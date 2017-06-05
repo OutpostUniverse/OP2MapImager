@@ -190,4 +190,29 @@ struct MapData
 
 	// Listing of properties grouped by terrain type. Properties apply to a given range of tiles.
 	vector<TerrainType> terrainTypeVector;
+
+public:
+	int GetTileIndex(unsigned int x, unsigned int y)
+	{
+		return tileDataVector[GetCellIndex(x, y)].tileIndex;
+	}
+
+	int GetCellType(unsigned int x, unsigned int y)
+	{
+		return tileDataVector[GetCellIndex(x, y)].cellType;
+	}
+
+	int GetLavaPossible(unsigned int x, unsigned int y)
+	{
+		return tileDataVector[GetCellIndex(x, y)].bLavaPossible;
+	}
+
+private:
+
+	size_t GetCellIndex(unsigned int x, unsigned int y)
+	{
+		unsigned int lowerX = x & 0x1F; // ... 0001 1111
+		unsigned int upperX = x >> 5;   // ... 1110 0000
+		return (upperX * mapHeader.mapTileHeight + y) * 32 + lowerX;
+	}
 };

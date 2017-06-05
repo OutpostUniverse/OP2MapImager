@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="FreeImage">
+      <UniqueIdentifier>{66206bf5-a9cb-4fc5-bda1-05ce543bd719}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,6 +24,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\Ashes.map" />
+    <None Include="FreeImage\FreeImage.dll">
+      <Filter>FreeImage</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapData.h">
@@ -29,5 +35,54 @@
     <ClInclude Include="MapFileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FreeImage\FreeImage.h">
+      <Filter>FreeImage</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="FreeImage\FreeImage.lib">
+      <Filter>FreeImage</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0005.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0006.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0007.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0008.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0009.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0010.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0011.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0012.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0000.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0002.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0003.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0004.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
