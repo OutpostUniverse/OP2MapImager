@@ -29,14 +29,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MapData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapFileReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FreeImage\FreeImage.h">
       <Filter>FreeImage</Filter>
+    </ClInclude>
+    <ClInclude Include="MapImager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
