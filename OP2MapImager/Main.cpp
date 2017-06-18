@@ -69,9 +69,22 @@ bool IsMapOrSaveFileExtension(const std::string& filename)
 	return XFile::ExtensionMatches(filename, "MAP") || XFile::ExtensionMatches(filename, "OP2");
 }
 
+void ConvertToUpper(string& str)
+{
+	for (auto & c : str) c = toupper(c);
+}
+
+string ConvertToUpper(const string& str)
+{
+	string newString = str;
+	ConvertToUpper(newString);
+
+	return newString;
+}
+
 ImageFormat ParseImageType(const std::string& imageTypeString)
 {
-	string imageTypeStringUpper = XFile::ConvertToUpper(imageTypeString);
+	string imageTypeStringUpper = ConvertToUpper(imageTypeString);
 
 	if (imageTypeStringUpper == "PNG")
 		return ImageFormat::PNG;
