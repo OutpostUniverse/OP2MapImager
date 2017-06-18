@@ -1,15 +1,5 @@
 #include "MapImager.h"
 
-Rectangle::Rectangle(void) { }
-
-Rectangle::Rectangle(int xVal, int yVal, int widthVal, int heightVal)
-{
-	x = xVal;
-	y = yVal;
-	width = widthVal;
-	height = heightVal;
-}
-
 void MapImager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
 	printf("\n*** ");
 	if (fif != FIF_UNKNOWN) {
@@ -30,10 +20,10 @@ void MapImager::DeInitialize()
 	FreeImage_DeInitialise();
 }
 
-MapImager::MapImager(int width, int height, int bpp, int outputTilePixelSize)
+MapImager::MapImager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor)
 {
-	this->outputTilePixelSize = outputTilePixelSize;
-	fiBmpDest = FreeImage_Allocate(width, height, bpp);
+	this->scaleFactor = scaleFactor;
+	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
 }
 
 MapImager::~MapImager() {
@@ -49,21 +39,28 @@ void MapImager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, 
 	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
 		bpp, red_mask, green_mask, blue_mask);
 
-	tileSetBmps.push_back(fiTileSetBmp);
+	int tileSetScaledWidth = width / (32 - scaleFactor);
+	int tileSetScaledHeight = height / (32 - scaleFactor);
+
+	tileSetBmps.push_back(FreeImage_Rescale(fiTileSetBmp, tileSetScaledWidth, tileSetScaledHeight));
+
+	FreeImage_Unload(fiTileSetBmp);
 }
 
-void MapImager::ScaleAndPaste(int tileSetIndex, Rectangle sourceRect, int destTopLeftPixel, int destTopRightPixel)
+void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 {
-	//TODO: Consider pre-scaling tile set images.
+	int tileSetYPixelPos = tileIndex * scaleFactor;
 
-	//FreeImage_Copy
-	FIBITMAP* bmpScaled = FreeImage_RescaleRect(tileSetBmps[tileSetIndex], outputTilePixelSize, outputTilePixelSize,
-		sourceRect.Left(), sourceRect.Top(), sourceRect.Right(), sourceRect.Bottom());
+	FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
+		0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+
+	int leftPixelPos = xPos * scaleFactor;
+	int topPixelPos = yPos * scaleFactor;
 
 	int alpha = 256;
-	FreeImage_Paste(fiBmpDest, bmpScaled, destTopLeftPixel, destTopRightPixel, alpha);
+	FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
 
-	FreeImage_Unload(bmpScaled);
+	FreeImage_Unload(tileBmp);
 }
 
 bool MapImager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)

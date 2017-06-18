@@ -5,29 +5,21 @@
 
 using namespace std;
 
-void ImageMap(const string& filename, int percentScaled, ImageFormat imageFormat)
+void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 {
 	MapData mapData(filename);
 
 	MapImager::Initialize();
 
-	int tileScaledWidth = 32 * percentScaled / 100;
-
 	MapImager mapImager(
-		mapData.mapHeader.MapTileWidth() * tileScaledWidth, 
-		mapData.mapHeader.mapTileHeight * tileScaledWidth, 8, 32);
-
+		mapData.mapHeader.MapTileWidth(), 
+		mapData.mapHeader.mapTileHeight, 8, scaleFactor);
 
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
 	{
-		int flag = 0; //Optional load flag constant for FreeImage
 		string filename = mapData.tileSetSources[i].GetTileSetFilename() + ".bmp";
-
-		//freeImageHelper.AddTileSetRawBits();
-
-		// Returns null if unsuccessful.
-		//tileSetImages[i] = FreeImage_Load(FREE_IMAGE_FORMAT::FIF_BMP, filename.c_str(), flag);
-
+		//TODO: Load Bmps into memory and set in mapImager.
+		//mapImager.AddTileSetRawBits()
 	}
 
 	cout << mapData.GetTileIndex(0, 0) << endl;
@@ -36,15 +28,8 @@ void ImageMap(const string& filename, int percentScaled, ImageFormat imageFormat
 	cout << mapData.GetTileIndex(32, 0) << endl;
 
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
-	{
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
-		{
-			Rectangle sourceRect(0, mapData.GetImageIndex(x, y), tileScaledWidth, tileScaledWidth);
-
-			//mapImager.ScaleAndPaste(mapData.GetTileSetIndex(x, y), sourceRect, 
-			//	tileScaledWidth * x, tileScaledWidth * y, tileScaledWidth, tileScaledWidth);
-		}
-	}
+			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
 	string imageFilename = mapData.tileSetSources[0].GetTileSetFilename() + ".png";
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
@@ -121,14 +106,17 @@ void OutputHelp()
 	cout << "The OP2MapImager executable must be placed in the same directory as the map's OP2 Tile Set Bitmaps." << endl;
 	cout << endl;
 	cout << "To save a map render:" << endl;
-	cout << "    OP2MapImager [OutputFileType = PNG [PNG|JPG|BMP]] [PercentScaled = 25[%]] <mapFilename.[map|OP2]>" << endl;
+	cout << "    OP2MapImager [OutputFileType = PNG [PNG|JPG|BMP]] [ScaleFactor = 8] <mapFilename.[map|OP2]>" << endl;
 	cout << "Example:" << endl;
-	cout << "    OP2MapImager PNG 25 Ashes.map" << endl;
+	cout << "    OP2MapImager PNG 16 Ashes.map" << endl;
 	cout << endl;
 	cout << "To save an image of all maps in a directory:" << endl;
 	cout << "OP2MapImager [Directory]" << endl;
 	cout << endl;
 	cout << "The default image type is PNG." << endl;
+	cout << "ScaleFactor represents the pixel length of a single tile on the final render." << endl;
+	cout << "    Max Value: 32, renders at 100%, or 32 pixels per tile. 1 = render at 1 pixel per tile" << endl;
+	cout << "    Min Value: 1, renders at 1 pixel per tile" << endl;
 	cout << endl;
 }
 
@@ -136,7 +124,7 @@ void OutputHelp()
 int main(int argc, char **argv)
 {
 	string formatStr = "PNG";
-	string percentScaledStr = "25";
+	string scaleFactorStr = "8";
 	string mapFilename = argv[argc - 1];
 	
 	// Determine command line instruction.
@@ -147,16 +135,16 @@ int main(int argc, char **argv)
 
 	// TODO: Consider allowing optional parameter parsing for image render type and image percent scale
 	formatStr = argv[2];
-	percentScaledStr = argv[3];
+	scaleFactorStr = argv[3];
 
 	try {
 		ImageFormat imageFormat = ParseImageType(formatStr);
-		int percentScaled = ParsePercentScaled(percentScaledStr);
+		int scaleFactor = ParsePercentScaled(scaleFactorStr);
 
 		if (XFile::IsDirectory(mapFilename))
-			ImageMaps(mapFilename, percentScaled, imageFormat);
+			ImageMaps(mapFilename, scaleFactor, imageFormat);
 		else if (IsMapOrSaveFileExtension(mapFilename))
-			ImageMap(mapFilename, percentScaled, imageFormat);
+			ImageMap(mapFilename, scaleFactor, imageFormat);
 		
 		throw exception("You must provide either a directory or a file of type [.map|.OP2].");
 	}
