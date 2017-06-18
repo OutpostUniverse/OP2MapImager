@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapImager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\Ashes.map">
