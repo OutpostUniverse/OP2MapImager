@@ -17,7 +17,12 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
 	{
+		if (mapData.tileSetSources[i].numTiles == 0)
+			continue;
+
 		string filename = mapData.tileSetSources[i].GetTileSetFilename() + ".bmp";
+
+		mapImager.AddTileSet(filename, ImageFormat::BMP);
 		//TODO: Load Bmps into memory and set in mapImager.
 		//mapImager.AddTileSetRawBits()
 	}
@@ -31,7 +36,7 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
-	string imageFilename = mapData.tileSetSources[0].GetTileSetFilename() + ".png";
+	string imageFilename = "Ashes.png";
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
 	if (imageSaveSuccess)
@@ -134,8 +139,8 @@ int main(int argc, char **argv)
 	}
 
 	// TODO: Consider allowing optional parameter parsing for image render type and image percent scale
-	formatStr = argv[2];
-	scaleFactorStr = argv[3];
+	formatStr = argv[1];
+	scaleFactorStr = argv[2];
 
 	try {
 		ImageFormat imageFormat = ParseImageType(formatStr);
@@ -145,8 +150,8 @@ int main(int argc, char **argv)
 			ImageMaps(mapFilename, scaleFactor, imageFormat);
 		else if (IsMapOrSaveFileExtension(mapFilename))
 			ImageMap(mapFilename, scaleFactor, imageFormat);
-		
-		throw exception("You must provide either a directory or a file of type [.map|.OP2].");
+		else
+			throw exception("You must provide either a directory or a file of type [.map|.OP2].");
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;

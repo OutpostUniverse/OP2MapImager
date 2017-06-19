@@ -31,6 +31,8 @@ public:
 	void AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
 		unsigned red_mask, unsigned green_mask, unsigned blue_mask);
 
+	void AddTileSet(std::string filename, ImageFormat imageFormat);
+
 	//void ScaleAndPaste(int tileSetIndex, Rectangle sourceRect, int destTopLeftPixel, int destTopRightPixel);
 
 	void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos);
@@ -45,4 +47,5 @@ private:
 
 	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat);
 	int GetFiSaveFlag(FREE_IMAGE_FORMAT imageFormat);
+	void MapImager::ScaleTileSet(FIBITMAP* fiTileSetBmp);
 };

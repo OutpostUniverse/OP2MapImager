@@ -33,32 +33,52 @@ MapImager::~MapImager() {
 	FreeImage_Unload(fiBmpDest);
 }
 
-void MapImager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
-	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
+void MapImager::ScaleTileSet(FIBITMAP* fiTileSetBmp)
 {
-	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
-		bpp, red_mask, green_mask, blue_mask);
-
-	int tileSetScaledWidth = width / (32 - scaleFactor);
-	int tileSetScaledHeight = height / (32 - scaleFactor);
+	unsigned nonScaledTileLength = 32;
+	unsigned imageWidth = FreeImage_GetWidth(fiTileSetBmp);
+	unsigned imageHeight = FreeImage_GetHeight(fiTileSetBmp);
+	unsigned tileSetScaledWidth = FreeImage_GetWidth(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
+	unsigned tileSetScaledHeight = FreeImage_GetHeight(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
 
 	tileSetBmps.push_back(FreeImage_Rescale(fiTileSetBmp, tileSetScaledWidth, tileSetScaledHeight));
 
 	FreeImage_Unload(fiTileSetBmp);
 }
 
+void MapImager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
+	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
+{
+	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
+		bpp, red_mask, green_mask, blue_mask);
+
+	ScaleTileSet(fiTileSetBmp);
+}
+
+void MapImager::AddTileSet(std::string filename, ImageFormat imageFormat)
+{
+	FIBITMAP* fiTileSetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
+
+	ScaleTileSet(fiTileSetBmp);
+}
+
 void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 {
 	int tileSetYPixelPos = tileIndex * scaleFactor;
 
-	FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
-		0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+	//FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
+	//	0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+
+	FIBITMAP* tileBmp = FreeImage_Copy(tileSetBmps[tileSetIndex], 0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+
+	int viewWidth = FreeImage_GetWidth(tileBmp);
+	int viewHeight = FreeImage_GetHeight(tileBmp);
 
 	int leftPixelPos = xPos * scaleFactor;
 	int topPixelPos = yPos * scaleFactor;
 
 	int alpha = 256;
-	FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
+	bool pasteSuccess = FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
 
 	FreeImage_Unload(tileBmp);
 }
@@ -66,6 +86,10 @@ void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 bool MapImager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
 {
 	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
+
+	//FIBITMAP* testLoad = FreeImage_Load(FREE_IMAGE_FORMAT::FIF_BMP, "well0001.bmp");
+	//FreeImage_Save(fiImageFormat, testLoad, "TestSave.png");
+
 	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFiSaveFlag(fiImageFormat));
 }
 
