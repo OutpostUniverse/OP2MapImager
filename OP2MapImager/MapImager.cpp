@@ -24,6 +24,26 @@ MapImager::MapImager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFact
 {
 	this->scaleFactor = scaleFactor;
 	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
+
+	//std::string filename = "well0001.bmp";
+
+	//FIBITMAP* tileBmp = FreeImage_Load(FREE_IMAGE_FORMAT::FIF_BMP, filename.c_str());
+
+	//RGBQUAD* palette = FreeImage_GetPalette(tileBmp);
+
+	//unsigned int redMask = FreeImage_GetRedMask(tileBmp);
+	//unsigned int greenMask = FreeImage_GetGreenMask(tileBmp);
+	//unsigned int blueMask = FreeImage_GetBlueMask(tileBmp);
+
+	//RGBQUAD* color = { 0, 0, 0, 0 };
+	//RGBQUAD color = { 0, 0, 255, 0 };
+	//bool backgroundColorSuccess = FreeImage_GetBackgroundColor(tileBmp, &color);
+
+	//fiBmpDest = FreeImage_AllocateExT(FREE_IMAGE_TYPE::FIT_BITMAP, mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp, &color, 0, palette, redMask, greenMask, blueMask);
+
+	//FreeImage_Unload(tileBmp);
+
+	//fiBmpDest = FreeImage_AllocateEx(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp, color, 0, palette);
 }
 
 MapImager::~MapImager() {
@@ -66,10 +86,8 @@ void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 {
 	int tileSetYPixelPos = tileIndex * scaleFactor;
 
-	//FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
-	//	0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
-
-	FIBITMAP* tileBmp = FreeImage_Copy(tileSetBmps[tileSetIndex], 0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+	FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
+		0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
 
 	int viewWidth = FreeImage_GetWidth(tileBmp);
 	int viewHeight = FreeImage_GetHeight(tileBmp);
@@ -86,9 +104,6 @@ void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 bool MapImager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
 {
 	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
-
-	//FIBITMAP* testLoad = FreeImage_Load(FREE_IMAGE_FORMAT::FIF_BMP, "well0001.bmp");
-	//FreeImage_Save(fiImageFormat, testLoad, "TestSave.png");
 
 	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFiSaveFlag(fiImageFormat));
 }

@@ -13,7 +13,7 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 
 	MapImager mapImager(
 		mapData.mapHeader.MapTileWidth(), 
-		mapData.mapHeader.mapTileHeight, 8, scaleFactor);
+		mapData.mapHeader.mapTileHeight, 24, scaleFactor);
 
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
 	{
@@ -33,8 +33,14 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 	cout << mapData.GetTileIndex(32, 0) << endl;
 
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
+	{
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
+		{
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
+			cout << mapData.GetTileSetIndex(x, y) << " ";
+		}
+		cout << endl;
+	}
 
 	string imageFilename = "Ashes.png";
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
