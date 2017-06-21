@@ -5,6 +5,21 @@
 
 using namespace std;
 
+std::string GetImageFormatExtension(ImageFormat imageFormat)
+{
+	switch (imageFormat)
+	{
+	case ImageFormat::PNG:
+		return ".png";
+	case ImageFormat::BMP:
+		return ".bmp";
+	case ImageFormat::JPG:
+		return ".jpg";
+	default:
+		return ".bmp";
+	}
+}
+
 void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 {
 	MapData mapData(filename);
@@ -31,7 +46,7 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
-	string imageFilename = "Ashes.png";
+	string imageFilename = XFile::ChangeFileExtension(filename, GetImageFormatExtension(imageFormat));
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
 	if (imageSaveSuccess)
