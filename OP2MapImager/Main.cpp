@@ -27,20 +27,9 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		//mapImager.AddTileSetRawBits()
 	}
 
-	cout << mapData.GetTileIndex(0, 0) << endl;
-	cout << mapData.GetTileIndex(1, 0) << endl;
-	cout << mapData.GetTileIndex(0, 1) << endl;
-	cout << mapData.GetTileIndex(32, 0) << endl;
-
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
-	{
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
-		{
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
-			cout << mapData.GetTileSetIndex(x, y) << " ";
-		}
-		cout << endl;
-	}
 
 	string imageFilename = "Ashes.png";
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
