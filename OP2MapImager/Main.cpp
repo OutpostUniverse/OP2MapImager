@@ -42,6 +42,11 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		//mapImager.AddTileSetRawBits()
 	}
 
+	//for (size_t i = 0; i < mapData.tileDataVector.size(); ++i)
+	//{
+	//	cout <<  "TileDataIndex: " << i << "   " << "TileIndex: " << mapData.tileDataVector[i].tileIndex << endl;
+	//}
+
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
