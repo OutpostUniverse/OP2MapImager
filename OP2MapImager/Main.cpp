@@ -27,7 +27,7 @@ string CreateUniqueFilename(const string& filename)
 	int pathIndex = 1;
 	while (XFile::PathExists(uniqueFilename))
 	{
-		uniqueFilename = XFile::AppendToFilename(filename, std::to_string(pathIndex));
+		uniqueFilename = XFile::AppendToFilename(filename, "_" + std::to_string(pathIndex));
 		pathIndex++;
 
 		if (pathIndex >= std::numeric_limits<int>::max())
@@ -59,18 +59,16 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		//mapImager.AddTileSetRawBits()
 	}
 
-	//for (size_t i = 0; i < mapData.tileDataVector.size(); ++i)
-	//{
-	//	cout <<  "TileDataIndex: " << i << "   " << "TileIndex: " << mapData.tileDataVector[i].tileIndex << endl;
-	//}
-
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
-	string destDirectory = "MapRenders/";
+	string destDirectory = "MapRenders";
 	XFile::CreateDirectory(destDirectory);
-	string imageFilename = CreateUniqueFilename(XFile::ChangeFileExtension(destDirectory + filename, GetImageFormatExtension(imageFormat)));
+	string imageFilename = XFile::AppendSubDirectory(filename, destDirectory); 
+	imageFilename = XFile::ChangeFileExtension(imageFilename, GetImageFormatExtension(imageFormat));
+	imageFilename = CreateUniqueFilename(imageFilename);
+	
 	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
 	if (imageSaveSuccess)
@@ -81,11 +79,16 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 	MapImager::DeInitialize();
 }
 
-void ImageMaps(const string& path, int percentScaled, ImageFormat imageFormat)
+void ImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat)
 {
+	vector<string> filenames;
+	XFile::GetFilesFromDirectory(filenames, path, ".map");
 
+	if (filenames.size() == 0)
+		throw exception("No map file found in the supplied directory.");
 
-	throw exception("Imaging multiple maps is not yet implemented.");
+	for (auto& filename : filenames)
+		ImageMap(filename, scaleFactor, imageFormat);
 }
 
 bool IsMapOrSaveFileExtension(const std::string& filename)
