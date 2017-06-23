@@ -20,6 +20,23 @@ std::string GetImageFormatExtension(ImageFormat imageFormat)
 	}
 }
 
+string CreateUniqueFilename(const string& filename)
+{
+	string uniqueFilename = filename;
+	
+	int pathIndex = 1;
+	while (XFile::PathExists(uniqueFilename))
+	{
+		uniqueFilename = XFile::AppendToFilename(filename, std::to_string(pathIndex));
+		pathIndex++;
+
+		if (pathIndex >= std::numeric_limits<int>::max())
+			throw std::exception("Too many files with the same filename.");
+	}
+
+	return uniqueFilename;
+}
+
 void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 {
 	MapData mapData(filename);
@@ -53,8 +70,8 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 
 	string destDirectory = "MapRenders/";
 	XFile::CreateDirectory(destDirectory);
-	string imageFilename = XFile::ChangeFileExtension(filename, GetImageFormatExtension(imageFormat));
-	bool imageSaveSuccess = mapImager.SaveMapImage(destDirectory + imageFilename, imageFormat);
+	string imageFilename = CreateUniqueFilename(XFile::ChangeFileExtension(destDirectory + filename, GetImageFormatExtension(imageFormat)));
+	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
 	if (imageSaveSuccess)
 		cout << "Map Image Saved as: " + imageFilename << endl;
