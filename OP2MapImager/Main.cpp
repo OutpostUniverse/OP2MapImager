@@ -51,8 +51,10 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
+	string destDirectory = "MapRenders/";
+	XFile::CreateDirectory(destDirectory);
 	string imageFilename = XFile::ChangeFileExtension(filename, GetImageFormatExtension(imageFormat));
-	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
+	bool imageSaveSuccess = mapImager.SaveMapImage(destDirectory + imageFilename, imageFormat);
 
 	if (imageSaveSuccess)
 		cout << "Map Image Saved as: " + imageFilename << endl;
