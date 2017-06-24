@@ -37,9 +37,22 @@ string CreateUniqueFilename(const string& filename)
 	return uniqueFilename;
 }
 
-bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, bool overwrite = false)
+void FormatRenderFilename(string& renderFilenameOut, const string& filename, const string& destDirectory, ImageFormat imageFormat, bool overwrite)
 {
-	MapData mapData(filename);
+	renderFilenameOut = XFile::AppendSubDirectory(filename, destDirectory);
+	renderFilenameOut = XFile::ChangeFileExtension(renderFilenameOut, GetImageFormatExtension(imageFormat));
+
+	if (!overwrite)
+		renderFilenameOut = CreateUniqueFilename(renderFilenameOut);
+}
+
+bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, string& renderFilenameOut, const string& destDirectory, bool overwrite = false)
+{
+	bool saveGame = false;
+	if (XFile::ExtensionMatches(filename, ".OP2"))
+		saveGame = true;
+
+	MapData mapData(filename, saveGame);
 
 	MapImager::Initialize();
 
@@ -64,39 +77,36 @@ bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, 
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 
-	string destDirectory = "MapRenders";
 	XFile::CreateDirectory(destDirectory);
-	string imageFilename = XFile::AppendSubDirectory(filename, destDirectory);
-	imageFilename = XFile::ChangeFileExtension(imageFilename, GetImageFormatExtension(imageFormat));
+	FormatRenderFilename(renderFilenameOut, filename, destDirectory, imageFormat, overwrite);
 
-	if (!overwrite)
-		imageFilename = CreateUniqueFilename(imageFilename);
-
-	bool saveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
+	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, imageFormat);
 
 	MapImager::DeInitialize();
 
 	if (!saveSuccess)
-		cerr << "Error encountered when attempting to save " + imageFilename << endl;
+		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl;
 
 	return saveSuccess;
 }
 
-void ConsoleImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, bool quiet = false, bool overwrite = false)
+void ConsoleImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, const string& destDirectory, bool quiet = false, bool overwrite = false)
 {
 	if (!quiet)
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(filename) << endl;
 
-	bool saveSuccess = ImageMap(filename, scaleFactor, imageFormat);
+	string renderFilename;
+	bool saveSuccess = ImageMap(filename, scaleFactor, imageFormat, renderFilename, destDirectory, overwrite);
 
 	if (saveSuccess && !quiet)
-		cout << "Render Saved: " + filename << endl << endl;
+		cout << "Render Saved: " + renderFilename << endl << endl;
 }
 
-void ConsoleImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat, bool quiet = false, bool overwrite = false)
+void ConsoleImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat, const string& destDirectory, bool quiet = false, bool overwrite = false)
 {
 	vector<string> filenames;
 	XFile::GetFilesFromDirectory(filenames, path, ".map");
+	XFile::GetFilesFromDirectory(filenames, path, ".OP2");
 
 	if (filenames.size() == 0)
 		throw exception("No map file found in the supplied directory.");
@@ -105,7 +115,7 @@ void ConsoleImageMaps(const string& path, int scaleFactor, ImageFormat imageForm
 		cout << filenames.size() + "files found for rendering.";
 
 	for (auto& filename : filenames)
-		ConsoleImageMap(filename, scaleFactor, imageFormat, quiet, overwrite);
+		ConsoleImageMap(filename, scaleFactor, imageFormat, destDirectory, quiet, overwrite);
 }
 
 bool IsMapOrSaveFileExtension(const std::string& filename)
@@ -179,36 +189,86 @@ void OutputHelp()
 	cout << endl;
 }
 
+struct ConsoleArgs
+{
+	bool helpRequested = false;
+	bool overwrite = false;
+	bool quiet = false;
+	ImageFormat imageFormat = ImageFormat::PNG;
+	int scaleFactor = 8;
+	vector<string> paths;
+	string destinationDirectory = "MapRenders";
+};
+
+void SortArguments(ConsoleArgs& consoleArgs,  int argc, char **argv)
+{
+	if (argc < 2)
+	{
+		consoleArgs.helpRequested = true;
+		return;
+	}
+
+	for (int i = 1; i < argc; ++i)
+	{
+		string argument = ConvertToUpper(argv[i]);
+		if (argument == "-Q" || argument == "--QUIET")
+		{
+			consoleArgs.quiet = true;
+			i++;
+		}
+		else if (argument == "-O" || argument == "--OVERWRITE")
+		{
+			consoleArgs.overwrite = true;
+			i++;
+		}
+		else if (argument == "-S" || argument == "--SCALE")
+		{
+			consoleArgs.scaleFactor = ParsePercentScaled(string(argv[i + 1]));
+			i++;
+		}
+		else if (argument == "-D" || argument == "--DESTINATION")
+		{
+			consoleArgs.destinationDirectory = argv[i + 1];
+			i++;
+		}
+		else if (argument == "-I" || argument == "--IMAGE")
+		{
+			consoleArgs.imageFormat = ParseImageType(argv[i + 1]);
+			i++;
+		}
+		else if (argument == "-H" || argument == "--HELP")
+		{
+			consoleArgs.helpRequested = true;
+			return;
+		}
+		else
+			consoleArgs.paths.push_back(argv[i]);
+	}
+}
+
 // argv[1] = path, argv[2] = Image Format (Default is PNG)
 int main(int argc, char **argv)
 {
-	string formatStr = "PNG";
-	string scaleFactorStr = "8";
-	string mapFilename = argv[argc - 1];
-	
-	// Determine command line instruction.
-	if (argc < 4) {
-		OutputHelp();
-		return 1;
-	}
+	try
+	{
+		ConsoleArgs consoleArgs;
+		SortArguments(consoleArgs, argc, argv);
 
-	// TODO: Consider allowing optional parameter parsing for image render type and image percent scale
-	formatStr = argv[1];
-	scaleFactorStr = argv[2];
+		if (consoleArgs.helpRequested)
+		{
+			OutputHelp();
+			return 0;
+		}
 
-	bool overwrite = false;
-	bool quiet = false;
-
-	try {
-		ImageFormat imageFormat = ParseImageType(formatStr);
-		int scaleFactor = ParsePercentScaled(scaleFactorStr);
-
-		if (XFile::IsDirectory(mapFilename))
-			ConsoleImageMaps(mapFilename, scaleFactor, imageFormat);
-		else if (IsMapOrSaveFileExtension(mapFilename))
-			ConsoleImageMap(mapFilename, scaleFactor, imageFormat, quiet, overwrite);
-		else
-			throw exception("You must provide either a directory or a file of type [.map|.OP2].");
+		for each (string path in consoleArgs.paths)
+		{
+			if (XFile::IsDirectory(path))
+				ConsoleImageMaps(path, consoleArgs.scaleFactor, consoleArgs.imageFormat, consoleArgs.destinationDirectory, consoleArgs.quiet, consoleArgs.overwrite);
+			else if (IsMapOrSaveFileExtension(path))
+				ConsoleImageMap(path, consoleArgs.scaleFactor, consoleArgs.imageFormat, consoleArgs.destinationDirectory, consoleArgs.quiet, consoleArgs.overwrite);
+			else
+				throw exception("You must provide either a directory or a file of type [.map|.OP2].");
+		}
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;
