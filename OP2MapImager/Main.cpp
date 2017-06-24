@@ -37,14 +37,14 @@ string CreateUniqueFilename(const string& filename)
 	return uniqueFilename;
 }
 
-void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
+bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, bool overwrite = false)
 {
 	MapData mapData(filename);
 
 	MapImager::Initialize();
 
 	MapImager mapImager(
-		mapData.mapHeader.MapTileWidth(), 
+		mapData.mapHeader.MapTileWidth(),
 		mapData.mapHeader.mapTileHeight, 24, scaleFactor);
 
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
@@ -55,7 +55,8 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 		string filename = mapData.tileSetSources[i].GetTileSetFilename() + ".bmp";
 
 		mapImager.AddTileSet(filename, ImageFormat::BMP);
-		//TODO: Load Bmps into memory and set in mapImager.
+
+		//TODO: Load Bmps into memory and set in mapImager if Outpost2 specific BMP file.
 		//mapImager.AddTileSetRawBits()
 	}
 
@@ -65,21 +66,34 @@ void ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat)
 
 	string destDirectory = "MapRenders";
 	XFile::CreateDirectory(destDirectory);
-	string imageFilename = XFile::AppendSubDirectory(filename, destDirectory); 
+	string imageFilename = XFile::AppendSubDirectory(filename, destDirectory);
 	imageFilename = XFile::ChangeFileExtension(imageFilename, GetImageFormatExtension(imageFormat));
-	imageFilename = CreateUniqueFilename(imageFilename);
-	
-	bool imageSaveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
-	if (imageSaveSuccess)
-		cout << "Map Image Saved as: " + imageFilename << endl;
-	else
-		cout << "Error encountered when attempting to save " + imageFilename << endl;
+	if (!overwrite)
+		imageFilename = CreateUniqueFilename(imageFilename);
+
+	bool saveSuccess = mapImager.SaveMapImage(imageFilename, imageFormat);
 
 	MapImager::DeInitialize();
+
+	if (!saveSuccess)
+		cerr << "Error encountered when attempting to save " + imageFilename << endl;
+
+	return saveSuccess;
 }
 
-void ImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat)
+void ConsoleImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, bool quiet = false, bool overwrite = false)
+{
+	if (!quiet)
+		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(filename) << endl;
+
+	bool saveSuccess = ImageMap(filename, scaleFactor, imageFormat);
+
+	if (saveSuccess && !quiet)
+		cout << "Render Saved: " + filename << endl << endl;
+}
+
+void ConsoleImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat, bool quiet = false, bool overwrite = false)
 {
 	vector<string> filenames;
 	XFile::GetFilesFromDirectory(filenames, path, ".map");
@@ -87,8 +101,11 @@ void ImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat)
 	if (filenames.size() == 0)
 		throw exception("No map file found in the supplied directory.");
 
+	if (!quiet)
+		cout << filenames.size() + "files found for rendering.";
+
 	for (auto& filename : filenames)
-		ImageMap(filename, scaleFactor, imageFormat);
+		ConsoleImageMap(filename, scaleFactor, imageFormat, quiet, overwrite);
 }
 
 bool IsMapOrSaveFileExtension(const std::string& filename)
@@ -179,14 +196,17 @@ int main(int argc, char **argv)
 	formatStr = argv[1];
 	scaleFactorStr = argv[2];
 
+	bool overwrite = false;
+	bool quiet = false;
+
 	try {
 		ImageFormat imageFormat = ParseImageType(formatStr);
 		int scaleFactor = ParsePercentScaled(scaleFactorStr);
 
 		if (XFile::IsDirectory(mapFilename))
-			ImageMaps(mapFilename, scaleFactor, imageFormat);
+			ConsoleImageMaps(mapFilename, scaleFactor, imageFormat);
 		else if (IsMapOrSaveFileExtension(mapFilename))
-			ImageMap(mapFilename, scaleFactor, imageFormat);
+			ConsoleImageMap(mapFilename, scaleFactor, imageFormat, quiet, overwrite);
 		else
 			throw exception("You must provide either a directory or a file of type [.map|.OP2].");
 	}
