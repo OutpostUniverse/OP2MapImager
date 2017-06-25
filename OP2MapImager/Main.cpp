@@ -2,8 +2,25 @@
 #include "MapImager.h"
 #include <string>
 #include <iostream>
+#include <functional>
 
 using namespace std;
+
+struct RenderSettings
+{
+	ImageFormat imageFormat = ImageFormat::PNG;
+	int scaleFactor = 4;
+	string destDirectory = "MapRenders";
+	bool overwrite = false;
+	bool quiet = false;
+	bool helpRequested = false;
+};
+
+struct ConsoleArgs
+{
+	RenderSettings renderSettings;
+	vector<string> paths;
+};
 
 std::string GetImageFormatExtension(ImageFormat imageFormat)
 {
@@ -46,20 +63,8 @@ void FormatRenderFilename(string& renderFilenameOut, const string& filename, con
 		renderFilenameOut = CreateUniqueFilename(renderFilenameOut);
 }
 
-bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, string& renderFilenameOut, const string& destDirectory, bool overwrite = false)
+void loadTileSets(MapData& mapData, MapImager& mapImager)
 {
-	bool saveGame = false;
-	if (XFile::ExtensionMatches(filename, ".OP2"))
-		saveGame = true;
-
-	MapData mapData(filename, saveGame);
-
-	MapImager::Initialize();
-
-	MapImager mapImager(
-		mapData.mapHeader.MapTileWidth(),
-		mapData.mapHeader.mapTileHeight, 24, scaleFactor);
-
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
 	{
 		if (mapData.tileSetSources[i].numTiles == 0)
@@ -72,15 +77,36 @@ bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, 
 		//TODO: Load Bmps into memory and set in mapImager if Outpost2 specific BMP file.
 		//mapImager.AddTileSetRawBits()
 	}
+}
 
+void setRenderTiles(MapData& mapData, MapImager& mapImager)
+{
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
 		for (unsigned int x = 0; x < mapData.mapHeader.MapTileWidth(); x++)
 			mapImager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
+}
 
-	XFile::CreateDirectory(destDirectory);
-	FormatRenderFilename(renderFilenameOut, filename, destDirectory, imageFormat, overwrite);
+bool ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
+{
+	bool saveGame = false;
+	if (XFile::ExtensionMatches(filename, ".OP2"))
+		saveGame = true;
 
-	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, imageFormat);
+	MapData mapData(filename, saveGame);
+
+	MapImager::Initialize();
+
+	MapImager mapImager(
+		mapData.mapHeader.MapTileWidth(),
+		mapData.mapHeader.mapTileHeight, 24, renderSettings.scaleFactor);
+
+	loadTileSets(mapData, mapImager);
+	setRenderTiles(mapData, mapImager);
+
+	XFile::CreateDirectory(renderSettings.destDirectory);
+	FormatRenderFilename(renderFilenameOut, filename, renderSettings.destDirectory, renderSettings.imageFormat, renderSettings.overwrite);
+
+	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
 
 	MapImager::DeInitialize();
 
@@ -90,32 +116,32 @@ bool ImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, 
 	return saveSuccess;
 }
 
-void ConsoleImageMap(const string& filename, int scaleFactor, ImageFormat imageFormat, const string& destDirectory, bool quiet = false, bool overwrite = false)
+void ConsoleImageMap(const string& mapFilename, const RenderSettings& renderSettings)
 {
-	if (!quiet)
-		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(filename) << endl;
+	if (!renderSettings.quiet)
+		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(mapFilename) << endl;
 
 	string renderFilename;
-	bool saveSuccess = ImageMap(filename, scaleFactor, imageFormat, renderFilename, destDirectory, overwrite);
+	bool saveSuccess = ImageMap(renderFilename, mapFilename, renderSettings);
 
-	if (saveSuccess && !quiet)
+	if (saveSuccess && !renderSettings.quiet)
 		cout << "Render Saved: " + renderFilename << endl << endl;
 }
 
-void ConsoleImageMaps(const string& path, int scaleFactor, ImageFormat imageFormat, const string& destDirectory, bool quiet = false, bool overwrite = false)
+void ConsoleImageMapsInDirectory(const string& directory, RenderSettings renderSettings)
 {
 	vector<string> filenames;
-	XFile::GetFilesFromDirectory(filenames, path, ".map");
-	XFile::GetFilesFromDirectory(filenames, path, ".OP2");
+	XFile::GetFilesFromDirectory(filenames, directory, ".map");
+	XFile::GetFilesFromDirectory(filenames, directory, ".OP2");
 
 	if (filenames.size() == 0)
 		throw exception("No map file found in the supplied directory.");
 
-	if (!quiet)
+	if (!renderSettings.quiet)
 		cout << filenames.size() + "files found for rendering.";
 
 	for (auto& filename : filenames)
-		ConsoleImageMap(filename, scaleFactor, imageFormat, destDirectory, quiet, overwrite);
+		ConsoleImageMap(filename, renderSettings);
 }
 
 bool IsMapOrSaveFileExtension(const std::string& filename)
@@ -152,16 +178,13 @@ ImageFormat ParseImageType(const std::string& imageTypeString)
 	throw exception("Unable to determine final render file type. Try PNG, JPG, or BMP.");
 }
 
-int ParsePercentScaled(string& percentScaledStr)
+int ParsePercentScaled(const string& percentScaledStr)
 {
-	if (percentScaledStr[percentScaledStr.length() - 1] == '%')
-		percentScaledStr.pop_back();
-
 	// stoi will throw an exception if it is unable to parse the string into an integer
 	int percentScaled = stoi(percentScaledStr);
 
 	if (percentScaled <= 0)
-		throw exception("Percent Scaled was set improperly.");
+		throw exception("Scale Factor was set improperly.");
 
 	return percentScaled;
 }
@@ -189,64 +212,138 @@ void OutputHelp()
 	cout << endl;
 }
 
-struct ConsoleArgs
+bool ParseBool(const string& str)
 {
-	bool helpRequested = false;
-	bool overwrite = false;
-	bool quiet = false;
-	ImageFormat imageFormat = ImageFormat::PNG;
-	int scaleFactor = 8;
-	vector<string> paths;
-	string destinationDirectory = "MapRenders";
+	string upperStr = ConvertToUpper(str);
+
+	if (upperStr == "TRUE" || upperStr == "YES")
+		return true;
+
+	if (upperStr == "FALSE" || upperStr == "NO")
+		return false;
+
+	throw invalid_argument("Unable to parse argument into a valid boolean (True/False).");
+}
+
+void CheckForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
+{
+	if (index + numberOfArgsToPass >= argc)
+		throw exception("Missing the final argument for the supplied switch.");
+}
+
+void parseHelp(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.helpRequested = true;
+}
+
+void parseQuiet(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.quiet = ParseBool(value);
+}
+
+void parseOverwrite(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.overwrite = ParseBool(value);
+}
+
+void parseScale(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.scaleFactor = ParsePercentScaled(value);
+}
+
+void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.destDirectory = value;
+}
+
+void parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.imageFormat = ParseImageType(value);
+}
+
+
+
+struct ConsoleSwitch
+{
+	ConsoleSwitch() { }
+
+	ConsoleSwitch(string shortSwitch, string longSwitch, function<void(const char* value, ConsoleArgs&)> parseFunction, int numberOfArgs)
+	{
+		this->shortSwitch = shortSwitch;
+		this->longSwitch = longSwitch;
+		this->parseFunction = parseFunction;
+		this->numberOfArgs = numberOfArgs;
+	}
+
+	string shortSwitch;
+	string longSwitch;
+	function<void(const char*, ConsoleArgs&)> parseFunction;
+	int numberOfArgs; // The switch statement does not count as an argument.
+
+	bool argumentMatch(string argument)
+	{
+		return argument == shortSwitch || argument == longSwitch;
+	}
 };
 
-void SortArguments(ConsoleArgs& consoleArgs,  int argc, char **argv)
+ConsoleSwitch consoleSwitches[]
+{
+	ConsoleSwitch("-S", "--SCALE", parseScale, 1),
+	ConsoleSwitch("-I", "--IMAGEFORMAT", parseImageFormat, 1),
+	ConsoleSwitch("-D", "--DESTINATIONDIRECTORY", parseDestDirectory, 1),
+	ConsoleSwitch("-H", "--HELP", parseHelp, 0),
+	ConsoleSwitch("-Q", "--QUIET", parseQuiet, 1),
+	ConsoleSwitch("-O", "--OVERWRITE", parseOverwrite, 1)
+};
+
+bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
+{
+	string argument = ConvertToUpper(argumentChar);
+
+	for each (ConsoleSwitch consoleSwitch in consoleSwitches)
+	{
+		if (consoleSwitch.argumentMatch(argument))
+		{
+			currentSwitch = consoleSwitch;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void SortArguments(ConsoleArgs& consoleArgs, int argc, char **argv)
 {
 	if (argc < 2)
 	{
-		consoleArgs.helpRequested = true;
+		consoleArgs.renderSettings.helpRequested = true;
 		return;
 	}
 
+	ConsoleSwitch currentSwitch;
+
 	for (int i = 1; i < argc; ++i)
 	{
-		string argument = ConvertToUpper(argv[i]);
-		if (argument == "-Q" || argument == "--QUIET")
+		bool switchFound = findSwitch(argv[i], currentSwitch);
+
+		if (switchFound)
 		{
-			consoleArgs.quiet = true;
-			i++;
-		}
-		else if (argument == "-O" || argument == "--OVERWRITE")
-		{
-			consoleArgs.overwrite = true;
-			i++;
-		}
-		else if (argument == "-S" || argument == "--SCALE")
-		{
-			consoleArgs.scaleFactor = ParsePercentScaled(string(argv[i + 1]));
-			i++;
-		}
-		else if (argument == "-D" || argument == "--DESTINATION")
-		{
-			consoleArgs.destinationDirectory = argv[i + 1];
-			i++;
-		}
-		else if (argument == "-I" || argument == "--IMAGE")
-		{
-			consoleArgs.imageFormat = ParseImageType(argv[i + 1]);
-			i++;
-		}
-		else if (argument == "-H" || argument == "--HELP")
-		{
-			consoleArgs.helpRequested = true;
-			return;
+			CheckForMissingSwitchArgument(i, argc, currentSwitch.numberOfArgs);
+
+			if (currentSwitch.numberOfArgs == 0)
+				currentSwitch.parseFunction(argv[i], consoleArgs);
+			else
+				currentSwitch.parseFunction(argv[i + 1], consoleArgs);
+
+			i = i + currentSwitch.numberOfArgs;
 		}
 		else
+		{
 			consoleArgs.paths.push_back(argv[i]);
+		}
 	}
 }
 
-// argv[1] = path, argv[2] = Image Format (Default is PNG)
 int main(int argc, char **argv)
 {
 	try
@@ -254,7 +351,7 @@ int main(int argc, char **argv)
 		ConsoleArgs consoleArgs;
 		SortArguments(consoleArgs, argc, argv);
 
-		if (consoleArgs.helpRequested)
+		if (consoleArgs.renderSettings.helpRequested)
 		{
 			OutputHelp();
 			return 0;
@@ -263,9 +360,9 @@ int main(int argc, char **argv)
 		for each (string path in consoleArgs.paths)
 		{
 			if (XFile::IsDirectory(path))
-				ConsoleImageMaps(path, consoleArgs.scaleFactor, consoleArgs.imageFormat, consoleArgs.destinationDirectory, consoleArgs.quiet, consoleArgs.overwrite);
+				ConsoleImageMapsInDirectory(path, consoleArgs.renderSettings);
 			else if (IsMapOrSaveFileExtension(path))
-				ConsoleImageMap(path, consoleArgs.scaleFactor, consoleArgs.imageFormat, consoleArgs.destinationDirectory, consoleArgs.quiet, consoleArgs.overwrite);
+				ConsoleImageMap(path, consoleArgs.renderSettings);
 			else
 				throw exception("You must provide either a directory or a file of type [.map|.OP2].");
 		}
