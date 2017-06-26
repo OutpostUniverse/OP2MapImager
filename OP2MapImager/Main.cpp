@@ -162,7 +162,7 @@ string ConvertToUpper(const string& str)
 	return newString;
 }
 
-ImageFormat ParseImageType(const std::string& imageTypeString)
+ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString)
 {
 	string imageTypeStringUpper = ConvertToUpper(imageTypeString);
 
@@ -192,23 +192,32 @@ int ParsePercentScaled(const string& percentScaledStr)
 void OutputHelp()
 {
 	cout << endl;
-	cout << "OP2MapImager - The Outpost 2 Map Imager" << endl;
+	cout << "OP2MapImager Ver 1.0 - Outpost 2 Map and Saved Game Imager" << endl;
 	cout << "Developed by Hooman and Brett208 (Vagabond)" << endl;
 	cout << endl;
-	cout << "The OP2MapImager executable must be placed in the same directory as the map's OP2 Tile Set Bitmaps." << endl;
+	cout << "+++ USAGE NOTES +++" << endl;
+	cout << "  * Capable of saving multiple map files and entire directories." << endl;
+	cout << "  * The OP2MapImager executable and FreeImage.DLL must be in the same directory as the tileset BMPs." << endl;
+	cout << "  * Tileset BMPs and map files must be manually extracted from VOL files before use with OP2MapImager." << endl;
+	cout << "  * Scale Factor determines the final render size and represents the final pixel length of a single tile" << endl;
+	cout << "    * Max Value: 32, renders at full size, or 32 pixels per tile." << endl;
+	cout << "    * Min Value: 1, renders at 1 pixel per tile" << endl;
 	cout << endl;
-	cout << "To save a map render:" << endl;
-	cout << "    OP2MapImager [OutputFileType = PNG [PNG|JPG|BMP]] [ScaleFactor = 8] <mapFilename.[map|OP2]>" << endl;
-	cout << "Example:" << endl;
-	cout << "    OP2MapImager PNG 16 Ashes.map" << endl;
+	cout << "+++ EXAMPLE COMMANDS +++" << endl;
+	cout << "  * OP2MapImager mapFilename.[map|OP2]" << endl;
+	cout << "  * OP2MapImager -s 16 -o true -q true Ashes.map eden01.map sgame0.op2" << endl;
+	cout << "  * OP2MapImager --Scale 8 --ImageFormat BMP [Directory of choice]" << endl;
 	cout << endl;
-	cout << "To save an image of all maps in a directory:" << endl;
-	cout << "OP2MapImager [Directory]" << endl;
+	cout << "+++ OPTIONAL ARGUMENTS +++" << endl;
+	cout << "  -H / --Help: Displays Help File" << endl;
+	cout << "  -Q / --Quiet: [Defaul false] Makes application run without issueing console messages." << endl;
+	cout << "  -O / --Overwrite: [Default false] Allows application to overwrite existing files when rendering new maps." << endl;
+	cout << "  -D / --DestinationDirectory: " << endl;
+	cout << "  -I / --ImageFormat: [Default PNG]. Allows PNG|JPG|BMP. Sets the image format of the final prameter." << endl;
+	cout << "  -S / --Scale: [Default 4] Sets Scale Factor of image." << endl;
 	cout << endl;
-	cout << "The default image type is PNG." << endl;
-	cout << "ScaleFactor represents the pixel length of a single tile on the final render." << endl;
-	cout << "    Max Value: 32, renders at 100%, or 32 pixels per tile. 1 = render at 1 pixel per tile" << endl;
-	cout << "    Min Value: 1, renders at 1 pixel per tile" << endl;
+	cout << "For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)" << endl;
+	cout << "Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)" << endl;
 	cout << endl;
 }
 
@@ -258,7 +267,7 @@ void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
 
 void parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
 {
-	consoleArgs.renderSettings.imageFormat = ParseImageType(value);
+	consoleArgs.renderSettings.imageFormat = ParseImageTypeToEnum(value);
 }
 
 

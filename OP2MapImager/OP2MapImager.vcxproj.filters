@@ -85,4 +85,8 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="FreeImage-License.txt" />
+  </ItemGroup>
 </Project>
