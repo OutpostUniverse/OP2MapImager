@@ -1,119 +1,103 @@
 #include "MapImager.h"
+#include <iostream>
 
-void MapImager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
-	printf("\n*** ");
-	if (fif != FIF_UNKNOWN) {
-		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
-	}
-	printf(message);
-	printf(" ***\n");
-}
-
-void MapImager::Initialize()
+bool MapImager::imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	FreeImage_Initialise();
-	FreeImage_SetOutputMessage(MapImager::FreeImageErrorHandler);
+	bool saveGame = false;
+	if (XFile::extensionMatches(filename, ".OP2"))
+		saveGame = true;
+
+	ArchiveHelper::findFile(filename, renderSettings.accessArchives);
+
+	MapData mapData(filename, saveGame);
+
+	RenderManager::Initialize();
+
+	RenderManager mapImager(
+		mapData.mapHeader.mapTileWidth(),
+		mapData.mapHeader.mapTileHeight, 24, renderSettings.scaleFactor);
+
+	loadTileSets(mapData, mapImager, renderSettings.accessArchives);
+	setRenderTiles(mapData, mapImager);
+
+	XFile::newDirectory(renderSettings.destDirectory);
+	formatRenderFilename(renderFilenameOut, filename, renderSettings);
+
+	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+
+	RenderManager::DeInitialize();
+
+	if (!saveSuccess)
+		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl;
+
+	return saveSuccess;
 }
 
-void MapImager::DeInitialize()
-{
-	FreeImage_DeInitialise();
-}
-
-MapImager::MapImager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor)
-{
-	this->scaleFactor = scaleFactor;
-	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
-}
-
-MapImager::~MapImager() {
-	for (FIBITMAP* fiBmp : tileSetBmps)
-		FreeImage_Unload(fiBmp);
-
-	FreeImage_Unload(fiBmpDest);
-}
-
-void MapImager::ScaleTileSet(FIBITMAP* fiTileSetBmp)
-{
-	unsigned nonScaledTileLength = 32;
-	unsigned imageWidth = FreeImage_GetWidth(fiTileSetBmp);
-	unsigned imageHeight = FreeImage_GetHeight(fiTileSetBmp);
-	unsigned tileSetScaledWidth = FreeImage_GetWidth(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
-	unsigned tileSetScaledHeight = FreeImage_GetHeight(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
-
-	tileSetBmps.push_back(FreeImage_Rescale(fiTileSetBmp, tileSetScaledWidth, tileSetScaledHeight));
-
-	FreeImage_Unload(fiTileSetBmp);
-}
-
-void MapImager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
-	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
-{
-	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
-		bpp, red_mask, green_mask, blue_mask);
-
-	ScaleTileSet(fiTileSetBmp);
-}
-
-void MapImager::AddTileSet(std::string filename, ImageFormat imageFormat)
-{
-	FIBITMAP* fiTileSetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
-
-	ScaleTileSet(fiTileSetBmp);
-}
-
-void MapImager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
-{
-	int tileSetYPixelPos = tileIndex * scaleFactor;
-
-	FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
-		0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
-
-	int viewWidth = FreeImage_GetWidth(tileBmp);
-	int viewHeight = FreeImage_GetHeight(tileBmp);
-
-	int leftPixelPos = xPos * scaleFactor;
-	int topPixelPos = yPos * scaleFactor;
-
-	int alpha = 256;
-	bool pasteSuccess = FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
-
-	FreeImage_Unload(tileBmp);
-}
-
-bool MapImager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
-{
-	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
-
-	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFiSaveFlag(fiImageFormat));
-}
-
-FREE_IMAGE_FORMAT MapImager::GetFiImageFormat(ImageFormat imageFormat)
+string MapImager::getImageFormatExtension(ImageFormat imageFormat)
 {
 	switch (imageFormat)
 	{
-	case ImageFormat::BMP:
-		return FREE_IMAGE_FORMAT::FIF_BMP;
-	case ImageFormat::JPG:
-		return FREE_IMAGE_FORMAT::FIF_JPEG;
 	case ImageFormat::PNG:
-		return FREE_IMAGE_FORMAT::FIF_PNG;
+		return ".png";
+	case ImageFormat::BMP:
+		return ".bmp";
+	case ImageFormat::JPG:
+		return ".jpg";
 	default:
-		return FREE_IMAGE_FORMAT::FIF_BMP;
+		return ".bmp";
 	}
 }
 
-int MapImager::GetFiSaveFlag(FREE_IMAGE_FORMAT imageFormat)
+void MapImager::formatRenderFilename(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	switch (imageFormat)
+	renderFilenameOut = XFile::appendSubDirectory(filename, renderSettings.destDirectory);
+	string s = ".s" + to_string(renderSettings.scaleFactor);
+	renderFilenameOut = XFile::appendToFilename(renderFilenameOut, s);
+	renderFilenameOut = XFile::changeFileExtension(renderFilenameOut, getImageFormatExtension(renderSettings.imageFormat));
+
+	if (!renderSettings.overwrite)
+		renderFilenameOut = createUniqueFilename(renderFilenameOut);
+}
+
+string MapImager::createUniqueFilename(const string& filename)
+{
+	string uniqueFilename = filename;
+
+	int pathIndex = 1;
+	while (XFile::PathExists(uniqueFilename))
 	{
-	case FIF_BMP:
-		return BMP_DEFAULT;
-	case FIF_JPEG:
-		return JPEG_DEFAULT;
-	case FIF_PNG:
-		return PNG_DEFAULT;
-	default:
-		return BMP_DEFAULT;
+		uniqueFilename = XFile::appendToFilename(filename, "_" + std::to_string(pathIndex));
+		pathIndex++;
+
+		//if (pathIndex >= std::numeric_limits<int>::max())
+		if (pathIndex >= 32000)
+			throw std::exception("Too many files with the same filename.");
 	}
+
+	return uniqueFilename;
+}
+
+void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives)
+{
+	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
+	{
+		if (mapData.tileSetSources[i].numTiles == 0)
+			continue;
+
+		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
+
+		ArchiveHelper::findFile(tileSetFilename, accessArchives);
+
+		mapImager.AddTileSet(tileSetFilename, ImageFormat::BMP);
+
+		//TODO: Load Bmps into memory and set in mapImager if Outpost2 specific BMP file.
+		//mapImager.AddTileSetRawBits()
+	}
+}
+
+void MapImager::setRenderTiles(MapData& mapData, RenderManager& renderManager)
+{
+	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
+		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++)
+			renderManager.PasteTile(mapData.getTileSetIndex(x, y), mapData.getImageIndex(x, y), x, y);
 }

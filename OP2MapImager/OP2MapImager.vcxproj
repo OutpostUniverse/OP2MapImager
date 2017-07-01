@@ -90,6 +90,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Brett\Documents\Outpost2SVN\GameResources\OP2Utility\OP2Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +122,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Brett\Documents\Outpost2SVN\GameResources\OP2Utility\OP2Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,8 +151,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleArgumentParser.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapImager.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\Ashes.map">
@@ -164,7 +170,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleArgumentParser.h" />
     <ClInclude Include="MapImager.h" />
+    <ClInclude Include="RenderManager.h" />
     <ClInclude Include="FreeImage\FreeImage.h" />
   </ItemGroup>
   <ItemGroup>
@@ -217,7 +225,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="FreeImage-License.txt" />
+    <Text Include="FreeImage license-gplv3.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

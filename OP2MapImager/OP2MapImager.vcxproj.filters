@@ -21,6 +21,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConsoleArgumentParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="MapImager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +40,12 @@
   <ItemGroup>
     <ClInclude Include="FreeImage\FreeImage.h">
       <Filter>FreeImage</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleArgumentParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapImager.h">
       <Filter>Header Files</Filter>
@@ -87,6 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="FreeImage-License.txt" />
+    <Text Include="FreeImage license-gplv3.txt" />
   </ItemGroup>
 </Project>
