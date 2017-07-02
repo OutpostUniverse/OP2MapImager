@@ -32,7 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\Ashes.map" />
     <None Include="FreeImage\FreeImage.dll">
       <Filter>FreeImage</Filter>
     </None>

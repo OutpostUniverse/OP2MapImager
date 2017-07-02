@@ -157,9 +157,6 @@
     <ClCompile Include="RenderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\Ashes.map">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="FreeImage\FreeImage.dll">
       <DeploymentContent>false</DeploymentContent>
       <FileType>Document</FileType>
