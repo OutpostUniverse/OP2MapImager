@@ -18,6 +18,9 @@ namespace ConsoleArgumentParser
 	{
 		string argument = StringHelper::convertToUpper(argumentChar);
 
+		if (argument[argument.size() - 1] == ':')
+			argument.pop_back();
+
 		for each (ConsoleSwitch consoleSwitch in consoleSwitches)
 		{
 			if (consoleSwitch.argumentMatch(argument))

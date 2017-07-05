@@ -25,13 +25,16 @@ Developed by Hooman and Brett208 (Vagabond)
 For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)
 Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)
 
-+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
++ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
 
 +++ INSTALL DIRECTIONS +++
 
 Ensure OP2MapImager.exe, FreeImage.dll, and well0000.bmp through well0012.bmp are all in the same directory. (I typically put them all in the root OP2 install directory for ease of use, but not required.)
 
 Open a command prompt. Navigate to the directory with MapImager.exe and type 'OP2MapImager -h'.
+
 
 +++ OUTPOST 2 TILESETS (WELL00XX.BMP) +++
 
@@ -41,11 +44,13 @@ OP2MapImager contains a copy of the tileset images that have been reformatted fr
 
 If you attempt to render a map using the original Outpost 2 tileset images, OP2MapImager will throw an error.
 
+
 +++ ARCHIVE (.VOL) FILE ACCESS +++
 
 By default, OP2MapImager is able to search through .vol archives and pull maps or tilesets out of the .vol files. OP2MapImager currently leaves the .map file or tileset image file loose in the directory after pulling the file. These loose copies may be deleted manually by the user without affecting the ability of Outpost 2 to run.
 
 OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. So if the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
+
 
 +++ RELEASE COMPILATION INSTRUCTIONS +++
 
@@ -58,7 +63,7 @@ Source code may be found at: https://svn.outpostuniverse.org:8443/!/#outpost2/vi
  5. Grab the following files, and place them in a zipped directory with name format 'OP2MapImager 1.0 x64': 
     * OP2MapImager.exe (Release Directory) 
 	* FreeImage.dll (There are different DLLs for x32 and x64 compilations)
-	* Well0000.BMP-WELL0012.BMP (Ensure they are the reformated versions that a normal image editor may open.)
+	* Well0000.BMP-Well0012.BMP (Ensure they are the reformated versions that a normal image editor may open.)
 	* ReadMe.txt (this file)
 	* FreeImage liscense-gplv3.txt
  6. Place the following files in a separate zipped directory with name format 'OP2MapImager 1.0 x64 Debug':
