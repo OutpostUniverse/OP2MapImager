@@ -56,14 +56,21 @@ OP2MapImager will first search the supplied directory, and if it cannot find the
 
 Source code may be found at: https://svn.outpostuniverse.org:8443/!/#outpost2/view/head/GameResources/OP2MapImager.
 
- 1. Set Solution Configuration to Release.
- 2. Set Solution Platform as desired. (x86/x64).
- 3. Compile Code.
+Post Build Event Notes: When in release mode, a command prompt script will run once the source code is compiled. This script automates staging all required files for distribution. Included in the source code is 7za.exe, the 7-zip command line tool that facilitates zipping the final release package. See http://www.7-zip.org/ for source files and https://www.dotnetperls.com/7-zip-examples for examples of use.
+
+The Post Build Event requires a SVN console interface. I recommend the TortoiseSVN command prompt. NOTE: The command prompt is not installed by default and must be manually selected during the install process of TortoiseSVN.
+
+
+ 1. If changes have been made to source code, run SVN COMMIT.
+ 2. Run SVN Update to merge committed changes and properly update revision number of repository.
+ 3. Set Solution Configuration to Release.
+ 4. Set Solution Platform to x86. (x64 is not currently supported due to some WINAPI code within OP2Utility VolDecompress).
+ 5. Compile Code. (If SVN Update has not been executed before this, you may not capture the current revision number)
  4. Determine version number for this release.
- 5. Grab the following files, and place them in a zipped directory with name format 'OP2MapImager 1.0 x64': 
-    * OP2MapImager.exe (Release Directory) 
-	* FreeImage.dll (There are different DLLs for x32 and x64 compilations)
-	* Well0000.BMP-Well0012.BMP (Ensure they are the reformated versions that a normal image editor may open.)
+ 5. The following files will be automatically copied into the zipped directory'OP2MapImager 1.0.XXXX x86': 
+    * OP2MapImager.exe (From Release Directory) 
+	* FreeImage.dll (x32 version)
+	* Well0000.BMP-Well0012.BMP (Reformated BMPs that a normal image editor may open.)
 	* ReadMe.txt (this file)
 	* FreeImage liscense-gplv3.txt
  6. Place the following files in a separate zipped directory with name format 'OP2MapImager 1.0 x64 Debug':

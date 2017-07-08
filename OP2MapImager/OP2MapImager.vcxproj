@@ -99,13 +99,21 @@
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
+REM SET zipName="OP2MapImager Ver1.0" svn info --show-item revision --no-newline
+SET zipName="OP2MapImager Ver1.0"
+SET directoryName=$(OutDir)%25zipName%25 
+
 if $(ConfigurationName) == Release (
-    mkdir "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)well00*.bmp" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)ReadMe.txt" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(OutDir)FreeImage.dll" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(OutDir)$(TargetFileName)" "$(OutDir)OP2MapImager X.X"
+    mkdir %25directoryName%25
+    xcopy /y /d "$(ProjectDir)well00*.bmp" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)ReadMe.txt" %25directoryName%25
+    xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
+    xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
+
+    7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
+    REM DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -142,13 +150,21 @@ if $(ConfigurationName) == Release (
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
+REM SET zipName="OP2MapImager Ver1.0" svn info --show-item revision --no-newline
+SET zipName="OP2MapImager Ver1.0"
+SET directoryName=$(OutDir)%25zipName%25 
+
 if $(ConfigurationName) == Release (
-    mkdir "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)well00*.bmp" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(ProjectDir)ReadMe.txt" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(OutDir)FreeImage.dll" "$(OutDir)OP2MapImager X.X"
-    xcopy /y /d "$(OutDir)$(TargetFileName)" "$(OutDir)OP2MapImager X.X"
+    mkdir %25directoryName%25
+    xcopy /y /d "$(ProjectDir)well00*.bmp" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)ReadMe.txt" %25directoryName%25
+    xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
+    xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
+
+    7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
+    REM DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
