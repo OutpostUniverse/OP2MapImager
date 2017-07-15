@@ -99,8 +99,10 @@
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
-REM SET zipName="OP2MapImager Ver1.0" svn info --show-item revision --no-newline
-SET zipName="OP2MapImager Ver1.0"
+FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
+
+SET zipNameBegining="OP2MapImager Ver1.0."
+SET zipName=%25zipNameBegining%25%25svnVersion%25
 SET directoryName=$(OutDir)%25zipName%25 
 
 if $(ConfigurationName) == Release (
@@ -113,7 +115,7 @@ if $(ConfigurationName) == Release (
 
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
     REM DEL /q %25directoryName%25\*.*
-    RMDIR %25directoryName%25 /s /q
+    REM RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -150,8 +152,10 @@ if $(ConfigurationName) == Release (
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
-REM SET zipName="OP2MapImager Ver1.0" svn info --show-item revision --no-newline
-SET zipName="OP2MapImager Ver1.0"
+FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
+
+SET zipNameBegining="OP2MapImager Ver1.0."
+SET zipName=%25zipNameBegining%25%25svnVersion%25
 SET directoryName=$(OutDir)%25zipName%25 
 
 if $(ConfigurationName) == Release (
@@ -164,7 +168,7 @@ if $(ConfigurationName) == Release (
 
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
     REM DEL /q %25directoryName%25\*.*
-    RMDIR %25directoryName%25 /s /q
+    REM RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
