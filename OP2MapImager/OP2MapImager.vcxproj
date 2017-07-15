@@ -97,8 +97,10 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
+      <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
+xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
+REM Pull repository revision number and set into final release directory name.
 FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
 
 SET zipNameBegining="OP2MapImager Ver1.0."
@@ -113,9 +115,11 @@ if $(ConfigurationName) == Release (
     xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
     xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
 
+    REM Use 7Zip to zip final version
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
-    REM DEL /q %25directoryName%25\*.*
-    REM RMDIR %25directoryName%25 /s /q
+    
+    DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -150,8 +154,10 @@ if $(ConfigurationName) == Release (
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
+      <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
+xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 
+REM Pull repository revision number and set into final release directory name.
 FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
 
 SET zipNameBegining="OP2MapImager Ver1.0."
@@ -166,9 +172,11 @@ if $(ConfigurationName) == Release (
     xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
     xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
 
+    REM Use 7Zip to zip final version
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
-    REM DEL /q %25directoryName%25\*.*
-    REM RMDIR %25directoryName%25 /s /q
+    
+    DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

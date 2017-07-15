@@ -11,6 +11,7 @@ using namespace ConsoleArgumentParser;
 //  * SDL checks have been set to NO/FALSE. (Security Development Lifecycle).
 
 MapImager mapImager;
+static std::string version = "1.0";
 
 void outputHelp();
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
@@ -90,7 +91,7 @@ bool isRenderableFileExtension(const std::string& filename)
 void outputHelp()
 {
 	cout << endl;
-	cout << "OP2MapImager Ver 1.0 - Outpost 2 Map and Saved Game Imager" << endl;
+	cout << "OP2MapImager Ver " << version << " - Outpost 2 Map and Saved Game Imager" << endl;
 	cout << "Developed by Hooman and Brett208 (Vagabond)" << endl;
 	cout << endl;
 	cout << "+++ USAGE NOTES +++" << endl;

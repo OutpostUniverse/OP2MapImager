@@ -1,4 +1,4 @@
-OP2MapImager Ver 1.0 - Outpost 2 Map and Saved Game Imager
+OP2MapImager - Outpost 2 Map and Saved Game Imager
 Developed by Hooman and Brett208 (Vagabond)
 
 +++ USAGE NOTES +++
@@ -60,20 +60,15 @@ Post Build Event Notes: When in release mode, a command prompt script will run o
 
 The Post Build Event requires a SVN console interface. I recommend the TortoiseSVN command prompt. NOTE: The command prompt is not installed by default and must be manually selected during the install process of TortoiseSVN.
 
-
- 1. If changes have been made to source code, run SVN COMMIT.
- 2. Run SVN Update to merge committed changes and properly update revision number of repository.
+ 1. If changing Major/Minor revision number, set new version number at top of OP2MapImager main.cpp AND in post build event batch script.
+ 2. Run SVN Commit and then SVN Update to merge committed changes and properly update revision number of repository.
  3. Set Solution Configuration to Release.
  4. Set Solution Platform to x86. (x64 is not currently supported due to some WINAPI code within OP2Utility VolDecompress).
- 5. Compile Code. (If SVN Update has not been executed before this, you may not capture the current revision number)
- 4. Determine version number for this release.
- 5. The following files will be automatically copied into the zipped directory'OP2MapImager 1.0.XXXX x86': 
+ 5. Compile Code. 
+ 6. The following files will automatically be copied into the zipped directory'OP2MapImager 1.0.XXXX' (XXXX is svn revision number): 
     * OP2MapImager.exe (From Release Directory) 
 	* FreeImage.dll (x32 version)
 	* Well0000.BMP-Well0012.BMP (Reformated BMPs that a normal image editor may open.)
 	* ReadMe.txt (this file)
 	* FreeImage liscense-gplv3.txt
- 6. Place the following files in a separate zipped directory with name format 'OP2MapImager 1.0 x64 Debug':
-    * OP2MapRender.pdb
-	* OP2Utility.pdb
- 7. Place both zip files on the Outpost Universe Website.
+ 7. Place zip file on the Outpost Universe Website.
