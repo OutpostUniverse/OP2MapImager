@@ -7,9 +7,12 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 	if (XFile::extensionMatches(filename, ".OP2"))
 		saveGame = true;
 
-	ArchiveHelper::findFile(filename, renderSettings.accessArchives);
+	SeekableStreamReader* seekableStreamReader = resourceManager.getResourceStream(filename);
 
-	MapData mapData(filename, saveGame);
+	if (seekableStreamReader == nullptr)
+		throw std::exception("Unable to find specified map or save file.");
+
+	MapData mapData(seekableStreamReader, saveGame);
 
 	RenderManager::Initialize();
 
@@ -86,7 +89,10 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
 
-		ArchiveHelper::findFile(tileSetFilename, accessArchives);
+		bool extracted = resourceManager.extractFromArchive(tileSetFilename);
+
+		if (!extracted)
+			throw std::exception(("Unable to find the tileset " + tileSetFilename + "in the directory or in a given archive (.vol).").c_str());
 
 		mapImager.AddTileSet(tileSetFilename, ImageFormat::BMP);
 

@@ -20,10 +20,13 @@ struct RenderSettings
 class MapImager
 {
 public:
+	MapImager() : resourceManager("") {};
 	bool imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);
 	string getImageFormatExtension(ImageFormat imageFormat);
 
 private:
+	ResourceManager resourceManager;
+
 	void setRenderTiles(MapData& mapData, RenderManager& mapImager);
 	void loadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
 	void formatRenderFilename(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);

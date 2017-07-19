@@ -67,7 +67,8 @@ void imageMapFromConsole(const string& mapFilename, const RenderSettings& render
 
 void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings)
 {
-	ArchiveHelper::extractAllOfFileType(directory, ".map");
+	ResourceManager resourceManager(directory);
+	resourceManager.extractAllOfFileType(directory, ".map");
 
 	vector<string> filenames;
 	XFile::getFilesFromDirectory(filenames, directory, ".map");
