@@ -14,6 +14,8 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 
 	MapData mapData(seekableStreamReader, saveGame);
 
+	delete seekableStreamReader;
+
 	RenderManager::Initialize();
 
 	RenderManager mapImager(
@@ -90,9 +92,9 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
 
 		bool extracted = resourceManager.extractFromArchive(tileSetFilename);
-
+		
 		if (!extracted)
-			throw std::exception(("Unable to find the tileset " + tileSetFilename + "in the directory or in a given archive (.vol).").c_str());
+			throw std::exception(("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).").c_str());
 
 		mapImager.AddTileSet(tileSetFilename, ImageFormat::BMP);
 

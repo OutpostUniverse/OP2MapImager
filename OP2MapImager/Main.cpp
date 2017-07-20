@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;
-		cerr << "Run without arguments to see usage message." << endl;
+		cerr << "Run without arguments to see usage message." << endl << endl;
 		return 1;
 	}
 
