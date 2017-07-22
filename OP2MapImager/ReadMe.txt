@@ -47,9 +47,9 @@ If you attempt to render a map using the original Outpost 2 tileset images, OP2M
 
 +++ ARCHIVE (.VOL) FILE ACCESS +++
 
-By default, OP2MapImager is able to search through .vol archives and pull maps or tilesets out of the .vol files. OP2MapImager currently leaves the .map file or tileset image file loose in the directory after pulling the file. These loose copies may be deleted manually by the user without affecting the ability of Outpost 2 to run.
+By default, OP2MapImager is able to search through .vol archives and pull maps or tilesets out of the .vol files.
 
-OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. So if the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
+Unless the ArchiveAcess flag is dsiabled, OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. If the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
 
 
 +++ RELEASE COMPILATION INSTRUCTIONS +++

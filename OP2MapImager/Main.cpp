@@ -11,6 +11,7 @@ using namespace ConsoleArgumentParser;
 //  * SDL checks have been set to NO/FALSE. (Security Development Lifecycle).
 
 MapImager mapImager;
+static string consoleLineBreak("--------------------------------------------------");
 static std::string version = "1.0";
 
 void outputHelp();
@@ -68,20 +69,28 @@ void imageMapFromConsole(const string& mapFilename, const RenderSettings& render
 void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings)
 {
 	ResourceManager resourceManager(directory);
-	resourceManager.extractAllOfFileType(directory, ".map");
 
 	vector<string> filenames;
-	XFile::getFilesFromDirectory(filenames, directory, ".map");
-	XFile::getFilesFromDirectory(filenames, directory, ".OP2");
+	resourceManager.getAllFilenamesOfType(filenames, directory, ".map", renderSettings.accessArchives);
+	resourceManager.getAllFilenamesOfType(filenames, directory, ".OP2", renderSettings.accessArchives);
 
 	if (filenames.size() == 0)
 		throw exception("No map file or save file found in the supplied directory.");
 
 	if (!renderSettings.quiet)
-		cout << "File count found for rendering: " << to_string(filenames.size()) << endl << endl;
+	{
+		cout << "File count found for rendering: " << to_string(filenames.size()) << endl;
+		cout << consoleLineBreak << endl << endl;
+	}
 
-	for (auto& filename : filenames)
+	for each (string filename in filenames)
 		imageMapFromConsole(filename, renderSettings);
+
+	if (!renderSettings.quiet)
+	{
+		cout << "Renders Complete!" << endl;
+		cout << consoleLineBreak << endl << endl;
+	}
 }
 
 bool isRenderableFileExtension(const std::string& filename)

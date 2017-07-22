@@ -7,7 +7,7 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 	if (XFile::extensionMatches(filename, ".OP2"))
 		saveGame = true;
 
-	SeekableStreamReader* seekableStreamReader = resourceManager.getResourceStream(filename);
+	SeekableStreamReader* seekableStreamReader = resourceManager.getResourceStream(filename, renderSettings.accessArchives);
 
 	if (seekableStreamReader == nullptr)
 		throw std::exception("Unable to find specified map or save file.");
