@@ -9,6 +9,7 @@ namespace ConsoleArgumentParser
 		ConsoleSwitch("-I", "--IMAGEFORMAT", parseImageFormat, 1),
 		ConsoleSwitch("-D", "--DESTINATIONDIRECTORY", parseDestDirectory, 1),
 		ConsoleSwitch("-H", "--HELP", parseHelp, 0),
+		ConsoleSwitch("-?", "--?", parseHelp, 0),
 		ConsoleSwitch("-Q", "--QUIET", parseQuiet, 0),
 		ConsoleSwitch("-O", "--OVERWRITE", parseOverwrite, 0),
 		ConsoleSwitch("-A", "--ACCESSARCHIVES", parseAccessArchives, 0)

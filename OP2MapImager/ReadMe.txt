@@ -22,8 +22,8 @@ Developed by Hooman and Brett208 (Vagabond)
   -S / --Scale: [Default 4] Sets Scale Factor of image.
   -A / --AccessArchives [Default true]. Add switch to disable searching VOL archives for map and well files.
 
-For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)
-Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)
+For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/).
+Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/).
 
 
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +

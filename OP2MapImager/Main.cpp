@@ -12,7 +12,7 @@ using namespace ConsoleArgumentParser;
 
 MapImager mapImager;
 static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "1.0";
+static std::string version = "1.0.0";
 
 void outputHelp();
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
@@ -125,7 +125,7 @@ void outputHelp()
 	cout << "  -S / --Scale: [Default 4] Sets Scale Factor of image." << endl;
 	cout << "  -A / --AccessArchives [Default true]. Add switch to disable searching VOL archives for map and well files." << endl;
 	cout << endl;
-	cout << "For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)" << endl;
-	cout << "Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)" << endl;
+	cout << "For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)." << endl;
+	cout << "Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)." << endl;
 	cout << endl;
 }

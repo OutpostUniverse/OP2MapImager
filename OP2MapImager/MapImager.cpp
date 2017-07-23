@@ -55,7 +55,11 @@ string MapImager::getImageFormatExtension(ImageFormat imageFormat)
 
 void MapImager::formatRenderFilename(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	renderFilenameOut = XFile::appendSubDirectory(filename, renderSettings.destDirectory);
+	if (XFile::isRootPath(renderSettings.destDirectory))
+		renderFilenameOut = XFile::replaceFilename(renderSettings.destDirectory, filename);
+	else
+		renderFilenameOut = XFile::appendSubDirectory(filename, renderSettings.destDirectory);
+
 	string s = ".s" + to_string(renderSettings.scaleFactor);
 	renderFilenameOut = XFile::appendToFilename(renderFilenameOut, s);
 	renderFilenameOut = XFile::changeFileExtension(renderFilenameOut, getImageFormatExtension(renderSettings.imageFormat));
