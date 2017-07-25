@@ -103,7 +103,7 @@ xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 REM Pull repository revision number and set into final release directory name.
 FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
 
-SET zipNameBegining="OP2MapImager Ver1.0."
+SET zipNameBegining="OP2MapImager Ver1.0.1 Rev"
 SET zipName=%25zipNameBegining%25%25svnVersion%25
 SET directoryName=$(OutDir)%25zipName%25 
 
@@ -160,7 +160,7 @@ xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
 REM Pull repository revision number and set into final release directory name.
 FOR /f %25%25i IN ('svn info --show-item revision --no-newline') DO SET svnVersion=%25%25i
 
-SET zipNameBegining="OP2MapImager Ver1.0."
+SET zipNameBegining="OP2MapImager Ver1.0.1 Rev"
 SET zipName=%25zipNameBegining%25%25svnVersion%25
 SET directoryName=$(OutDir)%25zipName%25 
 

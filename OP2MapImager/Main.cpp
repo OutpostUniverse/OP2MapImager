@@ -12,7 +12,7 @@ using namespace ConsoleArgumentParser;
 
 MapImager mapImager;
 static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "1.0.0";
+static std::string version = "1.0.1";
 
 void outputHelp();
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);

@@ -49,7 +49,7 @@ If you attempt to render a map using the original Outpost 2 tileset images, OP2M
 
 By default, OP2MapImager is able to search through .vol archives and pull maps or tilesets out of the .vol files.
 
-Unless the ArchiveAcess flag is dsiabled, OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. If the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
+Unless the AccessArchives flag is disabled, OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. If the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
 
 
 +++ RELEASE COMPILATION INSTRUCTIONS +++
@@ -72,3 +72,15 @@ The Post Build Event requires a SVN console interface. I recommend the TortoiseS
 	* ReadMe.txt (this file)
 	* FreeImage liscense-gplv3.txt
  7. Place zip file on the Outpost Universe Website.
+
+
++++ Change Log +++
+
+Ver 1.0.0 (22Jul2017)
+ * Initial Release
+
+Ver 1.0.1 (23Jul2017)
+ * Prevented creation of multiple renders of the same map if the map exists in multiple places in the same directory (IE both loosely in directory and in an archive).
+ * When imaging all maps & saved games in a directory, prevented selection of wellpallet.map and SGAME10.OP2 since they are not valid maps.
+ * Fixed typos in ReadMe.
+ * Added Changelog.
