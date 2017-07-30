@@ -95,7 +95,7 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
 
-		bool extracted = resourceManager.extractFromArchive(tileSetFilename);
+		bool extracted = resourceManager.extractFile(tileSetFilename);
 		
 		if (!extracted)
 			throw std::exception(("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).").c_str());

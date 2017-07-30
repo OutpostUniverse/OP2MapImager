@@ -70,9 +70,22 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 {
 	ResourceManager resourceManager(directory);
 
-	vector<string> filenames;
-	resourceManager.getAllFilenamesOfType(filenames, directory, ".map", renderSettings.accessArchives);
-	resourceManager.getAllFilenamesOfType(filenames, directory, ".OP2", renderSettings.accessArchives);
+	vector<string> filenames = resourceManager.getAllFilenamesOfType(directory, ".map", renderSettings.accessArchives);
+	vector<string> saveFilenames = resourceManager.getAllFilenames(directory, R"(.*SGAME[0-9]\.OP2)"); //Regex
+	
+	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
+
+	if (!filenames.empty()) {
+		
+		for (int i = filenames.size() - 1; i >= 0; i--) {
+			string filename = XFile::getFilename(filenames[i]);
+			if (XFile::pathsAreEqual(filename, "wellpallet.map")) {
+				filenames.erase(filenames.begin() + i);
+			}
+		}
+	}
+
+	//resourceManager.getAllFilenamesOfType(filenames, directory, ".OP2", renderSettings.accessArchives);
 
 	if (filenames.size() == 0)
 		throw exception("No map file or save file found in the supplied directory.");
