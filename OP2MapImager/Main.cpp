@@ -85,8 +85,6 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 		}
 	}
 
-	//resourceManager.getAllFilenamesOfType(filenames, directory, ".OP2", renderSettings.accessArchives);
-
 	if (filenames.size() == 0)
 		throw exception("No map file or save file found in the supplied directory.");
 
