@@ -34,12 +34,14 @@ namespace ConsoleArgumentParser
 		return false;
 	}
 
-	void SortArguments(ConsoleArgs& consoleArgs, int argc, char **argv)
+	ConsoleArgs sortArguments(int argc, char **argv)
 	{
+		ConsoleArgs consoleArgs;
+
 		if (argc < 2)
 		{
 			consoleArgs.renderSettings.helpRequested = true;
-			return;
+			return consoleArgs;
 		}
 
 		ConsoleSwitch currentSwitch;
@@ -50,7 +52,7 @@ namespace ConsoleArgumentParser
 
 			if (switchFound)
 			{
-				CheckForMissingSwitchArgument(i, argc, currentSwitch.numberOfArgs);
+				checkForMissingSwitchArgument(i, argc, currentSwitch.numberOfArgs);
 
 				if (currentSwitch.numberOfArgs == 0)
 					currentSwitch.parseFunction(argv[i], consoleArgs);
@@ -64,6 +66,8 @@ namespace ConsoleArgumentParser
 				consoleArgs.paths.push_back(argv[i]);
 			}
 		}
+
+		return consoleArgs;
 	}
 
 	ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString)
@@ -95,7 +99,7 @@ namespace ConsoleArgumentParser
 		throw invalid_argument("Unable to parse argument into a valid boolean (True/False).");
 	}
 
-	void CheckForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
+	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
 	{
 		if (index + numberOfArgsToPass >= argc)
 			throw exception("Missing the final argument for the supplied switch.");

@@ -38,13 +38,11 @@ namespace ConsoleArgumentParser
 		}
 	};
 
-	//public:
-	void SortArguments(ConsoleArgs& consoleArgs, int argc, char **argv);
+	ConsoleArgs sortArguments(int argc, char **argv);
 
-	//private:
-	void CheckForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
+	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
 	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString);
+	ImageFormat ParseImageTypeToEnum(const string& imageTypeString);
 
 	void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
 	void parseScale(const char* value, ConsoleArgs& consoleArgs);

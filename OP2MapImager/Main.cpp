@@ -23,8 +23,7 @@ int main(int argc, char **argv)
 {
 	try
 	{
-		ConsoleArgs consoleArgs;
-		SortArguments(consoleArgs, argc, argv);
+		ConsoleArgs consoleArgs = sortArguments(argc, argv);
 
 		if (consoleArgs.renderSettings.helpRequested)
 		{
