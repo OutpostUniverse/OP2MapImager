@@ -12,7 +12,7 @@ using namespace ConsoleArgumentParser;
 
 MapImager mapImager;
 static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "1.0.1";
+static std::string version = "1.0.2";
 
 void outputHelp();
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 		}
 
 		if (consoleArgs.paths.size() == 0)
-			throw exception("You must provide at least one file or directory. To provide the current directory, enter '/'.");
+			throw exception("You must provide at least one file or directory. To provide the current directory, enter './'.");
 
 		for each (string path in consoleArgs.paths)
 		{

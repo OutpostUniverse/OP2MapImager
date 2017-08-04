@@ -20,7 +20,7 @@ struct RenderSettings
 class MapImager
 {
 public:
-	MapImager() : resourceManager("") {};
+	MapImager() : resourceManager(".") {};
 	bool imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);
 	string getImageFormatExtension(ImageFormat imageFormat);
 

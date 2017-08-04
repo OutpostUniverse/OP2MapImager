@@ -84,3 +84,8 @@ Ver 1.0.1 (23Jul2017)
  * When imaging all maps & saved games in a directory, prevented selection of wellpallet.map and SGAME10.OP2 since they are not valid maps.
  * Fixed typos in ReadMe.
  * Added Changelog.
+
+ Ver 1.0.2 (XXAug2017)
+  * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
+  * Fixed method to provide current directory to use either '.' or './' instead of '/' or '\'.
+  * Made the function XFile::replaceFilename platform agnostic.
