@@ -73,7 +73,7 @@ string MapImager::createUniqueFilename(const string& filename)
 	string uniqueFilename = filename;
 
 	int pathIndex = 1;
-	while (XFile::PathExists(uniqueFilename))
+	while (XFile::pathExists(uniqueFilename))
 	{
 		uniqueFilename = XFile::appendToFilename(filename, "_" + std::to_string(pathIndex));
 		pathIndex++;
