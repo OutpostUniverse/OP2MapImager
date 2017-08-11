@@ -42,7 +42,7 @@ namespace ConsoleArgumentParser
 
 	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
 	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	ImageFormat ParseImageTypeToEnum(const string& imageTypeString);
+	ImageFormat parseImageTypeToEnum(const string& imageTypeString);
 
 	void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
 	void parseScale(const char* value, ConsoleArgs& consoleArgs);

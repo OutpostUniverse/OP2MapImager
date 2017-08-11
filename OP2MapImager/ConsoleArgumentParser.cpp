@@ -71,7 +71,7 @@ namespace ConsoleArgumentParser
 		return consoleArgs;
 	}
 
-	ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString)
+	ImageFormat parseImageTypeToEnum(const std::string& imageTypeString)
 	{
 		string imageTypeStringUpper = StringHelper::convertToUpper(imageTypeString);
 
@@ -87,7 +87,7 @@ namespace ConsoleArgumentParser
 		throw exception("Unable to determine final render file type. Try PNG, JPG, or BMP.");
 	}
 
-	bool ParseBool(const string& str)
+	bool parseBool(const string& str)
 	{
 		string upperStr = StringHelper::convertToUpper(str);
 
@@ -144,6 +144,6 @@ namespace ConsoleArgumentParser
 
 	void parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
 	{
-		consoleArgs.renderSettings.imageFormat = ParseImageTypeToEnum(value);
+		consoleArgs.renderSettings.imageFormat = parseImageTypeToEnum(value);
 	}
 }

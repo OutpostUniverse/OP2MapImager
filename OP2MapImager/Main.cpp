@@ -124,7 +124,7 @@ void outputHelp()
 	cout << "  * OP2MapImager --Scale 8 --ImageFormat BMP [Directory of choice]" << endl;
 	cout << endl;
 	cout << "+++ OPTIONAL ARGUMENTS +++" << endl;
-	cout << "  -H / --Help: Displays Help File" << endl;
+	cout << "  -H / --Help / -?: Displays help information" << endl;
 	cout << "  -Q / --Quiet: [Default false] Add switch to run application without issuing console messages." << endl;
 	cout << "  -O / --Overwrite: [Default false] Add switch to allow application to overwrite existing files." << endl;
 	cout << "  -D / --DestinationDirectory: [Default MapRenders]. Add switch and name of new destination path." << endl;
