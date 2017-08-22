@@ -33,7 +33,7 @@ Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.
 
 Ensure OP2MapImager.exe, FreeImage.dll, and well0000.bmp through well0012.bmp are all in the same directory. (I typically put them all in the root OP2 install directory for ease of use, but not required.)
 
-Open a command prompt. Navigate to the directory with MapImager.exe and type 'OP2MapImager -h'.
+Open a command prompt. Navigate to the directory with OP2MapImager.exe and type 'OP2MapImager -h' to see Usage Message.
 
 
 +++ OUTPOST 2 TILESETS (WELL00XX.BMP) +++
@@ -89,3 +89,4 @@ Ver 1.0.1 (23Jul2017)
   * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
   * Fixed method to provide current directory to use either '.' or './' instead of '/' or '\'.
   * Made the function XFile::replaceFilename platform agnostic.
+  * Fixed typos in ReadMe.txt.
