@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -98,7 +98,7 @@
     </Link>
     <PostBuildEvent>
       <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
-xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\x32\FreeImage.dll" "$(OutDir)"
 
 SET zipName="OP2MapImager Ver1.0.1"
 SET directoryName=$(OutDir)%25zipName%25 
@@ -140,7 +140,7 @@ if $(ConfigurationName) == Release (
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -151,7 +151,7 @@ if $(ConfigurationName) == Release (
     </Link>
     <PostBuildEvent>
       <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
-xcopy /y /d "$(ProjectDir)FreeImage\FreeImage.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\x32\FreeImage.dll" "$(OutDir)"
 
 SET zipName="OP2MapImager Ver1.0.1"
 SET directoryName=$(OutDir)%25zipName%25 
@@ -196,23 +196,10 @@ if $(ConfigurationName) == Release (
     <ClCompile Include="RenderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FreeImage\FreeImage.dll">
-      <DeploymentContent>false</DeploymentContent>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="ConsoleArgumentParser.h" />
+    <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="MapImager.h" />
     <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="FreeImage\FreeImage.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="FreeImage\FreeImage.lib" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0000.bmp">
@@ -263,6 +250,12 @@ if $(ConfigurationName) == Release (
     <ProjectReference Include="..\OP2Utility\OP2Utility\OP2Utility.vcxproj">
       <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FreeImage\Dist\x32\FreeImage.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="FreeImage\Dist\x32\FreeImage.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FreeImage/FreeImage.h"
+#include "FreeImage.h"
 #include <string>
 #include <vector>
 
@@ -16,7 +16,7 @@ enum class ImageFormat
 class RenderManager
 {
 	// fi stands for Free Image.
-	// dib stands for device independent bitmap
+	// dib stands for device independent bitmap.
 
 public:
 	static void initialize();

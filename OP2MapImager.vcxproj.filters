@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="FreeImage">
+    <Filter Include="FreeImageX32">
       <UniqueIdentifier>{66206bf5-a9cb-4fc5-bda1-05ce543bd719}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -32,14 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FreeImage\FreeImage.dll">
-      <Filter>FreeImage</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FreeImage\FreeImage.h">
-      <Filter>FreeImage</Filter>
-    </ClInclude>
     <ClInclude Include="ConsoleArgumentParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,11 +41,9 @@
     <ClInclude Include="MapImager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="FreeImage\FreeImage.lib">
-      <Filter>FreeImage</Filter>
-    </Library>
+    <ClInclude Include="FreeImage\Dist\x32\FreeImage.h">
+      <Filter>FreeImageX32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0005.bmp">
@@ -99,5 +89,15 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="FreeImage license-gplv3.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FreeImage\Dist\x32\FreeImage.dll">
+      <Filter>FreeImageX32</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="FreeImage\Dist\x32\FreeImage.lib">
+      <Filter>FreeImageX32</Filter>
+    </Library>
   </ItemGroup>
 </Project>
