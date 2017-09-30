@@ -1,0 +1,5 @@
+$ cat .gitattributes
+FreeImage/* linguist-vendored
+FreeImage Documentation/* linguist-vendored
+
+ReadMe.txt linguist-documentation
