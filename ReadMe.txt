@@ -1,6 +1,8 @@
 OP2MapImager - Outpost 2 Map and Saved Game Imager
 Developed by Hooman and Brett208 (Vagabond)
 
+Check the OP2MapImager landing page for the newest version at https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager.
+
 +++ USAGE NOTES +++
   * Capable of saving multiple map files and entire directories.
   * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs.
