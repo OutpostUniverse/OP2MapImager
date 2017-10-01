@@ -9,9 +9,13 @@ OP2MapImager is written in C++ and the solution/project files are built for Visu
 
 OP2MapImager depends on the project OP2Utility. OP2Utility requires a Windows machine to compile due to use of windows.h. In particular, the archive read/write code depends on Windows.h. There is some desire to remove the Windows specific code, but the efforts are not yet completed. The project must be compiled for x86. 
 
-OP2Utility may be found at: https://github.com/OutpostUniverse/OP2Utility
+OP2Utility may be found at: https://github.com/OutpostUniverse/OP2Utility.
 
 OP2MapImager requires FreeImage for image manipulation. FreeImage dlls are already included in the downloaded source code. Make sure you compile against the x86 version of FreeImage. One could also directly compile against FreeImage source and remove the dependency on FreeImage.dll.
+
+The tilesets that came with Outpost 2 are specially formatted and cannot be run by standard image manipulation software or libraries. These custom bitmaps have been reformatted into standard bitmaps. The game run without any issues using these standard bitmaps. These bitmaps do not come with the source code, but must be downloaded and placed in the same directory as the source code for the software to properly read a map.
+
+Standard formatted bitmaps can be found here: https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:map_imager.
 
 + + + RELEASE COMPILATION INSTRUCTIONS + + +
 
