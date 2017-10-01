@@ -52,26 +52,9 @@ By default, OP2MapImager is able to search through .vol archives and pull maps o
 Unless the AccessArchives flag is disabled, OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. If the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
 
 
-+++ RELEASE COMPILATION INSTRUCTIONS +++
++++ SOURCE CODE LOCATION AND COMPILIATION +++
 
-Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager.
-
-Post Build Event Notes: When in release mode, a command prompt script will run once the source code is compiled. This script automates staging all required files for distribution. Included in the source code is 7za.exe, the 7-zip command line tool that facilitates zipping the final release package. See http://www.7-zip.org/ for source files and https://www.dotnetperls.com/7-zip-examples for examples of use.
-
-The Post Build Event requires a SVN console interface. I recommend the TortoiseSVN command prompt. NOTE: The command prompt is not installed by default and must be manually selected during the install process of TortoiseSVN.
-
- 1. If changing Major/Minor revision number, set new version number at top of OP2MapImager main.cpp AND in post build event batch script.
- 2. Run SVN Commit and then SVN Update to merge committed changes and properly update revision number of repository.
- 3. Set Solution Configuration to Release.
- 4. Set Solution Platform to x86. (x64 is not currently supported due to some WINAPI code within OP2Utility VolDecompress).
- 5. Compile Code. 
- 6. The following files will automatically be copied into the zipped directory'OP2MapImager 1.0.XXXX' (XXXX is svn revision number): 
-    * OP2MapImager.exe (From Release Directory) 
-	* FreeImage.dll (x32 version)
-	* Well0000.BMP-Well0012.BMP (Reformated BMPs that a normal image editor may open.)
-	* ReadMe.txt (this file)
-	* FreeImage liscense-gplv3.txt
- 7. Place zip file on the Outpost Universe Website.
+Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager. See the file DeveloperReadMe.txt in the source code for specific instructions.
 
 
 +++ Change Log +++
