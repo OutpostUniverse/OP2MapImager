@@ -54,7 +54,7 @@ Unless the AccessArchives flag is disabled, OP2MapImager will first search the s
 
 +++ RELEASE COMPILATION INSTRUCTIONS +++
 
-Source code may be found at: https://svn.outpostuniverse.org:8443/!/#outpost2/view/head/GameResources/OP2MapImager.
+Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager.
 
 Post Build Event Notes: When in release mode, a command prompt script will run once the source code is compiled. This script automates staging all required files for distribution. Included in the source code is 7za.exe, the 7-zip command line tool that facilitates zipping the final release package. See http://www.7-zip.org/ for source files and https://www.dotnetperls.com/7-zip-examples for examples of use.
 
