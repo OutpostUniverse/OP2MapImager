@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\OP2Utility\Archives;..\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -140,7 +140,7 @@ if $(ConfigurationName) == Release (
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\OP2Utility\OP2Utility\Archives;..\OP2Utility\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\OP2Utility\Archives;..\OP2Utility;FreeImage\Dist\x32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -247,15 +247,15 @@ if $(ConfigurationName) == Release (
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OP2Utility\OP2Utility\OP2Utility.vcxproj">
-      <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="FreeImage\Dist\x32\FreeImage.dll" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="FreeImage\Dist\x32\FreeImage.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OP2Utility\OP2Utility.vcxproj">
+      <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
