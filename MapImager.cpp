@@ -1,5 +1,6 @@
 #include "MapImager.h"
 #include <iostream>
+#include <memory>
 
 bool MapImager::imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
@@ -7,14 +8,12 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 	if (XFile::extensionMatches(filename, ".OP2"))
 		saveGame = true;
 
-	SeekableStreamReader* seekableStreamReader = resourceManager.getResourceStream(filename, renderSettings.accessArchives);
+	unique_ptr<SeekableStreamReader> seekableStreamReader = resourceManager.getResourceStream(filename, renderSettings.accessArchives);
 
-	if (seekableStreamReader == nullptr)
+	if (!seekableStreamReader)
 		throw std::exception("Unable to find specified map or save file.");
 
-	MapData mapData(seekableStreamReader, saveGame);
-
-	delete seekableStreamReader;
+	MapData mapData(seekableStreamReader.get(), saveGame);
 
 	RenderManager::initialize();
 
