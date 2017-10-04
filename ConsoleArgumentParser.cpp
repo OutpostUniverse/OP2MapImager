@@ -1,5 +1,6 @@
 #include "ConsoleArgumentParser.h"
 #include "StringHelper.h"
+#include <stdexcept>
 
 namespace ConsoleArgumentParser
 {
@@ -84,7 +85,7 @@ namespace ConsoleArgumentParser
 		if (imageTypeStringUpper == "BMP" || imageTypeStringUpper == "BITMAP")
 			return ImageFormat::BMP;
 
-		throw exception("Unable to determine final render file type. Try PNG, JPG, or BMP.");
+		throw runtime_error("Unable to determine final render file type. Try PNG, JPG, or BMP.");
 	}
 
 	bool parseBool(const string& str)
@@ -103,7 +104,7 @@ namespace ConsoleArgumentParser
 	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
 	{
 		if (index + numberOfArgsToPass >= argc)
-			throw exception("Missing the final argument for the supplied switch.");
+			throw runtime_error("Missing the final argument for the supplied switch.");
 	}
 
 	void parseHelp(const char* value, ConsoleArgs& consoleArgs)
@@ -132,7 +133,7 @@ namespace ConsoleArgumentParser
 		int scaleFactor = stoi(value);
 
 		if (scaleFactor <= 0)
-			throw exception("Scale Factor was set improperly.");
+			throw runtime_error("Scale Factor was set improperly.");
 
 		consoleArgs.renderSettings.scaleFactor = scaleFactor;
 	}

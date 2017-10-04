@@ -3,6 +3,7 @@
 #include "MapImager.h"
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 using namespace ConsoleArgumentParser;
 
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
 		}
 
 		if (consoleArgs.paths.size() == 0)
-			throw exception("You must provide at least one file or directory. To provide the current directory, enter './'.");
+			throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
 
 		for each (string path in consoleArgs.paths)
 		{
@@ -41,7 +42,7 @@ int main(int argc, char **argv)
 			else if (isRenderableFileExtension(path))
 				imageMapFromConsole(path, consoleArgs.renderSettings);
 			else
-				throw exception("You must provide either a directory or a file of type (.map|.OP2).");
+				throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
 		}
 	}
 	catch (exception e) {
@@ -82,7 +83,7 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	}
 
 	if (filenames.size() == 0)
-		throw exception("No map file or save file found in the supplied directory.");
+		throw runtime_error("No map file or save file found in the supplied directory.");
 
 	if (!renderSettings.quiet)
 	{

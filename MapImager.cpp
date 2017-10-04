@@ -1,6 +1,7 @@
 #include "MapImager.h"
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 bool MapImager::imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
@@ -11,7 +12,7 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 	unique_ptr<SeekableStreamReader> seekableStreamReader = resourceManager.getResourceStream(filename, renderSettings.accessArchives);
 
 	if (!seekableStreamReader)
-		throw std::exception("Unable to find specified map or save file.");
+		throw runtime_error("Unable to find specified map or save file.");
 
 	MapData mapData(seekableStreamReader.get(), saveGame);
 
@@ -78,7 +79,7 @@ string MapImager::createUniqueFilename(const string& filename)
 		pathIndex++;
 
 		if (pathIndex >= 32000)
-			throw std::exception("Too many files with the same filename.");
+			throw runtime_error("Too many files with the same filename.");
 	}
 
 	return uniqueFilename;
@@ -96,7 +97,7 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 		bool extracted = resourceManager.extractSpecificFile(tileSetFilename);
 		
 		if (!extracted)
-			throw std::exception(("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).").c_str());
+			throw runtime_error("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).");
 
 		mapImager.addTileSet(tileSetFilename, ImageFormat::BMP);
 
