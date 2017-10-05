@@ -3,6 +3,8 @@
 #include <memory>
 #include <stdexcept>
 
+using namespace std;
+
 bool MapImager::imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
 	bool saveGame = false;

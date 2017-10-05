@@ -1,5 +1,7 @@
 #include "RenderManager.h"
 
+using namespace std;
+
 void RenderManager::freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
 	printf("\n*** ");
 	if (fif != FIF_UNKNOWN) {

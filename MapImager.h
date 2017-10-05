@@ -4,13 +4,11 @@
 #include "RenderManager.h"
 #include <string>
 
-using namespace std;
-
 struct RenderSettings
 {
 	ImageFormat imageFormat = ImageFormat::PNG;
 	int scaleFactor = 4;
-	string destDirectory = "MapRenders";
+	std::string destDirectory = "MapRenders";
 	bool overwrite = false;
 	bool quiet = false;
 	bool helpRequested = false;
@@ -22,13 +20,13 @@ class MapImager
 public:
 	MapImager() : resourceManager(".") {};
 	bool imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);
-	string getImageFormatExtension(ImageFormat imageFormat);
+	std::string getImageFormatExtension(ImageFormat imageFormat);
 
 private:
 	ResourceManager resourceManager;
 
 	void setRenderTiles(MapData& mapData, RenderManager& mapImager);
 	void loadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
-	void formatRenderFilename(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);
-	string createUniqueFilename(const string& filename);
+	void formatRenderFilename(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
+	std::string createUniqueFilename(const std::string& filename);
 };

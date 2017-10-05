@@ -5,21 +5,19 @@
 #include <vector>
 #include <functional>
 
-using namespace std;
-
 namespace ConsoleArgumentParser
 {
 	struct ConsoleArgs
 	{
 		RenderSettings renderSettings;
-		vector<string> paths;
+		std::vector<std::string> paths;
 	};
 
 	struct ConsoleSwitch
 	{
 		ConsoleSwitch() { }
 
-		ConsoleSwitch(string shortSwitch, string longSwitch, function<void(const char* value, ConsoleArgs&)> parseFunction, int numberOfArgs)
+		ConsoleSwitch(std::string shortSwitch, std::string longSwitch, std::function<void(const char* value, ConsoleArgs&)> parseFunction, int numberOfArgs)
 		{
 			this->shortSwitch = shortSwitch;
 			this->longSwitch = longSwitch;
@@ -27,12 +25,12 @@ namespace ConsoleArgumentParser
 			this->numberOfArgs = numberOfArgs;
 		}
 
-		string shortSwitch;
-		string longSwitch;
-		function<void(const char*, ConsoleArgs&)> parseFunction;
+		std::string shortSwitch;
+		std::string longSwitch;
+		std::function<void(const char*, ConsoleArgs&)> parseFunction;
 		int numberOfArgs; // The switch statement itself does not count as an argument.
 
-		bool argumentMatch(string argument)
+		bool argumentMatch(std::string argument)
 		{
 			return argument == shortSwitch || argument == longSwitch;
 		}
@@ -42,7 +40,7 @@ namespace ConsoleArgumentParser
 
 	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
 	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	ImageFormat parseImageTypeToEnum(const string& imageTypeString);
+	ImageFormat parseImageTypeToEnum(const std::string& imageTypeString);
 
 	void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
 	void parseScale(const char* value, ConsoleArgs& consoleArgs);

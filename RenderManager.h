@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 enum class ImageFormat
 {
 	BMP,
@@ -38,7 +36,7 @@ public:
 	void pasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos);
 
 	// Returns true on success.
-	bool saveMapImage(const string& destFilename, ImageFormat imageFormat);
+	bool saveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
 private:
 	int scaleFactor;

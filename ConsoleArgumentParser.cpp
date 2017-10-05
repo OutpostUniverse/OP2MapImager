@@ -2,6 +2,8 @@
 #include "StringHelper.h"
 #include <stdexcept>
 
+using namespace std;
+
 namespace ConsoleArgumentParser
 {
 	ConsoleSwitch consoleSwitches[]
