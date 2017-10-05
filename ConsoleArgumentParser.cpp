@@ -26,7 +26,7 @@ namespace ConsoleArgumentParser
 		if (argument.size() > 0 && argument[argument.size() - 1] == ':')
 			argument.pop_back();
 
-		for each (ConsoleSwitch consoleSwitch in consoleSwitches)
+		for (ConsoleSwitch consoleSwitch : consoleSwitches)
 		{
 			if (consoleSwitch.argumentMatch(argument))
 			{

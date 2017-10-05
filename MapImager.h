@@ -19,7 +19,7 @@ class MapImager
 {
 public:
 	MapImager() : resourceManager(".") {};
-	bool imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings);
+	bool imageMap(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
 	std::string getImageFormatExtension(ImageFormat imageFormat);
 
 private:

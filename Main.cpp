@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
+using namespace std;
 using namespace ConsoleArgumentParser;
 
 // In order to use specific c functions in VolDecompress code:
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
 		if (consoleArgs.paths.size() == 0)
 			throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
 
-		for each (string path in consoleArgs.paths)
+		for (string path : consoleArgs.paths)
 		{
 			if (XFile::isDirectory(path))
 				imageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
@@ -91,7 +92,7 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 		cout << consoleLineBreak << endl << endl;
 	}
 
-	for each (string filename in filenames)
+	for (string filename : filenames)
 		imageMapFromConsole(filename, renderSettings);
 
 	if (!renderSettings.quiet)
