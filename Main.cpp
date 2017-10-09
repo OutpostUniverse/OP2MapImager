@@ -6,7 +6,6 @@
 #include <stdexcept>
 
 using namespace std;
-using namespace ConsoleArgumentParser;
 
 // In order to use specific c functions in VolDecompress code:
 //  * Compiler Warning 4996 has been diasabled: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996
@@ -17,45 +16,55 @@ static string consoleLineBreak("------------------------------------------------
 static std::string version = "1.0.2";
 
 void outputHelp();
+void executeCommand(const ConsoleArgs& consoleArgs);
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
 void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings);
-bool isRenderableFileExtension(const std::string& filename);
+bool isRenderableFileExtension(const string& filename);
 void debugPause();
 
 int main(int argc, char **argv)
 {
 	try
 	{
-		ConsoleArgs consoleArgs = sortArguments(argc, argv);
+		ConsoleArgumentParser argumentParser;
+		ConsoleArgs consoleArgs = argumentParser.sortArguments(argc, argv);
 
-		if (consoleArgs.renderSettings.helpRequested)
-		{
-			outputHelp();
-			return 0;
-		}
-
-		if (consoleArgs.paths.size() == 0)
-			throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
-
-		for (string path : consoleArgs.paths)
-		{
-			if (XFile::isDirectory(path))
-				imageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
-			else if (isRenderableFileExtension(path))
-				imageMapFromConsole(path, consoleArgs.renderSettings);
-			else
-				throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
-		}
+		executeCommand(consoleArgs);
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;
 		cerr << "Run without arguments to see usage message." << endl << endl;
+
+		debugPause();
+
 		return 1;
 	}
 
 	debugPause();
 
 	return 0;
+}
+
+void executeCommand(const ConsoleArgs& consoleArgs)
+{
+	if (consoleArgs.renderSettings.helpRequested)
+	{
+		outputHelp();
+		return;
+	}
+
+	if (consoleArgs.paths.size() == 0)
+		throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
+
+	for (string path : consoleArgs.paths)
+	{
+		if (XFile::isDirectory(path))
+			imageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
+		else if (isRenderableFileExtension(path))
+			imageMapFromConsole(path, consoleArgs.renderSettings);
+		else
+			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
+	}
 }
 
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)

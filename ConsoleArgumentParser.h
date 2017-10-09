@@ -5,14 +5,14 @@
 #include <vector>
 #include <functional>
 
-namespace ConsoleArgumentParser
+struct ConsoleArgs
 {
-	struct ConsoleArgs
-	{
-		RenderSettings renderSettings;
-		std::vector<std::string> paths;
-	};
+	RenderSettings renderSettings;
+	std::vector<std::string> paths;
+};
 
+class ConsoleArgumentParser
+{
 	struct ConsoleSwitch
 	{
 		ConsoleSwitch() { }
@@ -36,17 +36,24 @@ namespace ConsoleArgumentParser
 		}
 	};
 
+public:
+	ConsoleArgumentParser();
 	ConsoleArgs sortArguments(int argc, char **argv);
+
+private:
+	std::vector<ConsoleSwitch> consoleSwitches;
 
 	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
 	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	ImageFormat parseImageTypeToEnum(const std::string& imageTypeString);
+	bool parseBool(const std::string& str);
 
-	void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
-	void parseScale(const char* value, ConsoleArgs& consoleArgs);
-	void parseImageFormat(const char* value, ConsoleArgs& consoleArgs);
-	void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs);
-	void parseHelp(const char* value, ConsoleArgs& consoleArgs);
-	void parseOverwrite(const char* value, ConsoleArgs& consoleArgs);
-	void parseAccessArchives(const char* value, ConsoleArgs& consoleArgs);
-}
+	static ImageFormat parseImageTypeToEnum(const std::string& imageTypeString);
+
+	static void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
+	static void parseScale(const char* value, ConsoleArgs& consoleArgs);
+	static void parseImageFormat(const char* value, ConsoleArgs& consoleArgs);
+	static void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs);
+	static void parseHelp(const char* value, ConsoleArgs& consoleArgs);
+	static void parseOverwrite(const char* value, ConsoleArgs& consoleArgs);
+	static void parseAccessArchives(const char* value, ConsoleArgs& consoleArgs);
+};

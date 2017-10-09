@@ -4,21 +4,19 @@
 
 using namespace std;
 
-namespace ConsoleArgumentParser
+ConsoleArgumentParser::ConsoleArgumentParser()
 {
-	ConsoleSwitch consoleSwitches[]
-	{
-		ConsoleSwitch("-S", "--SCALE", parseScale, 1),
-		ConsoleSwitch("-I", "--IMAGEFORMAT", parseImageFormat, 1),
-		ConsoleSwitch("-D", "--DESTINATIONDIRECTORY", parseDestDirectory, 1),
-		ConsoleSwitch("-H", "--HELP", parseHelp, 0),
-		ConsoleSwitch("-?", "--?", parseHelp, 0),
-		ConsoleSwitch("-Q", "--QUIET", parseQuiet, 0),
-		ConsoleSwitch("-O", "--OVERWRITE", parseOverwrite, 0),
-		ConsoleSwitch("-A", "--ACCESSARCHIVES", parseAccessArchives, 0)
-	};
+	consoleSwitches.push_back(ConsoleSwitch("-S", "--SCALE", parseScale, 1));
+	consoleSwitches.push_back(ConsoleSwitch("-I", "--IMAGEFORMAT", parseImageFormat, 1));
+	consoleSwitches.push_back(ConsoleSwitch("-D", "--DESTINATIONDIRECTORY", parseDestDirectory, 1));
+	consoleSwitches.push_back(ConsoleSwitch("-H", "--HELP", parseHelp, 0));
+	consoleSwitches.push_back(ConsoleSwitch("-?", "--?", parseHelp, 0));
+	consoleSwitches.push_back(ConsoleSwitch("-Q", "--QUIET", parseQuiet, 0));
+	consoleSwitches.push_back(ConsoleSwitch("-O", "--OVERWRITE", parseOverwrite, 0));
+	consoleSwitches.push_back(ConsoleSwitch("-A", "--ACCESSARCHIVES", parseAccessArchives, 0));
+};
 
-	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
+	bool ConsoleArgumentParser::findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
 	{
 		string argument = StringHelper::convertToUpper(argumentChar);
 
@@ -38,7 +36,7 @@ namespace ConsoleArgumentParser
 		return false;
 	}
 
-	ConsoleArgs sortArguments(int argc, char **argv)
+	ConsoleArgs ConsoleArgumentParser::sortArguments(int argc, char **argv)
 	{
 		ConsoleArgs consoleArgs;
 
@@ -74,7 +72,7 @@ namespace ConsoleArgumentParser
 		return consoleArgs;
 	}
 
-	ImageFormat parseImageTypeToEnum(const std::string& imageTypeString)
+	ImageFormat ConsoleArgumentParser::parseImageTypeToEnum(const std::string& imageTypeString)
 	{
 		string imageTypeStringUpper = StringHelper::convertToUpper(imageTypeString);
 
@@ -90,7 +88,7 @@ namespace ConsoleArgumentParser
 		throw runtime_error("Unable to determine final render file type. Try PNG, JPG, or BMP.");
 	}
 
-	bool parseBool(const string& str)
+	bool ConsoleArgumentParser::parseBool(const string& str)
 	{
 		string upperStr = StringHelper::convertToUpper(str);
 
@@ -103,33 +101,33 @@ namespace ConsoleArgumentParser
 		throw invalid_argument("Unable to parse argument into a valid boolean (True/False).");
 	}
 
-	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
+	void ConsoleArgumentParser::checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
 	{
 		if (index + numberOfArgsToPass >= argc)
 			throw runtime_error("Missing the final argument for the supplied switch.");
 	}
 
-	void parseHelp(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseHelp(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.helpRequested = true;
 	}
 
-	void parseQuiet(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseQuiet(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.quiet = true;
 	}
 
-	void parseOverwrite(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseOverwrite(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.overwrite = true;
 	}
 
-	void parseAccessArchives(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseAccessArchives(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.accessArchives = false;
 	}
 
-	void parseScale(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseScale(const char* value, ConsoleArgs& consoleArgs)
 	{
 		// stoi will throw an exception if it is unable to parse the string into an integer
 		int scaleFactor = stoi(value);
@@ -140,13 +138,12 @@ namespace ConsoleArgumentParser
 		consoleArgs.renderSettings.scaleFactor = scaleFactor;
 	}
 
-	void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.destDirectory = value;
 	}
 
-	void parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
+	void ConsoleArgumentParser::parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
 	{
 		consoleArgs.renderSettings.imageFormat = parseImageTypeToEnum(value);
 	}
-}

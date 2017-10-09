@@ -70,7 +70,7 @@ Ver 1.0.1 (23Jul2017)
  * Fixed typos in ReadMe.
  * Added Changelog.
 
- Ver 1.0.2 (XXAug2017)
+ Ver 1.0.2 (XXOct2017)
   * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
   * Fixed method to provide current directory to use either '.' or './' instead of '/' or '\'.
   * Made the function XFile::replaceFilename platform agnostic.
