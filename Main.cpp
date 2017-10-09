@@ -1,5 +1,5 @@
 #include "ConsoleArgumentParser.h"
-#include "OP2Utility.h"
+#include "OP2Utility/OP2Utility.h"
 #include "MapImager.h"
 #include <string>
 #include <iostream>

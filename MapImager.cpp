@@ -7,16 +7,9 @@ using namespace std;
 
 bool MapImager::imageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	bool saveGame = false;
-	if (XFile::extensionMatches(filename, ".OP2"))
-		saveGame = true;
+	bool saveGame = isSavedGame(filename);
 
-	unique_ptr<SeekableStreamReader> seekableStreamReader = resourceManager.getResourceStream(filename, renderSettings.accessArchives);
-
-	if (!seekableStreamReader)
-		throw runtime_error("Unable to find specified map or save file.");
-
-	MapData mapData(seekableStreamReader.get(), saveGame);
+	MapData mapData(resourceManager.getResourceStream(filename, renderSettings.accessArchives), saveGame);
 
 	RenderManager::initialize();
 
@@ -113,4 +106,9 @@ void MapImager::setRenderTiles(MapData& mapData, RenderManager& renderManager)
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
 		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++)
 			renderManager.pasteTile(mapData.getTileSetIndex(x, y), mapData.getImageIndex(x, y), x, y);
+}
+
+bool MapImager::isSavedGame(string filename)
+{
+	return XFile::extensionMatches(filename, ".OP2");
 }

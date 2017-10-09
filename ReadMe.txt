@@ -75,3 +75,6 @@ Ver 1.0.1 (23Jul2017)
   * Fixed method to provide current directory to use either '.' or './' instead of '/' or '\'.
   * Made the function XFile::replaceFilename platform agnostic.
   * Fixed typos in ReadMe.txt.
+  * Removed namespace using statements from header files.
+  * Remove Microsoft specific exception classes.
+  * Removed Microsoft specific for each loops and replaced with C++ standard range loops.
