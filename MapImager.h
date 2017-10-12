@@ -18,7 +18,7 @@ struct RenderSettings
 class MapImager
 {
 public:
-	MapImager() : resourceManager(".") {};
+	MapImager(std::string directory) : resourceManager(directory) {};
 	bool imageMap(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
 	std::string getImageFormatExtension(ImageFormat imageFormat);
 
@@ -27,7 +27,7 @@ private:
 
 	void setRenderTiles(MapData& mapData, RenderManager& mapImager);
 	void loadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
-	void formatRenderFilename(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
+	std::string formatRenderFilename(const std::string& filename, const RenderSettings& renderSettings);
 	std::string createUniqueFilename(const std::string& filename);
 	bool MapImager::isSavedGame(std::string filename);
 };

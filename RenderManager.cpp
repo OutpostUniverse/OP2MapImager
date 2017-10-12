@@ -8,7 +8,7 @@ void RenderManager::freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
 	}
 	printf(message);
-	printf(" ***\n");
+	printf(" ***\n\n");
 }
 
 void RenderManager::initialize()

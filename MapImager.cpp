@@ -21,14 +21,14 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 	setRenderTiles(mapData, mapImager);
 
 	XFile::createDirectory(renderSettings.destDirectory);
-	formatRenderFilename(renderFilenameOut, filename, renderSettings);
+	renderFilenameOut = formatRenderFilename(filename, renderSettings);
 
 	bool saveSuccess = mapImager.saveMapImage(renderFilenameOut, renderSettings.imageFormat);
 
 	RenderManager::deInitialize();
 
 	if (!saveSuccess)
-		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl;
+		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl << endl;
 
 	return saveSuccess;
 }
@@ -48,19 +48,23 @@ string MapImager::getImageFormatExtension(ImageFormat imageFormat)
 	}
 }
 
-void MapImager::formatRenderFilename(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
+string MapImager::formatRenderFilename(const string& filename, const RenderSettings& renderSettings)
 {
+	string renderFilename;
+
 	if (XFile::isRootPath(renderSettings.destDirectory))
-		renderFilenameOut = XFile::replaceFilename(renderSettings.destDirectory, filename);
+		renderFilename = XFile::replaceFilename(renderSettings.destDirectory, filename);
 	else
-		renderFilenameOut = XFile::appendSubDirectory(filename, renderSettings.destDirectory);
+		renderFilename = XFile::appendSubDirectory(XFile::getFilename(filename), renderSettings.destDirectory);
 
 	string s = ".s" + to_string(renderSettings.scaleFactor);
-	renderFilenameOut = XFile::appendToFilename(renderFilenameOut, s);
-	renderFilenameOut = XFile::changeFileExtension(renderFilenameOut, getImageFormatExtension(renderSettings.imageFormat));
+	renderFilename = XFile::appendToFilename(renderFilename, s);
+	renderFilename = XFile::changeFileExtension(renderFilename, getImageFormatExtension(renderSettings.imageFormat));
 
 	if (!renderSettings.overwrite)
-		renderFilenameOut = createUniqueFilename(renderFilenameOut);
+		renderFilename = createUniqueFilename(renderFilename);
+
+	return renderFilename;
 }
 
 string MapImager::createUniqueFilename(const string& filename)
