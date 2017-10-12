@@ -155,7 +155,7 @@ if $(ConfigurationName) == Release (
       <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
 xcopy /y /d "$(ProjectDir)FreeImage\Dist\x32\FreeImage.dll" "$(OutDir)"
 
-SET zipName="OP2MapImager Ver1.0.1"
+SET zipName="OP2MapImager Ver2.0.0"
 SET directoryName=$(OutDir)%25zipName%25 
 
 if $(ConfigurationName) == Release (
