@@ -70,11 +70,12 @@ Ver 1.0.1 (23Jul2017)
  * Fixed typos in ReadMe.
  * Added Changelog.
 
- Ver 2.0.0 (XXOct2017)
+ Ver 2.0.0 (12Oct2017)
   * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
-  * Fixed method to provide current directory to use either '.' or './' instead of '/' or '\'.
+  * Changed method to provide current directory to use either '.' or './' instead of '/' or '\'.
   * Made the function XFile::replaceFilename platform agnostic.
   * Fixed typos in ReadMe.txt.
   * Removed namespace using statements from header files.
-  * Remove Microsoft specific exception classes.
+  * Removed Microsoft specific exception classes.
   * Removed Microsoft specific for each loops and replaced with C++ standard range loops.
+  * Fixed crashing bug when attempting to render a map outside of the application's current working directory.

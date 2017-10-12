@@ -21,14 +21,15 @@ Standard formatted bitmaps can be found here: https://wiki.outpost2.net/doku.php
 
 Post Build Event Notes: When in release mode, a command prompt script will run once the source code is compiled. This script automates staging all required files for distribution. Included in the source code is 7za.exe, the 7-zip command line tool that facilitates zipping the final release package. See http://www.7-zip.org/ for source files and https://www.dotnetperls.com/7-zip-examples for examples of use.
 
- 1. If changing Major/Minor revision number, set new version number at top of OP2MapImager main.cpp AND in post build event batch script.
- 2. Set Solution Configuration to Release.
- 3. Set Solution Platform to x86. (x64 is not currently supported due to some WINAPI code within OP2Utility VolDecompress).
- 4. Compile Code. 
- 5. The following files will automatically be copied into the zipped directory'OP2MapImager X.X.X': 
+ 1. Set new version number at top of OP2MapImager main.cpp AND in post build event batch script (http://semver.org/).
+ 2. Consider tagging current version in repository.
+ 3. Set Solution Configuration to Release.
+ 4. Set Solution Platform to x86. (x64 is not currently supported due to some WINAPI code within OP2Utility Archives).
+ 5. Compile Code. 
+ 6. The following files will automatically be copied into the zipped directory'OP2MapImager X.X.X': 
     * OP2MapImager.exe (From Release Directory) 
 	* FreeImage.dll (x32 version)
 	* Well0000.BMP-Well0012.BMP (Reformated BMPs that a normal image editor may open.)
-	* ReadMe.txt (this file)
+	* ReadMe.txt
 	* FreeImage liscense-gplv3.txt
  7. Place zip file on the Outpost Universe Website.
