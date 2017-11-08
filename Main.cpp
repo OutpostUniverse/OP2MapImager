@@ -12,7 +12,7 @@ using namespace std;
 //  * SDL checks have been set to NO/FALSE. (Security Development Lifecycle).
 
 static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "2.0.0";
+static std::string version = "2.0.1";
 
 void outputHelp();
 void executeCommand(const ConsoleArgs& consoleArgs);
@@ -72,7 +72,6 @@ void imageMapFromConsole(const string& mapFilename, const RenderSettings& render
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::getFilename(mapFilename) << endl;
 
 	MapImager mapImager(XFile::getDirectory(mapFilename));
-	//MapImager mapImager(XFile::removeFilename(mapFilename));
 	string renderFilename;
 	bool saveSuccess = mapImager.imageMap(renderFilename, mapFilename, renderSettings);
 

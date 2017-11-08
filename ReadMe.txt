@@ -61,16 +61,12 @@ Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager. Se
 
 +++ Change Log +++
 
-Ver 1.0.0 (22Jul2017)
- * Initial Release
+Ver 2.0.1 (07Nov2017)
+  * Fix bug not allowing rendering of loose maps in current working directory.
+  * Reorder change log to be newest version first.
+  * Add PDB file zipping to post build event script.
 
-Ver 1.0.1 (23Jul2017)
- * Prevented creation of multiple renders of the same map if the map exists in multiple places in the same directory (IE both loosely in directory and in an archive).
- * When imaging all maps & saved games in a directory, prevented selection of wellpallet.map and SGAME10.OP2 since they are not valid maps.
- * Fixed typos in ReadMe.
- * Added Changelog.
-
- Ver 2.0.0 (12Oct2017)
+Ver 2.0.0 (12Oct2017)
   * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
   * Changed method to provide current directory to use either '.' or './' instead of '/' or '\'.
   * Made the function XFile::replaceFilename platform agnostic.
@@ -79,3 +75,12 @@ Ver 1.0.1 (23Jul2017)
   * Removed Microsoft specific exception classes.
   * Removed Microsoft specific for each loops and replaced with C++ standard range loops.
   * Fixed crashing bug when attempting to render a map outside of the application's current working directory.
+
+Ver 1.0.1 (23Jul2017)
+ * Prevented creation of multiple renders of the same map if the map exists in multiple places in the same directory (IE both loosely in directory and in an archive).
+ * When imaging all maps & saved games in a directory, prevented selection of wellpallet.map and SGAME10.OP2 since they are not valid maps.
+ * Fixed typos in ReadMe.
+ * Added Changelog.
+
+Ver 1.0.0 (22Jul2017)
+ * Initial Release
