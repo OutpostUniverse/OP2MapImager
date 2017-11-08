@@ -71,7 +71,8 @@ void imageMapFromConsole(const string& mapFilename, const RenderSettings& render
 	if (!renderSettings.quiet)
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::getFilename(mapFilename) << endl;
 
-	MapImager mapImager(XFile::removeFilename(mapFilename));
+	MapImager mapImager(XFile::getDirectory(mapFilename));
+	//MapImager mapImager(XFile::removeFilename(mapFilename));
 	string renderFilename;
 	bool saveSuccess = mapImager.imageMap(renderFilename, mapFilename, renderSettings);
 
