@@ -7,7 +7,7 @@ void RenderManager::freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	if (fif != FIF_UNKNOWN) {
 		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
 	}
-	printf(message);
+	printf("%s", message);
 	printf(" ***\n\n");
 }
 
