@@ -62,9 +62,10 @@ Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager. Se
 +++ Change Log +++
 
 Ver 2.0.1 (07Nov2017)
-  * Fix bug not allowing rendering of loose maps in current working directory.
-  * Reorder change log to be newest version first.
-  * Add PDB file zipping to post build event script.
+  * Fixed security concern when outputting error messages from FreeImage.
+  * Fixed bug not allowing rendering of loose maps in current working directory.
+  * Reordered change log to be newest version first.
+  * Added PDB file zipping to post build event script.
 
 Ver 2.0.0 (12Oct2017)
   * Fixed crash if supplying an empty variable ("") for a command via the command prompt.
