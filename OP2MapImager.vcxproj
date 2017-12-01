@@ -116,7 +116,7 @@ if $(ConfigurationName) == Release (
     xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
     xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
 
-    xcopy /y /d "$(OutDir)OP2Archive.pdb" %25pdbDirectoryName%25
+    xcopy /y /d "$(OutDir)OP2MapImager.pdb" %25pdbDirectoryName%25
 
     REM Use 7Zip to zip final version
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
@@ -180,7 +180,7 @@ if $(ConfigurationName) == Release (
     xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
     xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
 
-    xcopy /y /d "$(OutDir)OP2Archive.pdb" %25pdbDirectoryName%25
+    xcopy /y /d "$(OutDir)OP2MapImager.pdb" %25pdbDirectoryName%25
 
     REM Use 7Zip to zip final version
     7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
