@@ -93,6 +93,8 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
 
+		//TODO: Allow FreeImage to take a pointer to the associated well within a vol file 
+		//      instead of forcing its extraction.
 		bool extracted = resourceManager.extractSpecificFile(tileSetFilename);
 		
 		if (!extracted)
@@ -100,7 +102,8 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		mapImager.addTileSet(tileSetFilename, ImageFormat::BMP);
 
-		//TODO: Load Bmps into memory and set in mapImager if Outpost2 specific BMP file.
+		//TODO: If tilesets are Outpost 2 specific, translate the Outpost 2 specific tilesets into 
+		//      standard bmp files for use in rendering map.
 		//mapImager.addTileSetRawBits()
 	}
 }
