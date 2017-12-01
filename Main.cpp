@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include "Timer.h"
 
 using namespace std;
 
@@ -25,10 +26,15 @@ int main(int argc, char **argv)
 {
 	try
 	{
+		//Timer timer;
+		//timer.startTimer();
+
 		ConsoleArgumentParser argumentParser;
 		ConsoleArgs consoleArgs = argumentParser.sortArguments(argc, argv);
-
 		executeCommand(consoleArgs);
+
+		//if (!consoleArgs.renderSettings.quiet)
+		//    cout << "Map Renders completed in " << timer.getElapsedTime() << " seconds.";
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;

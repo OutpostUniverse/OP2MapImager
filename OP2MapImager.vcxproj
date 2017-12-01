@@ -216,12 +216,14 @@ if $(ConfigurationName) == Release (
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapImager.cpp" />
     <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleArgumentParser.h" />
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="MapImager.h" />
     <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0000.bmp">

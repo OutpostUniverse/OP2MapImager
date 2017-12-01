@@ -30,6 +30,9 @@
     <ClCompile Include="MapImager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleArgumentParser.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h">
       <Filter>FreeImageX32</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
