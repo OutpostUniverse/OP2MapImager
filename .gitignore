@@ -1,3 +1,5 @@
 *.suo
 Debug
 *.vs
+MapRenders
+Release
