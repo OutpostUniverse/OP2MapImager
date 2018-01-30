@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void RenderManager::freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
+void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
 	printf("\n*** ");
 	if (fif != FIF_UNKNOWN) {
 		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
@@ -11,13 +11,13 @@ void RenderManager::freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	printf(" ***\n\n");
 }
 
-void RenderManager::initialize()
+void RenderManager::Initialize()
 {
 	FreeImage_Initialise();
-	FreeImage_SetOutputMessage(RenderManager::freeImageErrorHandler);
+	FreeImage_SetOutputMessage(RenderManager::FreeImageErrorHandler);
 }
 
-void RenderManager::deInitialize()
+void RenderManager::Deinitialize()
 {
 	FreeImage_DeInitialise();
 }
@@ -37,7 +37,7 @@ RenderManager::~RenderManager()
 	FreeImage_Unload(fiBmpDest);
 }
 
-void RenderManager::scaleTileSet(FIBITMAP* fiTileSetBmp)
+void RenderManager::ScaleTileSet(FIBITMAP* fiTileSetBmp)
 {
 	unsigned nonScaledTileLength = 32;
 	unsigned imageWidth = FreeImage_GetWidth(fiTileSetBmp);
@@ -50,23 +50,23 @@ void RenderManager::scaleTileSet(FIBITMAP* fiTileSetBmp)
 	FreeImage_Unload(fiTileSetBmp);
 }
 
-void RenderManager::addTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
+void RenderManager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
 	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
 {
 	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
 		bpp, red_mask, green_mask, blue_mask);
 
-	scaleTileSet(fiTileSetBmp);
+	ScaleTileSet(fiTileSetBmp);
 }
 
-void RenderManager::addTileSet(std::string filename, ImageFormat imageFormat)
+void RenderManager::AddTileSet(std::string filename, ImageFormat imageFormat)
 {
 	FIBITMAP* fiTileSetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
 
-	scaleTileSet(fiTileSetBmp);
+	ScaleTileSet(fiTileSetBmp);
 }
 
-void RenderManager::pasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
+void RenderManager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
 {
 	int tileSetYPixelPos = tileIndex * scaleFactor;
 
@@ -85,11 +85,11 @@ void RenderManager::pasteTile(int tileSetIndex, int tileIndex, int xPos, int yPo
 	FreeImage_Unload(tileBmp);
 }
 
-bool RenderManager::saveMapImage(const std::string& destFilename, ImageFormat imageFormat)
+bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
 {
 	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
 
-	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), getFISaveFlag(fiImageFormat));
+	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
 }
 
 FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat)
@@ -107,7 +107,7 @@ FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat)
 	}
 }
 
-int RenderManager::getFISaveFlag(FREE_IMAGE_FORMAT imageFormat)
+int RenderManager::GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat)
 {
 	switch (imageFormat)
 	{

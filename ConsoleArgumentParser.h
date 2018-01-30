@@ -30,7 +30,7 @@ class ConsoleArgumentParser
 		std::function<void(const char*, ConsoleArgs&)> parseFunction;
 		int numberOfArgs; // The switch statement itself does not count as an argument.
 
-		bool argumentMatch(std::string argument)
+		bool ArgumentMatch(std::string argument)
 		{
 			return argument == shortSwitch || argument == longSwitch;
 		}
@@ -38,22 +38,22 @@ class ConsoleArgumentParser
 
 public:
 	ConsoleArgumentParser();
-	ConsoleArgs sortArguments(int argc, char **argv);
+	ConsoleArgs SortArguments(int argc, char **argv);
 
 private:
 	std::vector<ConsoleSwitch> consoleSwitches;
 
-	void checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
-	bool findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	bool parseBool(const std::string& str);
+	void CheckForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
+	bool FindSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
+	bool ParseBool(const std::string& str);
 
-	static ImageFormat parseImageTypeToEnum(const std::string& imageTypeString);
+	static ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString);
 
-	static void parseQuiet(const char* value, ConsoleArgs& consoleArgs);
-	static void parseScale(const char* value, ConsoleArgs& consoleArgs);
-	static void parseImageFormat(const char* value, ConsoleArgs& consoleArgs);
-	static void parseDestDirectory(const char* value, ConsoleArgs& consoleArgs);
-	static void parseHelp(const char* value, ConsoleArgs& consoleArgs);
-	static void parseOverwrite(const char* value, ConsoleArgs& consoleArgs);
-	static void parseAccessArchives(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseQuiet(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseScale(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseImageFormat(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseDestDirectory(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseHelp(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseOverwrite(const char* value, ConsoleArgs& consoleArgs);
+	static void ParseAccessArchives(const char* value, ConsoleArgs& consoleArgs);
 };

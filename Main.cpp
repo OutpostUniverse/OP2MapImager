@@ -15,46 +15,46 @@ using namespace std;
 static string consoleLineBreak("--------------------------------------------------");
 static std::string version = "2.0.1";
 
-void outputHelp();
-void executeCommand(const ConsoleArgs& consoleArgs);
-void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
-void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings);
-bool isRenderableFileExtension(const string& filename);
-void debugPause();
+void OutputHelp();
+void ExecuteCommand(const ConsoleArgs& consoleArgs);
+void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
+void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings);
+bool IsRenderableFileExtension(const string& filename);
+void DebugPause();
 
 int main(int argc, char **argv)
 {
 	try
 	{
 		//Timer timer;
-		//timer.startTimer();
+		//timer.StartTimer();
 
 		ConsoleArgumentParser argumentParser;
-		ConsoleArgs consoleArgs = argumentParser.sortArguments(argc, argv);
-		executeCommand(consoleArgs);
+		ConsoleArgs consoleArgs = argumentParser.SortArguments(argc, argv);
+		ExecuteCommand(consoleArgs);
 
 		//if (!consoleArgs.renderSettings.quiet)
-		//    cout << "Map Renders completed in " << timer.getElapsedTime() << " seconds.";
+		//    cout << "Map Renders completed in " << timer.GetElapsedTime() << " seconds.";
 	}
 	catch (exception e) {
 		cerr << e.what() << endl;
 		cerr << "Run without arguments to see usage message." << endl << endl;
 
-		debugPause();
+		DebugPause();
 
 		return 1;
 	}
 
-	debugPause();
+	DebugPause();
 
 	return 0;
 }
 
-void executeCommand(const ConsoleArgs& consoleArgs)
+void ExecuteCommand(const ConsoleArgs& consoleArgs)
 {
 	if (consoleArgs.renderSettings.helpRequested)
 	{
-		outputHelp();
+		OutputHelp();
 		return;
 	}
 
@@ -65,10 +65,10 @@ void executeCommand(const ConsoleArgs& consoleArgs)
 	for (string path : consoleArgs.paths)
 	{
 		if (XFile::isDirectory(path)) {
-			imageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
+			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
 		}
-		else if (isRenderableFileExtension(path)) {
-			imageMapFromConsole(path, consoleArgs.renderSettings);
+		else if (IsRenderableFileExtension(path)) {
+			ImageMapFromConsole(path, consoleArgs.renderSettings);
 		}
 		else {
 			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
@@ -76,7 +76,7 @@ void executeCommand(const ConsoleArgs& consoleArgs)
 	}
 }
 
-void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)
+void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)
 {
 	if (!renderSettings.quiet) {
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::getFilename(mapFilename) << endl;
@@ -84,14 +84,14 @@ void imageMapFromConsole(const string& mapFilename, const RenderSettings& render
 
 	MapImager mapImager(XFile::getDirectory(mapFilename));
 	string renderFilename;
-	bool saveSuccess = mapImager.imageMap(renderFilename, mapFilename, renderSettings);
+	bool saveSuccess = mapImager.ImageMap(renderFilename, mapFilename, renderSettings);
 
 	if (saveSuccess && !renderSettings.quiet) {
 		cout << "Render Saved: " + renderFilename << endl << endl;
 	}
 }
 
-void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings)
+void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings)
 {
 	ResourceManager resourceManager(directory);
 
@@ -119,7 +119,7 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	}
 
 	for (string filename : filenames) {
-		imageMapFromConsole(filename, renderSettings);
+		ImageMapFromConsole(filename, renderSettings);
 	}
 
 	if (!renderSettings.quiet)
@@ -129,12 +129,12 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	}
 }
 
-bool isRenderableFileExtension(const std::string& filename)
+bool IsRenderableFileExtension(const std::string& filename)
 {
 	return XFile::extensionMatches(filename, "MAP") || XFile::extensionMatches(filename, "OP2");
 }
 
-void outputHelp()
+void OutputHelp()
 {
 	cout << endl;
 	cout << "OP2MapImager Ver " << version << " - Outpost 2 Map and Saved Game Imager" << endl;
@@ -166,7 +166,7 @@ void outputHelp()
 	cout << endl;
 }
 
-void debugPause()
+void DebugPause()
 {
 #if defined _DEBUG
 	getchar();

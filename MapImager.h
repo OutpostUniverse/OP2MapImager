@@ -19,15 +19,15 @@ class MapImager
 {
 public:
 	MapImager(std::string directory) : resourceManager(directory) {};
-	bool imageMap(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
-	std::string getImageFormatExtension(ImageFormat imageFormat);
+	bool ImageMap(std::string& renderFilenameOut, const std::string& filename, const RenderSettings& renderSettings);
+	std::string GetImageFormatExtension(ImageFormat imageFormat);
 
 private:
 	ResourceManager resourceManager;
 
-	void setRenderTiles(MapData& mapData, RenderManager& mapImager);
-	void loadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
-	std::string formatRenderFilename(const std::string& filename, const RenderSettings& renderSettings);
-	std::string createUniqueFilename(const std::string& filename);
-	bool MapImager::isSavedGame(std::string filename);
+	void SetRenderTiles(MapData& mapData, RenderManager& mapImager);
+	void LoadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
+	std::string FormatRenderFilename(const std::string& filename, const RenderSettings& renderSettings);
+	std::string CreateUniqueFilename(const std::string& filename);
+	bool IsSavedGame(std::string filename);
 };
