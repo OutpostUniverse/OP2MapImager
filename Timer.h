@@ -11,4 +11,3 @@ public:
 private:
 	std::chrono::high_resolution_clock::time_point startTime;
 };
-

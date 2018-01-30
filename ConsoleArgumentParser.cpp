@@ -16,134 +16,134 @@ ConsoleArgumentParser::ConsoleArgumentParser()
 	consoleSwitches.push_back(ConsoleSwitch("-A", "--ACCESSARCHIVES", parseAccessArchives, 0));
 };
 
-	bool ConsoleArgumentParser::findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
+bool ConsoleArgumentParser::findSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
+{
+	string argument = StringHelper::convertToUpper(argumentChar);
+
+	// Remove trailing colon from switch statements.
+	if (argument.size() > 0 && argument[argument.size() - 1] == ':')
+		argument.pop_back();
+
+	for (ConsoleSwitch consoleSwitch : consoleSwitches)
 	{
-		string argument = StringHelper::convertToUpper(argumentChar);
-
-		// Remove trailing colon from switch statements.
-		if (argument.size() > 0 && argument[argument.size() - 1] == ':')
-			argument.pop_back();
-
-		for (ConsoleSwitch consoleSwitch : consoleSwitches)
+		if (consoleSwitch.argumentMatch(argument))
 		{
-			if (consoleSwitch.argumentMatch(argument))
-			{
-				currentSwitch = consoleSwitch;
-				return true;
-			}
+			currentSwitch = consoleSwitch;
+			return true;
 		}
-
-		return false;
 	}
 
-	ConsoleArgs ConsoleArgumentParser::sortArguments(int argc, char **argv)
+	return false;
+}
+
+ConsoleArgs ConsoleArgumentParser::sortArguments(int argc, char **argv)
+{
+	ConsoleArgs consoleArgs;
+
+	if (argc < 2)
 	{
-		ConsoleArgs consoleArgs;
-
-		if (argc < 2)
-		{
-			consoleArgs.renderSettings.helpRequested = true;
-			return consoleArgs;
-		}
-
-		ConsoleSwitch currentSwitch;
-
-		for (int i = 1; i < argc; ++i)
-		{
-			bool switchFound = findSwitch(argv[i], currentSwitch);
-
-			if (switchFound)
-			{
-				checkForMissingSwitchArgument(i, argc, currentSwitch.numberOfArgs);
-
-				if (currentSwitch.numberOfArgs == 0)
-					currentSwitch.parseFunction(argv[i], consoleArgs);
-				else
-					currentSwitch.parseFunction(argv[i + 1], consoleArgs);
-
-				i = i + currentSwitch.numberOfArgs;
-			}
-			else
-			{
-				consoleArgs.paths.push_back(argv[i]);
-			}
-		}
-
+		consoleArgs.renderSettings.helpRequested = true;
 		return consoleArgs;
 	}
 
-	ImageFormat ConsoleArgumentParser::parseImageTypeToEnum(const std::string& imageTypeString)
+	ConsoleSwitch currentSwitch;
+
+	for (int i = 1; i < argc; ++i)
 	{
-		string imageTypeStringUpper = StringHelper::convertToUpper(imageTypeString);
+		bool switchFound = findSwitch(argv[i], currentSwitch);
 
-		if (imageTypeStringUpper == "PNG")
-			return ImageFormat::PNG;
+		if (switchFound)
+		{
+			checkForMissingSwitchArgument(i, argc, currentSwitch.numberOfArgs);
 
-		if (imageTypeStringUpper == "JPG" || imageTypeStringUpper == "JPEG")
-			return ImageFormat::JPG;
+			if (currentSwitch.numberOfArgs == 0)
+				currentSwitch.parseFunction(argv[i], consoleArgs);
+			else
+				currentSwitch.parseFunction(argv[i + 1], consoleArgs);
 
-		if (imageTypeStringUpper == "BMP" || imageTypeStringUpper == "BITMAP")
-			return ImageFormat::BMP;
-
-		throw runtime_error("Unable to determine final render file type. Try PNG, JPG, or BMP.");
+			i = i + currentSwitch.numberOfArgs;
+		}
+		else
+		{
+			consoleArgs.paths.push_back(argv[i]);
+		}
 	}
 
-	bool ConsoleArgumentParser::parseBool(const string& str)
-	{
-		string upperStr = StringHelper::convertToUpper(str);
+	return consoleArgs;
+}
 
-		if (upperStr == "TRUE" || upperStr == "YES")
-			return true;
+ImageFormat ConsoleArgumentParser::parseImageTypeToEnum(const std::string& imageTypeString)
+{
+	string imageTypeStringUpper = StringHelper::convertToUpper(imageTypeString);
 
-		if (upperStr == "FALSE" || upperStr == "NO")
-			return false;
+	if (imageTypeStringUpper == "PNG")
+		return ImageFormat::PNG;
 
-		throw invalid_argument("Unable to parse argument into a valid boolean (True/False).");
-	}
+	if (imageTypeStringUpper == "JPG" || imageTypeStringUpper == "JPEG")
+		return ImageFormat::JPG;
 
-	void ConsoleArgumentParser::checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
-	{
-		if (index + numberOfArgsToPass >= argc)
-			throw runtime_error("Missing the final argument for the supplied switch.");
-	}
+	if (imageTypeStringUpper == "BMP" || imageTypeStringUpper == "BITMAP")
+		return ImageFormat::BMP;
 
-	void ConsoleArgumentParser::parseHelp(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.helpRequested = true;
-	}
+	throw runtime_error("Unable to determine final render file type. Try PNG, JPG, or BMP.");
+}
 
-	void ConsoleArgumentParser::parseQuiet(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.quiet = true;
-	}
+bool ConsoleArgumentParser::parseBool(const string& str)
+{
+	string upperStr = StringHelper::convertToUpper(str);
 
-	void ConsoleArgumentParser::parseOverwrite(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.overwrite = true;
-	}
+	if (upperStr == "TRUE" || upperStr == "YES")
+		return true;
 
-	void ConsoleArgumentParser::parseAccessArchives(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.accessArchives = false;
-	}
+	if (upperStr == "FALSE" || upperStr == "NO")
+		return false;
 
-	void ConsoleArgumentParser::parseScale(const char* value, ConsoleArgs& consoleArgs)
-	{
-		// stoi will throw an exception if it is unable to parse the string into an integer
-		int scaleFactor = stoi(value);
+	throw invalid_argument("Unable to parse argument into a valid boolean (True/False).");
+}
 
-		if (scaleFactor <= 0)
-			throw runtime_error("Scale Factor was set improperly.");
+void ConsoleArgumentParser::checkForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass)
+{
+	if (index + numberOfArgsToPass >= argc)
+		throw runtime_error("Missing the final argument for the supplied switch.");
+}
 
-		consoleArgs.renderSettings.scaleFactor = scaleFactor;
-	}
+void ConsoleArgumentParser::parseHelp(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.helpRequested = true;
+}
 
-	void ConsoleArgumentParser::parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.destDirectory = value;
-	}
+void ConsoleArgumentParser::parseQuiet(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.quiet = true;
+}
 
-	void ConsoleArgumentParser::parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
-	{
-		consoleArgs.renderSettings.imageFormat = parseImageTypeToEnum(value);
-	}
+void ConsoleArgumentParser::parseOverwrite(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.overwrite = true;
+}
+
+void ConsoleArgumentParser::parseAccessArchives(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.accessArchives = false;
+}
+
+void ConsoleArgumentParser::parseScale(const char* value, ConsoleArgs& consoleArgs)
+{
+	// stoi will throw an exception if it is unable to parse the string into an integer
+	int scaleFactor = stoi(value);
+
+	if (scaleFactor <= 0)
+		throw runtime_error("Scale Factor was set improperly.");
+
+	consoleArgs.renderSettings.scaleFactor = scaleFactor;
+}
+
+void ConsoleArgumentParser::parseDestDirectory(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.destDirectory = value;
+}
+
+void ConsoleArgumentParser::parseImageFormat(const char* value, ConsoleArgs& consoleArgs)
+{
+	consoleArgs.renderSettings.imageFormat = parseImageTypeToEnum(value);
+}
