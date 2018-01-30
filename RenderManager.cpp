@@ -28,9 +28,11 @@ RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int s
 	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
 }
 
-RenderManager::~RenderManager() {
-	for (FIBITMAP* fiBmp : tileSetBmps)
+RenderManager::~RenderManager() 
+{
+	for (FIBITMAP* fiBmp : tileSetBmps) {
 		FreeImage_Unload(fiBmp);
+	}
 
 	FreeImage_Unload(fiBmpDest);
 }

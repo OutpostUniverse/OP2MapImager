@@ -58,31 +58,37 @@ void executeCommand(const ConsoleArgs& consoleArgs)
 		return;
 	}
 
-	if (consoleArgs.paths.size() == 0)
+	if (consoleArgs.paths.size() == 0) {
 		throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
+	}
 
 	for (string path : consoleArgs.paths)
 	{
-		if (XFile::isDirectory(path))
+		if (XFile::isDirectory(path)) {
 			imageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
-		else if (isRenderableFileExtension(path))
+		}
+		else if (isRenderableFileExtension(path)) {
 			imageMapFromConsole(path, consoleArgs.renderSettings);
-		else
+		}
+		else {
 			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
+		}
 	}
 }
 
 void imageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)
 {
-	if (!renderSettings.quiet)
+	if (!renderSettings.quiet) {
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::getFilename(mapFilename) << endl;
+	}
 
 	MapImager mapImager(XFile::getDirectory(mapFilename));
 	string renderFilename;
 	bool saveSuccess = mapImager.imageMap(renderFilename, mapFilename, renderSettings);
 
-	if (saveSuccess && !renderSettings.quiet)
+	if (saveSuccess && !renderSettings.quiet) {
 		cout << "Render Saved: " + renderFilename << endl << endl;
+	}
 }
 
 void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings)
@@ -94,15 +100,17 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
-	for (int i = filenames.size() - 1; i >= 0; i--) 
+	for (int i = filenames.size() - 1; i >= 0; i--)
 	{
 		string filename = XFile::getFilename(filenames[i]);
-		if (filename == "wellpallet.map")
+		if (filename == "wellpallet.map") {
 			filenames.erase(filenames.begin() + i);
+		}
 	}
 
-	if (filenames.size() == 0)
+	if (filenames.size() == 0) {
 		throw runtime_error("No map file or save file found in the supplied directory.");
+	}
 
 	if (!renderSettings.quiet)
 	{
@@ -110,8 +118,9 @@ void imageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 		cout << consoleLineBreak << endl << endl;
 	}
 
-	for (string filename : filenames)
+	for (string filename : filenames) {
 		imageMapFromConsole(filename, renderSettings);
+	}
 
 	if (!renderSettings.quiet)
 	{

@@ -27,8 +27,9 @@ bool MapImager::imageMap(string& renderFilenameOut, const string& filename, cons
 
 	RenderManager::deInitialize();
 
-	if (!saveSuccess)
+	if (!saveSuccess) {
 		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl << endl;
+	}
 
 	return saveSuccess;
 }
@@ -52,17 +53,20 @@ string MapImager::formatRenderFilename(const string& filename, const RenderSetti
 {
 	string renderFilename;
 
-	if (XFile::isRootPath(renderSettings.destDirectory))
+	if (XFile::isRootPath(renderSettings.destDirectory)) {
 		renderFilename = XFile::replaceFilename(renderSettings.destDirectory, filename);
-	else
+	}
+	else {
 		renderFilename = XFile::appendSubDirectory(XFile::getFilename(filename), renderSettings.destDirectory);
+	}
 
 	string s = ".s" + to_string(renderSettings.scaleFactor);
 	renderFilename = XFile::appendToFilename(renderFilename, s);
 	renderFilename = XFile::changeFileExtension(renderFilename, getImageFormatExtension(renderSettings.imageFormat));
 
-	if (!renderSettings.overwrite)
+	if (!renderSettings.overwrite) {
 		renderFilename = createUniqueFilename(renderFilename);
+	}
 
 	return renderFilename;
 }
@@ -77,8 +81,9 @@ string MapImager::createUniqueFilename(const string& filename)
 		uniqueFilename = XFile::appendToFilename(filename, "_" + std::to_string(pathIndex));
 		pathIndex++;
 
-		if (pathIndex >= 32000)
+		if (pathIndex >= 32000) {
 			throw runtime_error("Too many files with the same filename.");
+		}
 	}
 
 	return uniqueFilename;
@@ -88,8 +93,9 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 {
 	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
 	{
-		if (mapData.tileSetSources[i].numTiles == 0)
+		if (mapData.tileSetSources[i].numTiles == 0) {
 			continue;
+		}
 
 		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
 
@@ -97,8 +103,9 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 		//      instead of forcing its extraction.
 		bool extracted = resourceManager.extractSpecificFile(tileSetFilename);
 		
-		if (!extracted)
+		if (!extracted) {
 			throw runtime_error("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).");
+		}
 
 		mapImager.addTileSet(tileSetFilename, ImageFormat::BMP);
 
@@ -110,9 +117,11 @@ void MapImager::loadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 void MapImager::setRenderTiles(MapData& mapData, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++)
-		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++)
+	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++) {
+		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++) {
 			renderManager.pasteTile(mapData.getTileSetIndex(x, y), mapData.getImageIndex(x, y), x, y);
+		}
+	}
 }
 
 bool MapImager::isSavedGame(string filename)
