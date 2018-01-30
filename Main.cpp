@@ -64,7 +64,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 
 	for (string path : consoleArgs.paths)
 	{
-		if (XFile::isDirectory(path)) {
+		if (XFile::IsDirectory(path)) {
 			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
 		}
 		else if (IsRenderableFileExtension(path)) {
@@ -79,10 +79,10 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)
 {
 	if (!renderSettings.quiet) {
-		cout << "Render initialized (May take up to 45 seconds): " + XFile::getFilename(mapFilename) << endl;
+		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(mapFilename) << endl;
 	}
 
-	MapImager mapImager(XFile::getDirectory(mapFilename));
+	MapImager mapImager(XFile::GetDirectory(mapFilename));
 	string renderFilename;
 	bool saveSuccess = mapImager.ImageMap(renderFilename, mapFilename, renderSettings);
 
@@ -95,14 +95,14 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 {
 	ResourceManager resourceManager(directory);
 
-	vector<string> filenames = resourceManager.getAllFilenamesOfType(directory, ".map", renderSettings.accessArchives);
-	vector<string> saveFilenames = resourceManager.getAllFilenames(directory, R"(.*SGAME[0-9]\.OP2)"); //Regex
+	vector<string> filenames = resourceManager.GetAllFilenamesOfType(directory, ".map", renderSettings.accessArchives);
+	vector<string> saveFilenames = resourceManager.GetAllFilenames(directory, R"(.*SGAME[0-9]\.OP2)"); //Regex
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
 	for (int i = filenames.size() - 1; i >= 0; i--)
 	{
-		string filename = XFile::getFilename(filenames[i]);
+		string filename = XFile::GetFilename(filenames[i]);
 		if (filename == "wellpallet.map") {
 			filenames.erase(filenames.begin() + i);
 		}
@@ -131,7 +131,7 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 
 bool IsRenderableFileExtension(const std::string& filename)
 {
-	return XFile::extensionMatches(filename, "MAP") || XFile::extensionMatches(filename, "OP2");
+	return XFile::ExtensionMatches(filename, "MAP") || XFile::ExtensionMatches(filename, "OP2");
 }
 
 void OutputHelp()

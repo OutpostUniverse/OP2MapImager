@@ -9,7 +9,7 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 {
 	bool saveGame = IsSavedGame(filename);
 
-	MapData mapData(resourceManager.getResourceStream(filename, renderSettings.accessArchives), saveGame);
+	MapData mapData(resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
 
 	RenderManager::Initialize();
 
@@ -20,7 +20,7 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	LoadTileSets(mapData, mapImager, renderSettings.accessArchives);
 	SetRenderTiles(mapData, mapImager);
 
-	XFile::createDirectory(renderSettings.destDirectory);
+	XFile::NewDirectory(renderSettings.destDirectory);
 	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
 	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
@@ -53,16 +53,16 @@ string MapImager::FormatRenderFilename(const string& filename, const RenderSetti
 {
 	string renderFilename;
 
-	if (XFile::isRootPath(renderSettings.destDirectory)) {
-		renderFilename = XFile::replaceFilename(renderSettings.destDirectory, filename);
+	if (XFile::IsRootPath(renderSettings.destDirectory)) {
+		renderFilename = XFile::ReplaceFilename(renderSettings.destDirectory, filename);
 	}
 	else {
-		renderFilename = XFile::appendSubDirectory(XFile::getFilename(filename), renderSettings.destDirectory);
+		renderFilename = XFile::AppendSubDirectory(XFile::GetFilename(filename), renderSettings.destDirectory);
 	}
 
 	string s = ".s" + to_string(renderSettings.scaleFactor);
-	renderFilename = XFile::appendToFilename(renderFilename, s);
-	renderFilename = XFile::changeFileExtension(renderFilename, GetImageFormatExtension(renderSettings.imageFormat));
+	renderFilename = XFile::AppendToFilename(renderFilename, s);
+	renderFilename = XFile::ChangeFileExtension(renderFilename, GetImageFormatExtension(renderSettings.imageFormat));
 
 	if (!renderSettings.overwrite) {
 		renderFilename = CreateUniqueFilename(renderFilename);
@@ -76,9 +76,9 @@ string MapImager::CreateUniqueFilename(const string& filename)
 	string uniqueFilename = filename;
 
 	int pathIndex = 1;
-	while (XFile::pathExists(uniqueFilename))
+	while (XFile::PathExists(uniqueFilename))
 	{
-		uniqueFilename = XFile::appendToFilename(filename, "_" + std::to_string(pathIndex));
+		uniqueFilename = XFile::AppendToFilename(filename, "_" + std::to_string(pathIndex));
 		pathIndex++;
 
 		if (pathIndex >= 32000) {
@@ -97,11 +97,11 @@ void MapImager::LoadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 			continue;
 		}
 
-		string tileSetFilename = mapData.tileSetSources[i].getTileSetFilename() + ".bmp";
+		string tileSetFilename = mapData.tileSetSources[i].GetTileSetFilename() + ".bmp";
 
 		//TODO: Allow FreeImage to take a pointer to the associated well within a vol file 
 		//      instead of forcing its extraction.
-		bool extracted = resourceManager.extractSpecificFile(tileSetFilename);
+		bool extracted = resourceManager.ExtractSpecificFile(tileSetFilename);
 		
 		if (!extracted) {
 			throw runtime_error("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).");
@@ -119,12 +119,12 @@ void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
 {
 	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++) {
 		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++) {
-			renderManager.PasteTile(mapData.getTileSetIndex(x, y), mapData.getImageIndex(x, y), x, y);
+			renderManager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 		}
 	}
 }
 
 bool MapImager::IsSavedGame(string filename)
 {
-	return XFile::extensionMatches(filename, ".OP2");
+	return XFile::ExtensionMatches(filename, ".OP2");
 }

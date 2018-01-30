@@ -18,7 +18,7 @@ ConsoleArgumentParser::ConsoleArgumentParser()
 
 bool ConsoleArgumentParser::FindSwitch(char* argumentChar, ConsoleSwitch& currentSwitch)
 {
-	string argument = StringHelper::convertToUpper(argumentChar);
+	string argument = StringHelper::ConvertToUpper(argumentChar);
 
 	// Remove trailing colon from switch statements.
 	if (argument.size() > 0 && argument[argument.size() - 1] == ':') {
@@ -73,7 +73,7 @@ ConsoleArgs ConsoleArgumentParser::SortArguments(int argc, char **argv)
 
 ImageFormat ConsoleArgumentParser::ParseImageTypeToEnum(const std::string& imageTypeString)
 {
-	string imageTypeStringUpper = StringHelper::convertToUpper(imageTypeString);
+	string imageTypeStringUpper = StringHelper::ConvertToUpper(imageTypeString);
 
 	if (imageTypeStringUpper == "PNG") {
 		return ImageFormat::PNG;
@@ -90,7 +90,7 @@ ImageFormat ConsoleArgumentParser::ParseImageTypeToEnum(const std::string& image
 
 bool ConsoleArgumentParser::ParseBool(const string& str)
 {
-	string upperStr = StringHelper::convertToUpper(str);
+	string upperStr = StringHelper::ConvertToUpper(str);
 
 	if (upperStr == "TRUE" || upperStr == "YES") {
 		return true;
