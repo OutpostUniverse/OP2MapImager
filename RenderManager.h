@@ -28,12 +28,12 @@ public:
 
 	~RenderManager();
 
-	void AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
+	void AddTilesetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
 		unsigned red_mask, unsigned green_mask, unsigned blue_mask);
 
-	void AddTileSet(std::string filename, ImageFormat imageFormat);
+	void AddTileset(std::string filename, ImageFormat imageFormat);
 
-	void PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos);
+	void PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos);
 
 	// Returns true on success.
 	bool SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
@@ -41,9 +41,9 @@ public:
 private:
 	int scaleFactor;
 	FIBITMAP* fiBmpDest;
-	std::vector<FIBITMAP*> tileSetBmps;
+	std::vector<FIBITMAP*> tilesetBmps;
 
 	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat);
 	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat);
-	void ScaleTileSet(FIBITMAP* fiTileSetBmp);
+	void ScaleTileset(FIBITMAP* fiTilesetBmp);
 };

@@ -1,4 +1,5 @@
 #include "MapImager.h"
+#include "Maps/MapReader.h"
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -9,15 +10,16 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 {
 	bool saveGame = IsSavedGame(filename);
 
-	MapData mapData(resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
+	MapReader mapReader;
+	MapData mapData = mapReader.Read(resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
 
 	RenderManager::Initialize();
 
 	RenderManager mapImager(
-		mapData.mapHeader.mapTileWidth(),
-		mapData.mapHeader.mapTileHeight, 24, renderSettings.scaleFactor);
+		mapData.header.MapTileWidth(),
+		mapData.header.mapTileHeight, 24, renderSettings.scaleFactor);
 
-	LoadTileSets(mapData, mapImager, renderSettings.accessArchives);
+	LoadTilesets(mapData, mapImager, renderSettings.accessArchives);
 	SetRenderTiles(mapData, mapImager);
 
 	XFile::NewDirectory(renderSettings.destDirectory);
@@ -89,25 +91,25 @@ string MapImager::CreateUniqueFilename(const string& filename)
 	return uniqueFilename;
 }
 
-void MapImager::LoadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives)
+void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool accessArchives)
 {
-	for (size_t i = 0; i < mapData.tileSetSources.size(); ++i)
+	for (size_t i = 0; i < mapData.tilesetSources.size(); ++i)
 	{
-		if (mapData.tileSetSources[i].numTiles == 0) {
+		if (mapData.tilesetSources[i].numTiles == 0) {
 			continue;
 		}
 
-		string tileSetFilename = mapData.tileSetSources[i].GetTileSetFilename() + ".bmp";
+		string tilesetFilename(mapData.tilesetSources[i].tilesetFilename + ".bmp");
 
 		//TODO: Allow FreeImage to take a pointer to the associated well within a vol file 
 		//      instead of forcing its extraction.
-		bool extracted = resourceManager.ExtractSpecificFile(tileSetFilename);
+		bool extracted = resourceManager.ExtractSpecificFile(tilesetFilename);
 		
 		if (!extracted) {
-			throw runtime_error("Unable to find the tileset " + tileSetFilename + " in the directory or in a given archive (.vol).");
+			throw runtime_error("Unable to find the tileset " + tilesetFilename + " in the directory or in a given archive (.vol).");
 		}
 
-		mapImager.AddTileSet(tileSetFilename, ImageFormat::BMP);
+		mapImager.AddTileset(tilesetFilename, ImageFormat::BMP);
 
 		//TODO: If tilesets are Outpost 2 specific, translate the Outpost 2 specific tilesets into 
 		//      standard bmp files for use in rendering map.
@@ -117,9 +119,9 @@ void MapImager::LoadTileSets(MapData& mapData, RenderManager& mapImager, bool ac
 
 void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < mapData.mapHeader.mapTileHeight; y++) {
-		for (unsigned int x = 0; x < mapData.mapHeader.mapTileWidth(); x++) {
-			renderManager.PasteTile(mapData.GetTileSetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
+	for (unsigned int y = 0; y < mapData.header.mapTileHeight; y++) {
+		for (unsigned int x = 0; x < mapData.header.MapTileWidth(); x++) {
+			renderManager.PasteTile(mapData.GetTilesetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 		}
 	}
 }

@@ -26,7 +26,7 @@ private:
 	ResourceManager resourceManager;
 
 	void SetRenderTiles(MapData& mapData, RenderManager& mapImager);
-	void LoadTileSets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
+	void LoadTilesets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
 	std::string FormatRenderFilename(const std::string& filename, const RenderSettings& renderSettings);
 	std::string CreateUniqueFilename(const std::string& filename);
 	bool IsSavedGame(std::string filename);

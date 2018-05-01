@@ -100,7 +100,7 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
-	for (int i = filenames.size() - 1; i >= 0; i--)
+	for (size_t i = filenames.size() - 1; i >= 0; i--)
 	{
 		string filename = XFile::GetFilename(filenames[i]);
 		if (filename == "wellpallet.map") {

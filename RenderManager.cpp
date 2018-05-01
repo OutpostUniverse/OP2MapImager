@@ -30,48 +30,48 @@ RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int s
 
 RenderManager::~RenderManager() 
 {
-	for (FIBITMAP* fiBmp : tileSetBmps) {
+	for (FIBITMAP* fiBmp : tilesetBmps) {
 		FreeImage_Unload(fiBmp);
 	}
 
 	FreeImage_Unload(fiBmpDest);
 }
 
-void RenderManager::ScaleTileSet(FIBITMAP* fiTileSetBmp)
+void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
 {
 	unsigned nonScaledTileLength = 32;
-	unsigned imageWidth = FreeImage_GetWidth(fiTileSetBmp);
-	unsigned imageHeight = FreeImage_GetHeight(fiTileSetBmp);
-	unsigned tileSetScaledWidth = FreeImage_GetWidth(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
-	unsigned tileSetScaledHeight = FreeImage_GetHeight(fiTileSetBmp) / nonScaledTileLength * scaleFactor;
+	unsigned imageWidth = FreeImage_GetWidth(fiTilesetBmp);
+	unsigned imageHeight = FreeImage_GetHeight(fiTilesetBmp);
+	unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+	unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
 
-	tileSetBmps.push_back(FreeImage_Rescale(fiTileSetBmp, tileSetScaledWidth, tileSetScaledHeight));
+	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
 
-	FreeImage_Unload(fiTileSetBmp);
+	FreeImage_Unload(fiTilesetBmp);
 }
 
-void RenderManager::AddTileSetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
+void RenderManager::AddTilesetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
 	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
 {
-	FIBITMAP* fiTileSetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
+	FIBITMAP* fiTilesetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
 		bpp, red_mask, green_mask, blue_mask);
 
-	ScaleTileSet(fiTileSetBmp);
+	ScaleTileset(fiTilesetBmp);
 }
 
-void RenderManager::AddTileSet(std::string filename, ImageFormat imageFormat)
+void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 {
-	FIBITMAP* fiTileSetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
+	FIBITMAP* fiTilesetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
 
-	ScaleTileSet(fiTileSetBmp);
+	ScaleTileset(fiTilesetBmp);
 }
 
-void RenderManager::PasteTile(int tileSetIndex, int tileIndex, int xPos, int yPos)
+void RenderManager::PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos)
 {
-	int tileSetYPixelPos = tileIndex * scaleFactor;
+	int tilesetYPixelPos = tileIndex * scaleFactor;
 
-	FIBITMAP* tileBmp = FreeImage_CreateView(tileSetBmps[tileSetIndex], 
-		0, tileSetYPixelPos + scaleFactor, scaleFactor, tileSetYPixelPos);
+	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex], 
+		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos);
 
 	int viewWidth = FreeImage_GetWidth(tileBmp);
 	int viewHeight = FreeImage_GetHeight(tileBmp);
