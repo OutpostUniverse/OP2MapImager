@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <cstddef>
 #include "Timer.h"
 
 using namespace std;
@@ -36,7 +37,7 @@ int main(int argc, char **argv)
 		//if (!consoleArgs.renderSettings.quiet)
 		//    cout << "Map Renders completed in " << timer.GetElapsedTime() << " seconds.";
 	}
-	catch (exception e) {
+	catch (const std::exception& e) {
 		cerr << e.what() << endl;
 		cerr << "Run without arguments to see usage message." << endl << endl;
 
@@ -62,7 +63,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 		throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
 	}
 
-	for (string path : consoleArgs.paths)
+	for (const auto& path : consoleArgs.paths)
 	{
 		if (XFile::IsDirectory(path)) {
 			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
@@ -100,9 +101,10 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
-	for (size_t i = filenames.size() - 1; i >= 0; i--)
+	// Loop starts at index size - 1 and ends after index 0 executes
+	for (std::size_t i = filenames.size(); i-- > 0; )
 	{
-		string filename = XFile::GetFilename(filenames[i]);
+		string& filename = XFile::GetFilename(filenames[i]);
 		if (filename == "wellpallet.map") {
 			filenames.erase(filenames.begin() + i);
 		}
@@ -118,7 +120,7 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 		cout << consoleLineBreak << endl << endl;
 	}
 
-	for (string filename : filenames) {
+	for (const auto& filename : filenames) {
 		ImageMapFromConsole(filename, renderSettings);
 	}
 

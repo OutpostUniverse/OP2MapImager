@@ -25,7 +25,7 @@ bool ConsoleArgumentParser::FindSwitch(char* argumentChar, ConsoleSwitch& curren
 		argument.pop_back();
 	}
 
-	for (ConsoleSwitch consoleSwitch : consoleSwitches)
+	for (const auto& consoleSwitch : consoleSwitches)
 	{
 		if (consoleSwitch.ArgumentMatch(argument)) {
 			currentSwitch = consoleSwitch;
