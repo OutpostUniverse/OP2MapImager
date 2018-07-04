@@ -30,7 +30,7 @@ RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int s
 
 RenderManager::~RenderManager() 
 {
-	for (FIBITMAP* fiBmp : tilesetBmps) {
+	for (auto* fiBmp : tilesetBmps) {
 		FreeImage_Unload(fiBmp);
 	}
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <cstddef>
 
 using namespace std;
 
@@ -10,8 +11,7 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 {
 	bool saveGame = IsSavedGame(filename);
 
-	MapReader mapReader;
-	MapData mapData = mapReader.Read(resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
+	MapData mapData = MapReader::Read(*resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
 
 	RenderManager::Initialize();
 
@@ -93,7 +93,7 @@ string MapImager::CreateUniqueFilename(const string& filename)
 
 void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool accessArchives)
 {
-	for (size_t i = 0; i < mapData.tilesetSources.size(); ++i)
+	for (std::size_t i = 0; i < mapData.tilesetSources.size(); ++i)
 	{
 		if (mapData.tilesetSources[i].numTiles == 0) {
 			continue;
@@ -119,14 +119,14 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 
 void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < mapData.header.mapTileHeight; y++) {
-		for (unsigned int x = 0; x < mapData.header.MapTileWidth(); x++) {
+	for (unsigned int y = 0; y < mapData.header.mapTileHeight; ++y) {
+		for (unsigned int x = 0; x < mapData.header.MapTileWidth(); ++x) {
 			renderManager.PasteTile(mapData.GetTilesetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 		}
 	}
 }
 
-bool MapImager::IsSavedGame(string filename)
+bool MapImager::IsSavedGame(const string& filename)
 {
 	return XFile::ExtensionMatches(filename, ".OP2");
 }
