@@ -17,13 +17,11 @@ class ConsoleArgumentParser
 	{
 		ConsoleSwitch() { }
 
-		ConsoleSwitch(std::string shortSwitch, std::string longSwitch, std::function<void(const char* value, ConsoleArgs&)> parseFunction, int numberOfArgs)
-		{
-			this->shortSwitch = shortSwitch;
-			this->longSwitch = longSwitch;
-			this->parseFunction = parseFunction;
-			this->numberOfArgs = numberOfArgs;
-		}
+		ConsoleSwitch(const std::string& shortSwitch, const std::string& longSwitch, std::function<void(const char* value, ConsoleArgs&)> parseFunction, int numberOfArgs) :
+			shortSwitch(shortSwitch),
+			longSwitch(longSwitch),
+			parseFunction(parseFunction),
+			numberOfArgs(numberOfArgs) {}
 
 		std::string shortSwitch;
 		std::string longSwitch;
