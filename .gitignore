@@ -4,3 +4,4 @@ Debug
 MapRenders
 Release
 *.user
+.build/
