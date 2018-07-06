@@ -59,7 +59,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 		return;
 	}
 
-	if (consoleArgs.paths.size() == 0) {
+	if (consoleArgs.paths.empty()) {
 		throw runtime_error("You must provide at least one file or directory. To provide the current directory, enter './'.");
 	}
 
