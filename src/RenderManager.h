@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FreeImage/Dist/x32/FreeImage.h"
+#include "../FreeImage/Dist/x32/FreeImage.h"
 #include <string>
 #include <vector>
 
