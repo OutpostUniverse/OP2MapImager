@@ -11,7 +11,14 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 {
 	bool saveGame = IsSavedGame(filename);
 
-	MapData mapData = MapReader::Read(*resourceManager.GetResourceStream(filename, renderSettings.accessArchives), saveGame);
+	std::unique_ptr<SeekableStreamReader> mapStream = resourceManager.GetResourceStream(filename, renderSettings.accessArchives);
+
+	if (mapStream == nullptr) {
+		cerr << "Unable to locate " + filename + " within directory or within an archive (vol or clm) in the directory." << endl << endl;
+		return false;
+	}
+
+	MapData mapData = MapReader::Read(*mapStream, saveGame);
 
 	RenderManager::Initialize();
 
