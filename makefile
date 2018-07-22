@@ -16,12 +16,13 @@ UTILITYBASE := OP2Utility
 UTILITYDIR := OP2Utility
 UTILITYLIB := $(UTILITYDIR)/lib$(UTILITYBASE).a
 
-CXXFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas -I OP2Utility/include
+CPPFLAGS := -I $(UTILITYDIR)/include
+CXXFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas
 LDFLAGS := -L $(UTILITYDIR) -l $(UTILITYBASE) -lstdc++ -lm -lstdc++fs -lfreeimage
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
