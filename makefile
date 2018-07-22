@@ -12,9 +12,12 @@ BINDIR := $(BUILDDIR)/bin
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/op2mapimager
+UTILITYBASE := OP2Utility
+UTILITYDIR := OP2Utility
+UTILITYLIB := $(UTILITYDIR)/lib$(UTILITYBASE).a
 
 CFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas -I OP2Utility/include
-LDFLAGS := -lstdc++ -lm -lstdc++fs -lfreeimage
+LDFLAGS := -L $(UTILITYDIR) -l $(UTILITYBASE) -lstdc++ -lm -lstdc++fs -lfreeimage
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
@@ -27,9 +30,12 @@ FOLDERS := $(sort $(dir $(SRCS)))
 
 all: $(OUTPUT)
 
-$(OUTPUT): $(OBJS)
+$(OUTPUT): $(UTILITYLIB) $(OBJS)
 	@mkdir -p ${@D}
 	$(CXX) $^ $(LDFLAGS) -o $@
+
+$(UTILITYLIB):
+	$(MAKE) -C $(UTILITYDIR)
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
