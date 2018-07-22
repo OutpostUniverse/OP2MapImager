@@ -6,14 +6,14 @@ ifeq ($(origin CXX),default)
 	CXX := clang-6.0
 endif
 
-SRCDIR := .
+SRCDIR := src
 BUILDDIR := .build
 BINDIR := $(BUILDDIR)/bin
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/op2mapimager
 
-CFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas -I OP2Utility/
+CFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas -I OP2Utility/include
 LDFLAGS := -lstdc++ -lm -lstdc++fs -lfreeimage
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
@@ -21,7 +21,7 @@ DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-SRCS := $(shell find $(SRCDIR) -name '*.cpp' -not -path './FreeImage/*')
+SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 FOLDERS := $(sort $(dir $(SRCS)))
 
