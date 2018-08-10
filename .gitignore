@@ -2,7 +2,7 @@
 *.vs
 *.user
 .build/
-Debug
-Release
-MapRenders
+Debug/
+Release/
+MapRenders/
 OP2MapImager
