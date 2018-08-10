@@ -36,7 +36,10 @@ $(OUTPUT): $(UTILITYLIB) $(OBJS)
 	@mkdir -p ${@D}
 	$(CXX) $^ $(LDFLAGS) -o $@ $(LDLIBS)
 
-$(UTILITYLIB):
+$(UTILITYLIB): op2utility
+
+.PHONY:op2utility
+op2utility:
 	$(MAKE) -C $(UTILITYDIR)
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
