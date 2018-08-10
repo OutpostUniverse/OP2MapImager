@@ -6,30 +6,41 @@ ifeq ($(origin CXX),default)
 	CXX := clang-6.0
 endif
 
-SRCDIR := .
+SRCDIR := src
 BUILDDIR := .build
 BINDIR := $(BUILDDIR)/bin
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
-OUTPUT := $(BINDIR)/op2mapimager
+OUTPUT := OP2MapImager
+UTILITYBASE := OP2Utility
+UTILITYDIR := OP2Utility
+UTILITYLIB := $(UTILITYDIR)/lib$(UTILITYBASE).a
 
-CFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas -I OP2Utility/
-LDFLAGS := -lstdc++ -lm -lstdc++fs -lfreeimage
+CPPFLAGS := -I $(UTILITYDIR)/include
+CXXFLAGS := -std=c++14 -g -Wall -Wno-unknown-pragmas
+LDFLAGS := -L$(UTILITYDIR)
+LDLIBS := -l$(UTILITYBASE) -lstdc++fs -lstdc++ -lm -lfreeimage
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-SRCS := $(shell find $(SRCDIR) -name '*.cpp' -not -path './FreeImage/*')
+SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 FOLDERS := $(sort $(dir $(SRCS)))
 
 all: $(OUTPUT)
 
-$(OUTPUT): $(OBJS)
+$(OUTPUT): $(UTILITYLIB) $(OBJS)
 	@mkdir -p ${@D}
-	$(CXX) $^ $(LDFLAGS) -o $@
+	$(CXX) $^ $(LDFLAGS) -o $@ $(LDLIBS)
+
+$(UTILITYLIB): op2utility
+
+.PHONY:op2utility
+op2utility:
+	$(MAKE) -C $(UTILITYDIR)
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
