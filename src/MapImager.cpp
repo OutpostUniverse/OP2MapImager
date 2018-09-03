@@ -7,18 +7,9 @@
 
 using namespace std;
 
-bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
+void MapImager::ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	bool saveGame = IsSavedGame(filename);
-
-	std::unique_ptr<SeekableStreamReader> mapStream = resourceManager.GetResourceStream(filename, renderSettings.accessArchives);
-
-	if (mapStream == nullptr) {
-		cerr << "Unable to locate " + filename + " within directory or within an archive (vol or clm) in the directory." << endl << endl;
-		return false;
-	}
-
-	MapData mapData = MapReader::Read(*mapStream, saveGame);
+	MapData mapData = ReadMap(filename, renderSettings.accessArchives);
 
 	RenderManager::Initialize();
 
@@ -37,10 +28,8 @@ bool MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	RenderManager::Deinitialize();
 
 	if (!saveSuccess) {
-		cerr << "Error encountered when attempting to save " + renderFilenameOut << endl << endl;
+		throw std::runtime_error("Error encountered when attempting to save " + renderFilenameOut);
 	}
-
-	return saveSuccess;
 }
 
 string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
@@ -133,7 +122,17 @@ void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
 	}
 }
 
-bool MapImager::IsSavedGame(const string& filename)
+MapData MapImager::ReadMap(const string& filename, bool accessArchives)
 {
-	return XFile::ExtensionMatches(filename, ".OP2");
+	auto mapStream = resourceManager.GetResourceStream(filename, accessArchives);
+
+	if (mapStream == nullptr) {
+		throw std::runtime_error("Unable to locate " + filename + " within directory or within an archive (vol or clm) in the directory.");
+	}
+
+	if (XFile::ExtensionMatches(filename, ".OP2")) {
+		return MapReader::ReadSavedGame(filename);
+	}
+	
+	return MapReader::ReadMap(filename);
 }
