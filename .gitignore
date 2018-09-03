@@ -1,7 +1,8 @@
 *.suo
-Debug
 *.vs
-MapRenders
-Release
 *.user
 .build/
+Debug/
+Release/
+MapRenders/
+OP2MapImager
