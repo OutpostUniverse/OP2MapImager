@@ -85,10 +85,16 @@ void ImageMapFromConsole(const string& mapFilename, const RenderSettings& render
 
 	MapImager mapImager(XFile::GetDirectory(mapFilename));
 	string renderFilename;
-	bool saveSuccess = mapImager.ImageMap(renderFilename, mapFilename, renderSettings);
+	
+	try {
+		mapImager.ImageMap(renderFilename, mapFilename, renderSettings);
 
-	if (saveSuccess && !renderSettings.quiet) {
-		cout << "Render Saved: " + renderFilename << endl << endl;
+		if (!renderSettings.quiet) {
+			cout << "Render Saved: " + renderFilename << endl << endl;
+		}
+	}
+	catch (const std::exception& e) {
+		cout << e.what() << endl << endl;
 	}
 }
 
