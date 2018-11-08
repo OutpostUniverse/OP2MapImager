@@ -219,52 +219,12 @@ if $(ConfigurationName) == Release (
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\ConsoleArgumentParser.h" />
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="src\MapImager.h" />
     <ClInclude Include="src\RenderManager.h" />
     <ClInclude Include="src\Timer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0000.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0001.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0002.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0003.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0004.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0005.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0006.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0007.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0008.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0009.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0010.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0011.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0012.bmp">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="FreeImage license-gplv3.txt" />
@@ -280,6 +240,9 @@ if $(ConfigurationName) == Release (
     <ProjectReference Include="OP2Utility\OP2Utility.vcxproj">
       <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OP2MapImager.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
