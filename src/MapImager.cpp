@@ -131,8 +131,8 @@ MapData MapImager::ReadMap(const string& filename, bool accessArchives)
 	}
 
 	if (XFile::ExtensionMatches(filename, ".OP2")) {
-		return MapReader::ReadSavedGame(filename);
+		return MapReader::ReadSavedGame(*mapStream);
 	}
 	
-	return MapReader::ReadMap(filename);
+	return MapReader::ReadMap(*mapStream);
 }
