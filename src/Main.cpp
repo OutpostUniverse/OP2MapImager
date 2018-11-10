@@ -21,7 +21,6 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs);
 void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
 void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings);
 bool IsRenderableFileExtension(const string& filename);
-void DebugPause();
 
 int main(int argc, char **argv)
 {
@@ -41,12 +40,8 @@ int main(int argc, char **argv)
 		cerr << e.what() << endl;
 		cerr << "Run without arguments to see usage message." << endl << endl;
 
-		DebugPause();
-
 		return 1;
 	}
-
-	DebugPause();
 
 	return 0;
 }
@@ -172,11 +167,4 @@ void OutputHelp()
 	cout << "For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/)." << endl;
 	cout << "Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/)." << endl;
 	cout << endl;
-}
-
-void DebugPause()
-{
-#if defined _DEBUG
-	getchar();
-#endif
 }
