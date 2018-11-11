@@ -97,19 +97,19 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		string tilesetFilename(mapData.tilesetSources[i].tilesetFilename + ".bmp");
 
-		//TODO: Allow FreeImage to take a pointer to the associated well within a vol file 
-		//      instead of forcing its extraction.
-		bool extracted = resourceManager.ExtractSpecificFile(tilesetFilename);
-		
-		if (!extracted) {
+		auto stream = resourceManager.GetResourceStream(tilesetFilename);
+
+		if (stream == nullptr) {
 			throw runtime_error("Unable to find the tileset " + tilesetFilename + " in the directory or in a given archive (.vol).");
 		}
 
-		mapImager.AddTileset(tilesetFilename, ImageFormat::BMP);
+		if (stream->Length() > UINT32_MAX) {
+			throw std::runtime_error("Tileset " + tilesetFilename + " is too large for OP2MapImager to load into memory");
+		}
 
-		//TODO: If tilesets are Outpost 2 specific, translate the Outpost 2 specific tilesets into 
-		//      standard bmp files for use in rendering map.
-		//mapImager.AddTileSetRawBits()
+		std::vector<BYTE> buffer(static_cast<uint32_t>(stream->Length()));
+		stream->Read(&buffer[0], static_cast<uint32_t>(stream->Length()));
+		mapImager.AddTileset(&buffer[0], buffer.size());
 	}
 }
 

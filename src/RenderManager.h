@@ -28,9 +28,7 @@ public:
 
 	~RenderManager();
 
-	void AddTilesetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
-		unsigned red_mask, unsigned green_mask, unsigned blue_mask);
-
+	void AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilsesetSize);
 	void AddTileset(std::string filename, ImageFormat imageFormat);
 
 	void PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos);

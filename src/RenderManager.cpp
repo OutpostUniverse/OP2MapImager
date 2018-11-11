@@ -46,17 +46,33 @@ void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
 	unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
 
 	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
-
 	FreeImage_Unload(fiTilesetBmp);
 }
 
-void RenderManager::AddTilesetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
-	unsigned red_mask, unsigned green_mask, unsigned blue_mask)
+void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
 {
-	FIBITMAP* fiTilesetBmp = FreeImage_ConvertFromRawBits(bits, width, height, pitch,
-		bpp, red_mask, green_mask, blue_mask);
+	FIMEMORY* fiMemory = FreeImage_OpenMemory(tilesetMemoryPointer, tilesetSize);
 
-	ScaleTileset(fiTilesetBmp);
+	try
+	{
+		// get the file type
+		FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(fiMemory, 0);
+
+		if (fif != FREE_IMAGE_FORMAT::FIF_BMP) {
+			throw std::runtime_error("OP2MapImager only supports loading tilesets that are bitmaps");
+		}
+
+		// load an image from the memory stream
+		FIBITMAP* fiBitMap = FreeImage_LoadFromMemory(fif, fiMemory, 0);
+
+		ScaleTileset(fiBitMap);
+	}
+	catch (const std::exception& e){
+		FreeImage_CloseMemory(fiMemory);
+		throw e;
+	}
+
+	FreeImage_CloseMemory(fiMemory);
 }
 
 void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
