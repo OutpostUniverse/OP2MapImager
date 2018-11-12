@@ -5,5 +5,7 @@ jobs:
       - image: outpostuniverse/circleci-gcc-googletest
     steps:
       - checkout
+      - run: git submodule init
+      - run: git submodule update --remote
       - run: make -k CXX=g++
       - run: make check CXX=g++
