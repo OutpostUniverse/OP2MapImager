@@ -88,9 +88,6 @@ void RenderManager::PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPo
 	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex], 
 		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos);
 
-	int viewWidth = FreeImage_GetWidth(tileBmp);
-	int viewHeight = FreeImage_GetHeight(tileBmp);
-
 	int leftPixelPos = xPos * scaleFactor;
 	int topPixelPos = yPos * scaleFactor;
 
