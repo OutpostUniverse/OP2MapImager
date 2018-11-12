@@ -22,9 +22,8 @@ void RenderManager::Deinitialize()
 	FreeImage_DeInitialise();
 }
 
-RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor)
+RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : scaleFactor(scaleFactor)
 {
-	this->scaleFactor = scaleFactor;
 	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
 }
 
@@ -108,7 +107,7 @@ bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat im
 	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
 }
 
-FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat)
+FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat) const
 {
 	switch (imageFormat)
 	{
@@ -123,7 +122,7 @@ FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat)
 	}
 }
 
-int RenderManager::GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat)
+int RenderManager::GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const
 {
 	switch (imageFormat)
 	{

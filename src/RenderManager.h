@@ -37,11 +37,11 @@ public:
 	bool SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
 private:
-	int scaleFactor;
+	const int scaleFactor;
 	FIBITMAP* fiBmpDest;
 	std::vector<FIBITMAP*> tilesetBmps;
 
-	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat);
-	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat);
+	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat) const;
+	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const;
 	void ScaleTileset(FIBITMAP* fiTilesetBmp);
 };
