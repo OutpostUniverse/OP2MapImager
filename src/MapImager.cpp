@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <cstddef>
+#include <cstdint>
 
 using namespace std;
 
@@ -103,12 +104,14 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 			throw runtime_error("Unable to find the tileset " + tilesetFilename + " in the directory or in a given archive (.vol).");
 		}
 
-		if (stream->Length() > UINT32_MAX) {
+		auto streamLength = stream->Length();
+
+		if (streamLength > SIZE_MAX) {
 			throw std::runtime_error("Tileset " + tilesetFilename + " is too large for OP2MapImager to load into memory");
 		}
 
-		std::vector<BYTE> buffer(static_cast<uint32_t>(stream->Length()));
-		stream->Read(&buffer[0], static_cast<uint32_t>(stream->Length()));
+		std::vector<BYTE> buffer(static_cast<std::size_t>(streamLength));
+		stream->Read(&buffer[0], static_cast<std::size_t>(streamLength));
 		mapImager.AddTileset(&buffer[0], buffer.size());
 	}
 }
