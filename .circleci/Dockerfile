@@ -1,10 +1,10 @@
-# For building on CircleCI with Google Test
+# For building on CircleCI with Google Test and FreeImage
 
 # Build from the root project folder with:
-#   docker build .circleci/ --tag outpostuniverse/circleci-gcc-googletest
+#   docker build .circleci/ --tag outpostuniverse/circleci-gcc-googletest-freeimage
 # Push image to DockerHub with:
 #   docker login
-#   docker push outpostuniverse/circleci-gcc-googletest
+#   docker push outpostuniverse/circleci-gcc-googletest-freeimage
 
 # Run locally using the CircleCI command line interface:
 #   circleci build
@@ -35,3 +35,8 @@ RUN mkdir -p ${gtestBuildDir} && \
   make -C ${gtestBuildDir} && \
   cp ${gtestBuildDir}lib*.a /usr/lib && \
   rm -rf ${gtestBuildDir}
+
+# Install FreeImage
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libfreeimage-dev \
+    && rm -rf /var/lib/apt/lists/*
