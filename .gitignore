@@ -1,3 +1,4 @@
+*.aps
 *.suo
 *.vs
 *.user
@@ -6,3 +7,4 @@ Debug/
 Release/
 MapRenders/
 OP2MapImager
+Test/
