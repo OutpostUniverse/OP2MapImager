@@ -2,15 +2,6 @@
 
 using namespace std;
 
-void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
-	printf("\n*** ");
-	if (fif != FIF_UNKNOWN) {
-		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
-	}
-	printf("%s", message);
-	printf(" ***\n\n");
-}
-
 void RenderManager::Initialize()
 {
 	FreeImage_Initialise();
@@ -20,6 +11,15 @@ void RenderManager::Initialize()
 void RenderManager::Deinitialize()
 {
 	FreeImage_DeInitialise();
+}
+
+void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
+	printf("\n*** ");
+	if (fif != FIF_UNKNOWN) {
+		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
+	}
+	printf("%s", message);
+	printf(" ***\n\n");
 }
 
 RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : scaleFactor(scaleFactor)
@@ -34,18 +34,6 @@ RenderManager::~RenderManager()
 	}
 
 	FreeImage_Unload(fiBmpDest);
-}
-
-void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
-{
-	unsigned nonScaledTileLength = 32;
-	unsigned imageWidth = FreeImage_GetWidth(fiTilesetBmp);
-	unsigned imageHeight = FreeImage_GetHeight(fiTilesetBmp);
-	unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
-	unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
-
-	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
-	FreeImage_Unload(fiTilesetBmp);
 }
 
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
@@ -79,6 +67,18 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 	FIBITMAP* fiTilesetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
 
 	ScaleTileset(fiTilesetBmp);
+}
+
+void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
+{
+	unsigned nonScaledTileLength = 32;
+	unsigned imageWidth = FreeImage_GetWidth(fiTilesetBmp);
+	unsigned imageHeight = FreeImage_GetHeight(fiTilesetBmp);
+	unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+	unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+
+	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
+	FreeImage_Unload(fiTilesetBmp);
 }
 
 void RenderManager::PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos)
