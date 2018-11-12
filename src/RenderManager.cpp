@@ -71,11 +71,9 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 
 void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
 {
-	unsigned nonScaledTileLength = 32;
-	unsigned imageWidth = FreeImage_GetWidth(fiTilesetBmp);
-	unsigned imageHeight = FreeImage_GetHeight(fiTilesetBmp);
-	unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
-	unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+	const unsigned nonScaledTileLength = 32;
+	const unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+	const unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
 
 	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
 	FreeImage_Unload(fiTilesetBmp);
