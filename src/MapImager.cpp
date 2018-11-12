@@ -111,7 +111,7 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 		}
 
 		std::vector<BYTE> buffer(static_cast<std::size_t>(streamLength));
-		stream->Read(&buffer[0], static_cast<std::size_t>(streamLength));
+		stream->Read(buffer);
 		mapImager.AddTileset(&buffer[0], buffer.size());
 	}
 }
