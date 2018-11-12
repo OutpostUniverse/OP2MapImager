@@ -65,3 +65,8 @@ clean-deps:
 	-rm -fr $(DEPDIR)
 clean-all:
 	-rm -rf $(BUILDDIR)
+
+
+.PHONY:check
+check:
+	@echo "No tests to run"
