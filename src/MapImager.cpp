@@ -104,13 +104,15 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 			throw runtime_error("Unable to find the tileset " + tilesetFilename + " in the directory or in a given archive (.vol).");
 		}
 
-		auto streamLength = stream->Length();
+		using ImageBuffer = std::vector<BYTE>;
+		using ImageSize = ImageBuffer::size_type;
 
-		if (streamLength > SIZE_MAX) {
+		auto streamLength = stream->Length();
+		if (streamLength > std::numeric_limits<ImageSize>::max()) {
 			throw std::runtime_error("Tileset " + tilesetFilename + " is too large for OP2MapImager to load into memory");
 		}
 
-		std::vector<BYTE> buffer(static_cast<std::size_t>(streamLength));
+		ImageBuffer buffer(static_cast<ImageSize>(streamLength));
 		stream->Read(buffer);
 		mapImager.AddTileset(&buffer[0], buffer.size());
 	}
