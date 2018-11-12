@@ -81,18 +81,23 @@ void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
 	FreeImage_Unload(fiTilesetBmp);
 }
 
-void RenderManager::PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos)
+void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const int xPos, const int yPos)
 {
-	int tilesetYPixelPos = tileIndex * scaleFactor;
+	const int tilesetYPixelPos = tileIndex * scaleFactor;
 
 	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex], 
 		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos);
 
-	int leftPixelPos = xPos * scaleFactor;
-	int topPixelPos = yPos * scaleFactor;
+	const int leftPixelPos = xPos * scaleFactor;
+	const int topPixelPos = yPos * scaleFactor;
+	const int alpha = 256;
 
-	int alpha = 256;
 	bool pasteSuccess = FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
+
+	if (!pasteSuccess) {
+		throw std::runtime_error("Unable to paste a tile index " + std::to_string(tileIndex) + 
+			" from tileset index " + std::to_string(tilesetIndex) + " onto new render");
+	}
 
 	FreeImage_Unload(tileBmp);
 }
