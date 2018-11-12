@@ -213,6 +213,7 @@ if $(ConfigurationName) == Release (
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ConsoleArgumentParser.cpp" />
+    <ClCompile Include="src\FreeImageBmp.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MapImager.cpp" />
     <ClCompile Include="src\RenderManager.cpp" />
@@ -221,6 +222,7 @@ if $(ConfigurationName) == Release (
   <ItemGroup>
     <ClInclude Include="src\ConsoleArgumentParser.h" />
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
+    <ClInclude Include="src\FreeImageBmp.h" />
     <ClInclude Include="src\MapImager.h" />
     <ClInclude Include="src\RenderManager.h" />
     <ClInclude Include="src\Timer.h" />

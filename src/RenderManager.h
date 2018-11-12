@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FreeImageBmp.h"
 #include "../FreeImage/Dist/x32/FreeImage.h"
 #include <string>
 #include <vector>
@@ -38,10 +39,10 @@ public:
 
 private:
 	const int scaleFactor;
-	FIBITMAP* fiBmpDest;
+	FreeImageBmp freeImageBmpDest;
 	std::vector<FIBITMAP*> tilesetBmps;
 
 	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat) const;
 	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const;
-	void ScaleTileset(FIBITMAP* fiTilesetBmp);
+	void ScaleTileset(FreeImageBmp& freeImageBmp);
 };

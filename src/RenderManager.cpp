@@ -22,18 +22,15 @@ void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	printf(" ***\n\n");
 }
 
-RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : scaleFactor(scaleFactor)
-{
-	fiBmpDest = FreeImage_Allocate(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp);
-}
+RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : 
+	scaleFactor(scaleFactor),
+	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) { }
 
 RenderManager::~RenderManager() 
 {
 	for (auto* fiBmp : tilesetBmps) {
 		FreeImage_Unload(fiBmp);
 	}
-
-	FreeImage_Unload(fiBmpDest);
 }
 
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
@@ -42,17 +39,12 @@ void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSi
 
 	try
 	{
-		// get the file type
-		FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(fiMemory, 0);
-
-		if (fif != FREE_IMAGE_FORMAT::FIF_BMP) {
-			throw std::runtime_error("OP2MapImager only supports loading tilesets that are bitmaps");
+		if (FREE_IMAGE_FORMAT::FIF_BMP != FreeImage_GetFileTypeFromMemory(fiMemory, 0)) {
+			throw std::runtime_error("Loaded an incorrect or invalid image type");
 		}
 
-		// load an image from the memory stream
-		FIBITMAP* fiBitMap = FreeImage_LoadFromMemory(fif, fiMemory, 0);
-
-		ScaleTileset(fiBitMap);
+		FreeImageBmp freeImageBmp(FREE_IMAGE_FORMAT::FIF_BMP, fiMemory);
+		ScaleTileset(freeImageBmp);
 	}
 	catch (const std::exception& e){
 		FreeImage_CloseMemory(fiMemory);
@@ -64,19 +56,18 @@ void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSi
 
 void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 {
-	FIBITMAP* fiTilesetBmp = FreeImage_Load(GetFiImageFormat(imageFormat), filename.c_str());
+	FreeImageBmp freeImageBmp(GetFiImageFormat(imageFormat), filename.c_str());
 
-	ScaleTileset(fiTilesetBmp);
+	ScaleTileset(freeImageBmp);
 }
 
-void RenderManager::ScaleTileset(FIBITMAP* fiTilesetBmp)
+void RenderManager::ScaleTileset(FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
-	const unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
-	const unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp) / nonScaledTileLength * scaleFactor;
+	const unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
+	const unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
 
-	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
-	FreeImage_Unload(fiTilesetBmp);
+	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp.fiBitmap, tilesetScaledWidth, tilesetScaledHeight));
 }
 
 void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const int xPos, const int yPos)
@@ -90,7 +81,7 @@ void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const
 	const int topPixelPos = yPos * scaleFactor;
 	const int alpha = 256;
 
-	bool pasteSuccess = FreeImage_Paste(fiBmpDest, tileBmp, leftPixelPos, topPixelPos, alpha);
+	bool pasteSuccess = FreeImage_Paste(freeImageBmpDest.fiBitmap, tileBmp, leftPixelPos, topPixelPos, alpha);
 
 	if (!pasteSuccess) {
 		throw std::runtime_error("Unable to paste a tile index " + std::to_string(tileIndex) + 
@@ -104,7 +95,7 @@ bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat im
 {
 	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
 
-	return FreeImage_Save(fiImageFormat, fiBmpDest, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
+	return FreeImage_Save(fiImageFormat, freeImageBmpDest.fiBitmap, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
 }
 
 FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat) const
