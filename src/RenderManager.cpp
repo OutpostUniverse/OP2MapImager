@@ -1,4 +1,5 @@
 #include "RenderManager.h"
+#include <stdexcept>
 
 using namespace std;
 
