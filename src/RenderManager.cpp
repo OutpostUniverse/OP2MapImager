@@ -76,11 +76,13 @@ void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const
 	const int topPixelPos = yPos * scaleFactor;
 	const int alpha = 256;
 
-	bool pasteSuccess = FreeImage_Paste(freeImageBmpDest.fiBitmap, tileBmp.fiBitmap, leftPixelPos, topPixelPos, alpha);
-
-	if (!pasteSuccess) {
-		throw std::runtime_error("Unable to paste a tile index " + std::to_string(tileIndex) + 
-			" from tileset index " + std::to_string(tilesetIndex) + " onto new render");
+	try {
+		tileBmp.Paste(freeImageBmpDest, leftPixelPos, topPixelPos, alpha);
+	} catch(...) {
+		throw std::runtime_error(
+			"Unable to paste a tile index " + std::to_string(tileIndex) +
+			" from tileset index " + std::to_string(tilesetIndex) + " onto new render"
+		);
 	}
 }
 
