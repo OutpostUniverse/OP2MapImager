@@ -36,5 +36,8 @@ public:
 	// Paste bitmap to destination bitmap
 	void Paste(const FreeImageBmp& dest, int x, int y, int alpha) const;
 
+	// Save bitmap to file
+	void Save(const std::string& filename, FREE_IMAGE_FORMAT fiImageFormat, int flags) const;
+
 	FIBITMAP* fiBitmap;
 };

@@ -77,3 +77,12 @@ void FreeImageBmp::Paste(const FreeImageBmp& dest, int x, int y, int alpha) cons
 		throw std::runtime_error("Pasting of FreeImage bitmap failed");
 	}
 }
+
+void FreeImageBmp::Save(const std::string& filename, FREE_IMAGE_FORMAT fiImageFormat, int flags) const
+{
+	if (!FreeImage_Save(fiImageFormat, fiBitmap, filename.c_str(), flags)) {
+		throw std::runtime_error(
+			"Error saving FreeImage bitmap to file: " + filename
+		);
+	}
+}
