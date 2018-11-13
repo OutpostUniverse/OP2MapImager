@@ -33,5 +33,8 @@ public:
 	// Create view into bitmap
 	FreeImageBmp CreateView(unsigned left, unsigned top, unsigned right, unsigned bottom) const;
 
+	// Paste bitmap to destination bitmap
+	void Paste(const FreeImageBmp& dest, int x, int y, int alpha) const;
+
 	FIBITMAP* fiBitmap;
 };

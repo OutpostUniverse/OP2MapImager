@@ -70,3 +70,10 @@ FreeImageBmp FreeImageBmp::CreateView(unsigned left, unsigned top, unsigned righ
 {
 	return FreeImageBmp(FreeImage_CreateView(fiBitmap, left, top, right, bottom));
 }
+
+void FreeImageBmp::Paste(const FreeImageBmp& dest, int x, int y, int alpha) const
+{
+	if (!FreeImage_Paste(dest.fiBitmap, fiBitmap, x, y, alpha)) {
+		throw std::runtime_error("Pasting of FreeImage bitmap failed");
+	}
+}
