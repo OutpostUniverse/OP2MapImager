@@ -63,3 +63,8 @@ unsigned FreeImageBmp::Height() const
 {
 	return FreeImage_GetHeight(fiBitmap);
 }
+
+FreeImageBmp FreeImageBmp::CreateView(unsigned left, unsigned top, unsigned right, unsigned bottom) const
+{
+	return FreeImageBmp(FreeImage_CreateView(fiBitmap, left, top, right, bottom));
+}

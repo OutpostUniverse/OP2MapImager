@@ -30,5 +30,8 @@ public:
 	unsigned Width() const;
 	unsigned Height() const;
 
+	// Create view into bitmap
+	FreeImageBmp CreateView(unsigned left, unsigned top, unsigned right, unsigned bottom) const;
+
 	FIBITMAP* fiBitmap;
 };
