@@ -12,7 +12,7 @@ public:
 	// Create a new, default bitmap (pixels are all black)
 	FreeImageBmp(int width, int height, int bpp);
 
-	// Create bitmap from memory stream
+	// Create bitmap from memory buffer
 	FreeImageBmp(FREE_IMAGE_FORMAT imageType, FIMEMORY* fiMemory);
 
 	// Create a bitmap from a file
