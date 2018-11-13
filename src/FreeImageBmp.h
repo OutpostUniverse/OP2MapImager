@@ -23,5 +23,9 @@ public:
 
 	~FreeImageBmp();
 
+	// Get image dimensions
+	unsigned Width() const;
+	unsigned Height() const;
+
 	FIBITMAP* fiBitmap;
 };

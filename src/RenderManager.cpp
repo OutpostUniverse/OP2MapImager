@@ -58,8 +58,8 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 void RenderManager::ScaleTileset(FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
-	const unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
-	const unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
+	const unsigned tilesetScaledWidth = fiTilesetBmp.Width() / nonScaledTileLength * scaleFactor;
+	const unsigned tilesetScaledHeight = fiTilesetBmp.Height() / nonScaledTileLength * scaleFactor;
 
 	tilesetBmps.push_back(FreeImageBmp(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
 }

@@ -45,3 +45,14 @@ FreeImageBmp::~FreeImageBmp()
 {
 	FreeImage_Unload(fiBitmap);
 }
+
+
+unsigned FreeImageBmp::Width() const
+{
+	return FreeImage_GetWidth(fiBitmap);
+}
+
+unsigned FreeImageBmp::Height() const
+{
+	return FreeImage_GetHeight(fiBitmap);
+}
