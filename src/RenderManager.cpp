@@ -86,11 +86,11 @@ void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const
 	}
 }
 
-bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
+void RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
 {
 	FREE_IMAGE_FORMAT fiImageFormat = GetFIImageFormat(imageFormat);
-
-	return FreeImage_Save(fiImageFormat, freeImageBmpDest.fiBitmap, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
+	int flags = GetFISaveFlag(fiImageFormat);
+	freeImageBmpDest.Save(destFilename, fiImageFormat, flags);
 }
 
 FREE_IMAGE_FORMAT RenderManager::GetFIImageFormat(ImageFormat imageFormat) const

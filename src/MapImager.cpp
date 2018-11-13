@@ -24,13 +24,9 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	XFile::NewDirectory(renderSettings.destDirectory);
 	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
-	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+	mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
 
 	RenderManager::Deinitialize();
-
-	if (!saveSuccess) {
-		throw std::runtime_error("Error encountered when attempting to save " + renderFilenameOut);
-	}
 }
 
 string MapImager::GetImageFormatExtension(ImageFormat imageFormat)

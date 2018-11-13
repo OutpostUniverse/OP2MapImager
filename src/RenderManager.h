@@ -32,8 +32,7 @@ public:
 
 	void PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos);
 
-	// Returns true on success.
-	bool SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
+	void SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
 private:
 	const int scaleFactor;
