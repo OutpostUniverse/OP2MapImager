@@ -27,13 +27,6 @@ RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int s
 	scaleFactor(scaleFactor),
 	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) { }
 
-RenderManager::~RenderManager() 
-{
-	for (auto* fiBmp : tilesetBmps) {
-		FreeImage_Unload(fiBmp);
-	}
-}
-
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
 {
 	FIMEMORY* fiMemory = FreeImage_OpenMemory(tilesetMemoryPointer, tilesetSize);
@@ -57,7 +50,7 @@ void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSi
 
 void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 {
-	FreeImageBmp freeImageBmp(GetFiImageFormat(imageFormat), filename.c_str());
+	FreeImageBmp freeImageBmp(GetFIImageFormat(imageFormat), filename.c_str());
 
 	ScaleTileset(freeImageBmp);
 }
@@ -68,14 +61,14 @@ void RenderManager::ScaleTileset(FreeImageBmp& fiTilesetBmp)
 	const unsigned tilesetScaledWidth = FreeImage_GetWidth(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
 	const unsigned tilesetScaledHeight = FreeImage_GetHeight(fiTilesetBmp.fiBitmap) / nonScaledTileLength * scaleFactor;
 
-	tilesetBmps.push_back(FreeImage_Rescale(fiTilesetBmp.fiBitmap, tilesetScaledWidth, tilesetScaledHeight));
+	tilesetBmps.push_back(FreeImageBmp(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
 }
 
 void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const int xPos, const int yPos)
 {
 	const int tilesetYPixelPos = tileIndex * scaleFactor;
 
-	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex], 
+	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex].fiBitmap, 
 		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos);
 
 	const int leftPixelPos = xPos * scaleFactor;
@@ -94,12 +87,12 @@ void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const
 
 bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
 {
-	FREE_IMAGE_FORMAT fiImageFormat = GetFiImageFormat(imageFormat);
+	FREE_IMAGE_FORMAT fiImageFormat = GetFIImageFormat(imageFormat);
 
 	return FreeImage_Save(fiImageFormat, freeImageBmpDest.fiBitmap, destFilename.c_str(), GetFISaveFlag(fiImageFormat));
 }
 
-FREE_IMAGE_FORMAT RenderManager::GetFiImageFormat(ImageFormat imageFormat) const
+FREE_IMAGE_FORMAT RenderManager::GetFIImageFormat(ImageFormat imageFormat) const
 {
 	switch (imageFormat)
 	{

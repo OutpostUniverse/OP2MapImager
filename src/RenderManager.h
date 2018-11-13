@@ -27,8 +27,6 @@ public:
 	// ScaleFactor is the width/height in pixels of each tile.
 	RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor);
 
-	~RenderManager();
-
 	void AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilsesetSize);
 	void AddTileset(std::string filename, ImageFormat imageFormat);
 
@@ -40,9 +38,9 @@ public:
 private:
 	const int scaleFactor;
 	FreeImageBmp freeImageBmpDest;
-	std::vector<FIBITMAP*> tilesetBmps;
+	std::vector<FreeImageBmp> tilesetBmps;
 
-	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat) const;
+	FREE_IMAGE_FORMAT GetFIImageFormat(ImageFormat imageFormat) const;
 	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const;
 	void ScaleTileset(FreeImageBmp& freeImageBmp);
 };

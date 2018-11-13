@@ -1,7 +1,10 @@
 #include "FreeImageBmp.h"
 #include <stdexcept>
 
-//FreeImageBmp::FreeImageBmp(FIBITMAP* fiBitmap) : fiBitmap(fiBitmap) {}
+FreeImageBmp::FreeImageBmp(FreeImageBmp&& other) : fiBitmap(other.fiBitmap)
+{
+	other.fiBitmap = nullptr;
+}
 
 FreeImageBmp::FreeImageBmp(int width, int height, int bpp) : 
 	fiBitmap(FreeImage_Allocate(width, height, bpp)) 
@@ -25,6 +28,16 @@ FreeImageBmp::FreeImageBmp(FREE_IMAGE_FORMAT imageFormat, const std::string& fil
 {
 	if (fiBitmap == nullptr) {
 		throw std::runtime_error("Unable to load bitmap located at " + filename);
+	}
+}
+
+FreeImageBmp::FreeImageBmp(const FreeImageBmp& freeImageBmp, int scaledWidth, int scaledHeight) :
+	fiBitmap(FreeImage_Rescale(freeImageBmp.fiBitmap, scaledWidth, scaledHeight))
+{
+	if (fiBitmap == nullptr) {
+		throw std::runtime_error(
+			"Unable to create a new bitmap by scaling existing bitmap with requested scaled width: " + 
+			std::to_string(scaledWidth) + " , scaled height: " + std::to_string(scaledHeight));
 	}
 }
 
