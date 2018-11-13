@@ -42,5 +42,5 @@ private:
 
 	FREE_IMAGE_FORMAT GetFIImageFormat(ImageFormat imageFormat) const;
 	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const;
-	void ScaleTileset(const FreeImageBmp& freeImageBmp);
+	void AddScaledTileset(const FreeImageBmp& freeImageBmp);
 };

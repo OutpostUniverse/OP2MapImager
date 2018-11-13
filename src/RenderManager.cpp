@@ -38,7 +38,7 @@ void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSi
 		}
 
 		FreeImageBmp freeImageBmp(FREE_IMAGE_FORMAT::FIF_BMP, fiMemory);
-		ScaleTileset(freeImageBmp);
+		AddScaledTileset(freeImageBmp);
 	}
 	catch (const std::exception& e){
 		FreeImage_CloseMemory(fiMemory);
@@ -52,10 +52,10 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 {
 	FreeImageBmp freeImageBmp(GetFIImageFormat(imageFormat), filename.c_str());
 
-	ScaleTileset(freeImageBmp);
+	AddScaledTileset(freeImageBmp);
 }
 
-void RenderManager::ScaleTileset(const FreeImageBmp& fiTilesetBmp)
+void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
 	const unsigned tilesetScaledWidth = fiTilesetBmp.Width() / nonScaledTileLength * scaleFactor;
