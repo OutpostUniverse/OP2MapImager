@@ -40,6 +40,6 @@ private:
 	std::vector<FreeImageBmp> tilesetBmps;
 
 	FREE_IMAGE_FORMAT GetFIImageFormat(ImageFormat imageFormat) const;
-	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat) const;
+	int GetFISaveFlag(ImageFormat imageFormat) const;
 	void AddScaledTileset(const FreeImageBmp& freeImageBmp);
 };
