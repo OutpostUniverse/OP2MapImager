@@ -38,16 +38,6 @@ FreeImageBmp::FreeImageBmp(FREE_IMAGE_FORMAT imageFormat, const std::string& fil
 	}
 }
 
-FreeImageBmp::FreeImageBmp(const FreeImageBmp& freeImageBmp, int scaledWidth, int scaledHeight) :
-	fiBitmap(FreeImage_Rescale(freeImageBmp.fiBitmap, scaledWidth, scaledHeight))
-{
-	if (fiBitmap == nullptr) {
-		throw std::runtime_error(
-			"Unable to create a new bitmap by scaling existing bitmap with requested scaled width: " + 
-			std::to_string(scaledWidth) + " , scaled height: " + std::to_string(scaledHeight));
-	}
-}
-
 FreeImageBmp::~FreeImageBmp()
 {
 	FreeImage_Unload(fiBitmap);
@@ -62,6 +52,18 @@ unsigned FreeImageBmp::Width() const
 unsigned FreeImageBmp::Height() const
 {
 	return FreeImage_GetHeight(fiBitmap);
+}
+
+FreeImageBmp FreeImageBmp::Rescale(int scaledWidth, int scaledHeight) const
+{
+	try {
+		return FreeImageBmp(FreeImage_Rescale(fiBitmap, scaledWidth, scaledHeight));
+	} catch(...) {
+		// Upgrade exception to more detailed error message
+		throw std::runtime_error(
+			"Unable to create a new bitmap by scaling existing bitmap with requested scaled width: " +
+			std::to_string(scaledWidth) + " , scaled height: " + std::to_string(scaledHeight));
+	}
 }
 
 FreeImageBmp FreeImageBmp::CreateView(unsigned left, unsigned top, unsigned right, unsigned bottom) const

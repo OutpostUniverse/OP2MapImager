@@ -21,14 +21,14 @@ public:
 	// Create a bitmap from a file
 	FreeImageBmp(FREE_IMAGE_FORMAT imageFormat, const std::string& filename);
 
-	// Create a new bitmap by scaling the width and height of an existing bitmap
-	FreeImageBmp(const FreeImageBmp& freeImageBmp, int scaledWidth, int scaledHeight);
-
 	~FreeImageBmp();
 
 	// Get image dimensions
 	unsigned Width() const;
 	unsigned Height() const;
+
+	// Create a rescaled bitmap
+	FreeImageBmp Rescale(int scaledWidth, int scaledHeight) const;
 
 	// Create view into bitmap
 	FreeImageBmp CreateView(unsigned left, unsigned top, unsigned right, unsigned bottom) const;

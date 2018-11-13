@@ -55,13 +55,13 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 	ScaleTileset(freeImageBmp);
 }
 
-void RenderManager::ScaleTileset(FreeImageBmp& fiTilesetBmp)
+void RenderManager::ScaleTileset(const FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
 	const unsigned tilesetScaledWidth = fiTilesetBmp.Width() / nonScaledTileLength * scaleFactor;
 	const unsigned tilesetScaledHeight = fiTilesetBmp.Height() / nonScaledTileLength * scaleFactor;
 
-	tilesetBmps.push_back(FreeImageBmp(fiTilesetBmp, tilesetScaledWidth, tilesetScaledHeight));
+	tilesetBmps.push_back(fiTilesetBmp.Rescale(tilesetScaledWidth, tilesetScaledHeight));
 }
 
 void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const int xPos, const int yPos)
