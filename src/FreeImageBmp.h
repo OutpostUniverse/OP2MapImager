@@ -18,7 +18,7 @@ public:
 	// Create a bitmap from a file
 	FreeImageBmp(FREE_IMAGE_FORMAT imageFormat, const std::string& filename);
 
-	// Create a new bitmap by scaling the size and width of an existing bitmap
+	// Create a new bitmap by scaling the width and height of an existing bitmap
 	FreeImageBmp(const FreeImageBmp& freeImageBmp, int scaledWidth, int scaledHeight);
 
 	~FreeImageBmp();
