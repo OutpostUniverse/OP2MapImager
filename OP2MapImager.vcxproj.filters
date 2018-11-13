@@ -53,50 +53,12 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\FreeImageBmp.h">
+    <CIInclude Include="src\FreeImageBmp.h">
+      <Filter>Header Files</Filter>
+    </CIInclude>
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0005.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0006.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0007.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0008.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0009.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0010.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0011.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0012.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0000.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0002.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0003.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\GameDownload\Outpost2\trunk\well0004.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -111,5 +73,10 @@
     <Library Include="FreeImage\Dist\x32\FreeImage.lib">
       <Filter>FreeImageX32</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OP2MapImager.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
