@@ -7,6 +7,9 @@
 class FreeImageBmp
 {
 public:
+	// Create new bitmap from raw FreeImage bitmap handle
+	FreeImageBmp(FIBITMAP* fiBitmap);
+
 	FreeImageBmp(FreeImageBmp&& other); // Move constructor
 
 	// Create a new, default bitmap (pixels are all black)

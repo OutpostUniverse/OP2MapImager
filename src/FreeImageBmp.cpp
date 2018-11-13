@@ -1,6 +1,13 @@
 #include "FreeImageBmp.h"
 #include <stdexcept>
 
+FreeImageBmp::FreeImageBmp(FIBITMAP* fiBitmap) : fiBitmap(fiBitmap)
+{
+	if (fiBitmap == nullptr) {
+		throw std::runtime_error("Unable to create new FreeImage bitmap from null handle.");
+	}
+}
+
 FreeImageBmp::FreeImageBmp(FreeImageBmp&& other) : fiBitmap(other.fiBitmap)
 {
 	other.fiBitmap = nullptr;
