@@ -68,21 +68,20 @@ void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const
 {
 	const int tilesetYPixelPos = tileIndex * scaleFactor;
 
-	FIBITMAP* tileBmp = FreeImage_CreateView(tilesetBmps[tilesetIndex].fiBitmap, 
-		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos);
+	FreeImageBmp tileBmp = tilesetBmps[tilesetIndex].CreateView(
+		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos
+	);
 
 	const int leftPixelPos = xPos * scaleFactor;
 	const int topPixelPos = yPos * scaleFactor;
 	const int alpha = 256;
 
-	bool pasteSuccess = FreeImage_Paste(freeImageBmpDest.fiBitmap, tileBmp, leftPixelPos, topPixelPos, alpha);
+	bool pasteSuccess = FreeImage_Paste(freeImageBmpDest.fiBitmap, tileBmp.fiBitmap, leftPixelPos, topPixelPos, alpha);
 
 	if (!pasteSuccess) {
 		throw std::runtime_error("Unable to paste a tile index " + std::to_string(tileIndex) + 
 			" from tileset index " + std::to_string(tilesetIndex) + " onto new render");
 	}
-
-	FreeImage_Unload(tileBmp);
 }
 
 bool RenderManager::SaveMapImage(const std::string& destFilename, ImageFormat imageFormat)
