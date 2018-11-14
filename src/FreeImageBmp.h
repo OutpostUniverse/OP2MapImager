@@ -39,5 +39,6 @@ public:
 	// Save bitmap to file
 	void Save(const std::string& filename, FREE_IMAGE_FORMAT fiImageFormat, int flags) const;
 
+private:
 	FIBITMAP* fiBitmap;
 };
