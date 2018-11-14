@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FreeImageBmp.h"
 #include "../FreeImage/Dist/x32/FreeImage.h"
 #include <string>
 #include <vector>
@@ -26,24 +27,19 @@ public:
 	// ScaleFactor is the width/height in pixels of each tile.
 	RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor);
 
-	~RenderManager();
-
-	void AddTilesetRawBits(BYTE* bits, int width, int height, int pitch, unsigned bpp,
-		unsigned red_mask, unsigned green_mask, unsigned blue_mask);
-
+	void AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilsesetSize);
 	void AddTileset(std::string filename, ImageFormat imageFormat);
 
 	void PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos);
 
-	// Returns true on success.
-	bool SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
+	void SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
 private:
-	int scaleFactor;
-	FIBITMAP* fiBmpDest;
-	std::vector<FIBITMAP*> tilesetBmps;
+	const int scaleFactor;
+	FreeImageBmp freeImageBmpDest;
+	std::vector<FreeImageBmp> tilesetBmps;
 
-	FREE_IMAGE_FORMAT GetFiImageFormat(ImageFormat imageFormat);
-	int GetFISaveFlag(FREE_IMAGE_FORMAT imageFormat);
-	void ScaleTileset(FIBITMAP* fiTilesetBmp);
+	FREE_IMAGE_FORMAT GetFIImageFormat(ImageFormat imageFormat) const;
+	int GetFISaveFlag(ImageFormat imageFormat) const;
+	void AddScaledTileset(const FreeImageBmp& freeImageBmp);
 };

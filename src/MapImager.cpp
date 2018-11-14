@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <cstddef>
+#include <cstdint>
 
 using namespace std;
 
@@ -23,13 +24,9 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	XFile::NewDirectory(renderSettings.destDirectory);
 	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
-	bool saveSuccess = mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+	mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
 
 	RenderManager::Deinitialize();
-
-	if (!saveSuccess) {
-		throw std::runtime_error("Error encountered when attempting to save " + renderFilenameOut);
-	}
 }
 
 string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
@@ -97,19 +94,23 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 
 		string tilesetFilename(mapData.tilesetSources[i].tilesetFilename + ".bmp");
 
-		//TODO: Allow FreeImage to take a pointer to the associated well within a vol file 
-		//      instead of forcing its extraction.
-		bool extracted = resourceManager.ExtractSpecificFile(tilesetFilename);
-		
-		if (!extracted) {
+		auto stream = resourceManager.GetResourceStream(tilesetFilename);
+
+		if (stream == nullptr) {
 			throw runtime_error("Unable to find the tileset " + tilesetFilename + " in the directory or in a given archive (.vol).");
 		}
 
-		mapImager.AddTileset(tilesetFilename, ImageFormat::BMP);
+		using ImageBuffer = std::vector<BYTE>;
+		using ImageSize = ImageBuffer::size_type;
 
-		//TODO: If tilesets are Outpost 2 specific, translate the Outpost 2 specific tilesets into 
-		//      standard bmp files for use in rendering map.
-		//mapImager.AddTileSetRawBits()
+		auto streamLength = stream->Length();
+		if (streamLength > std::numeric_limits<ImageSize>::max()) {
+			throw std::runtime_error("Tileset " + tilesetFilename + " is too large for OP2MapImager to load into memory");
+		}
+
+		ImageBuffer buffer(static_cast<ImageSize>(streamLength));
+		stream->Read(buffer);
+		mapImager.AddTileset(&buffer[0], buffer.size());
 	}
 }
 
