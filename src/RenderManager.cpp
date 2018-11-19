@@ -29,7 +29,11 @@ RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int s
 
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
 {
-	FIMEMORY* fiMemory = FreeImage_OpenMemory(tilesetMemoryPointer, tilesetSize);
+	if (tilesetSize > std::numeric_limits<DWORD>::max()) {
+		throw std::runtime_error("Tileset size is too large");
+	}
+
+	FIMEMORY* fiMemory = FreeImage_OpenMemory(tilesetMemoryPointer, static_cast<DWORD>(tilesetSize));
 
 	try
 	{
@@ -64,9 +68,13 @@ void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 	tilesetBmps.push_back(fiTilesetBmp.Rescale(tilesetScaledWidth, tilesetScaledHeight));
 }
 
-void RenderManager::PasteTile(const int tilesetIndex, const int tileIndex, const int xPos, const int yPos)
+void RenderManager::PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos)
 {
-	const int tilesetYPixelPos = tileIndex * scaleFactor;
+	if (tileIndex * scaleFactor + scaleFactor > std::numeric_limits<unsigned int>::max()) {
+		throw std::runtime_error("New tilesetYPixelPos is too large");
+	}
+
+	const unsigned int tilesetYPixelPos = static_cast<unsigned int>(tileIndex * scaleFactor);
 
 	FreeImageBmp tileBmp = tilesetBmps[tilesetIndex].CreateView(
 		0, tilesetYPixelPos + scaleFactor, scaleFactor, tilesetYPixelPos

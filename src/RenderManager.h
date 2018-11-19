@@ -4,6 +4,7 @@
 #include "../FreeImage/Dist/x32/FreeImage.h"
 #include <string>
 #include <vector>
+#include <cstddef>
 
 enum class ImageFormat
 {
@@ -30,7 +31,7 @@ public:
 	void AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilsesetSize);
 	void AddTileset(std::string filename, ImageFormat imageFormat);
 
-	void PasteTile(int tilesetIndex, int tileIndex, int xPos, int yPos);
+	void PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos);
 
 	void SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
