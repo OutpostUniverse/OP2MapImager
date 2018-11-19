@@ -1,5 +1,6 @@
 #include "RenderManager.h"
 #include <stdexcept>
+#include <limits>
 
 using namespace std;
 
