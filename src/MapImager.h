@@ -7,7 +7,7 @@
 struct RenderSettings
 {
 	ImageFormat imageFormat = ImageFormat::PNG;
-	int scaleFactor = 4;
+	unsigned scaleFactor = 4;
 	std::string destDirectory = "MapRenders";
 	bool overwrite = false;
 	bool quiet = false;
