@@ -14,17 +14,17 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 
 	RenderManager::Initialize();
 
-	RenderManager mapImager(
+	RenderManager renderManager(
 		mapData.header.MapTileWidth(),
 		mapData.header.mapTileHeight, 24, renderSettings.scaleFactor);
 
-	LoadTilesets(mapData, mapImager, renderSettings.accessArchives);
-	SetRenderTiles(mapData, mapImager);
+	LoadTilesets(mapData, renderManager, renderSettings.accessArchives);
+	SetRenderTiles(mapData, renderManager);
 
 	XFile::NewDirectory(renderSettings.destDirectory);
 	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
-	mapImager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+	renderManager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
 
 	RenderManager::Deinitialize();
 }
