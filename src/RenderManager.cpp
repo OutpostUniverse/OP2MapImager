@@ -24,9 +24,14 @@ void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	printf(" ***\n\n");
 }
 
-RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : 
+RenderManager::RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, int bpp, unsigned scaleFactor) : 
 	scaleFactor(scaleFactor),
-	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) { }
+	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) 
+{
+	if (mapTileWidth * mapTileHeight > std::numeric_limits<unsigned int>::max() / scaleFactor - scaleFactor) {
+		throw std::runtime_error("Provided scale factor is too large to render a map with this tile width and height");
+	}
+}
 
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
 {
@@ -71,10 +76,7 @@ void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 
 void RenderManager::PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos)
 {
-	if (tileIndex * scaleFactor + scaleFactor > std::numeric_limits<unsigned int>::max()) {
-		throw std::runtime_error("New tilesetYPixelPos is too large");
-	}
-
+	// Following static_cast is checked for overflow in constructor
 	const unsigned int tilesetYPixelPos = static_cast<unsigned int>(tileIndex * scaleFactor);
 
 	FreeImageBmp tileBmp = tilesetBmps[tilesetIndex].CreateView(

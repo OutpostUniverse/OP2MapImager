@@ -26,7 +26,7 @@ public:
 	static void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message);
 
 	// ScaleFactor is the width/height in pixels of each tile.
-	RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor);
+	RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, int bpp, unsigned scaleFactor);
 
 	void AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilsesetSize);
 	void AddTileset(std::string filename, ImageFormat imageFormat);
@@ -36,7 +36,7 @@ public:
 	void SaveMapImage(const std::string& destFilename, ImageFormat imageFormat);
 
 private:
-	const int scaleFactor;
+	const unsigned scaleFactor;
 	FreeImageBmp freeImageBmpDest;
 	std::vector<FreeImageBmp> tilesetBmps;
 
