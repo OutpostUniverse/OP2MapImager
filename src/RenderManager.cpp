@@ -24,7 +24,7 @@ void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	printf(" ***\n\n");
 }
 
-RenderManager::RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, int bpp, unsigned scaleFactor) : 
+RenderManager::RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, unsigned bpp, unsigned scaleFactor) : 
 	scaleFactor(scaleFactor),
 	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) 
 {

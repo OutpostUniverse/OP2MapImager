@@ -1,5 +1,6 @@
 #include "FreeImageBmp.h"
 #include <stdexcept>
+#include <climits>
 
 FreeImageBmp::FreeImageBmp(FIBITMAP* fiBitmap) : fiBitmap(fiBitmap)
 {
@@ -13,9 +14,13 @@ FreeImageBmp::FreeImageBmp(FreeImageBmp&& other) : fiBitmap(other.fiBitmap)
 	other.fiBitmap = nullptr;
 }
 
-FreeImageBmp::FreeImageBmp(int width, int height, int bpp) : 
+FreeImageBmp::FreeImageBmp(int width, int height, unsigned bpp) : 
 	fiBitmap(FreeImage_Allocate(width, height, bpp)) 
 {
+	if (bpp > INT_MAX) {
+		throw std::runtime_error("Bpp of " + std::to_string(bpp) + " is too large");
+	}
+
 	if (fiBitmap == nullptr) {
 		throw std::runtime_error("Unable to create a default bitmap with the following properties, Width: " + std::to_string(width) +
 			" , Height: " + std::to_string(height) + " , Bits per pixel: " + std::to_string(bpp));
