@@ -18,6 +18,10 @@ FreeImageBmp::FreeImageBmp(int width, int height, unsigned bpp) :
 	fiBitmap(FreeImage_Allocate(width, height, bpp)) 
 {
 	if (bpp > INT_MAX) {
+		if (fiBitmap != nullptr) {
+			FreeImage_Unload(fiBitmap);
+		}
+
 		throw std::runtime_error("Bpp of " + std::to_string(bpp) + " is too large");
 	}
 
