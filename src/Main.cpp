@@ -18,7 +18,7 @@ static std::string version = "2.0.1";
 
 void OutputHelp();
 void ExecuteCommand(const ConsoleArgs& consoleArgs);
-void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings);
+void ImageMapFromConsole(const string& mapFilename, const string& resourceDirectory, const RenderSettings& renderSettings);
 void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings renderSettings);
 bool IsRenderableFileExtension(const string& filename);
 
@@ -64,7 +64,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
 		}
 		else if (IsRenderableFileExtension(path)) {
-			ImageMapFromConsole(path, consoleArgs.renderSettings);
+			ImageMapFromConsole(path, XFile::RemoveFilename(path), consoleArgs.renderSettings);
 		}
 		else {
 			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
@@ -72,13 +72,14 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 	}
 }
 
-void ImageMapFromConsole(const string& mapFilename, const RenderSettings& renderSettings)
+// @param resourceDirectory: Directory containing archives and tilesets
+void ImageMapFromConsole(const string& mapFilename, const string& resourceDirectory, const RenderSettings& renderSettings)
 {
 	if (!renderSettings.quiet) {
 		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(mapFilename) << endl;
 	}
 
-	MapImager mapImager(XFile::GetDirectory(mapFilename));
+	MapImager mapImager(resourceDirectory);
 	string renderFilename;
 	
 	try {
@@ -122,7 +123,7 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	}
 
 	for (const auto& filename : filenames) {
-		ImageMapFromConsole(filename, renderSettings);
+		ImageMapFromConsole(filename, directory, renderSettings);
 	}
 
 	if (!renderSettings.quiet)
