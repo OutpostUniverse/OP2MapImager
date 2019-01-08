@@ -69,8 +69,28 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
-	const unsigned tilesetScaledWidth = fiTilesetBmp.Width() / nonScaledTileLength * scaleFactor;
-	const unsigned tilesetScaledHeight = fiTilesetBmp.Height() / nonScaledTileLength * scaleFactor;
+
+	// Only source tilesets of standard width are supported
+	if (fiTilesetBmp.Width() != nonScaledTileLength) {
+		throw std::runtime_error("Source tileset width must match 32 pixels (1 tile)");
+	}
+	// Height must be a multiple of the tile size
+	if ((fiTilesetBmp.Width() % nonScaledTileLength) != 0) {
+		throw std::runtime_error("Source tileset height must be an integer multiple of 32 pixels (tile size)");
+	}
+
+	// Determine number of tiles
+	const unsigned numTiles = fiTilesetBmp.Height() / nonScaledTileLength;
+
+	// Pre-check scaled tileset size
+	const unsigned maxScaledTiles = std::numeric_limits<unsigned>::max() / scaleFactor;
+	if (numTiles > maxScaledTiles) {
+		throw std::runtime_error("Scaled tileset height exceeds memory size");
+	}
+
+	// Calculate scaled tileset dimensions
+	const unsigned tilesetScaledWidth = scaleFactor;
+	const unsigned tilesetScaledHeight = numTiles * scaleFactor;
 
 	tilesetBmps.push_back(fiTilesetBmp.Rescale(tilesetScaledWidth, tilesetScaledHeight));
 }
