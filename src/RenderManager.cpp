@@ -28,7 +28,8 @@ RenderManager::RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, unsi
 	scaleFactor(scaleFactor),
 	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) 
 {
-	if (mapTileWidth * mapTileHeight > std::numeric_limits<unsigned int>::max() / scaleFactor - scaleFactor) {
+	const auto maxTileDimension = std::numeric_limits<unsigned int>::max() / scaleFactor;
+	if ((mapTileWidth > maxTileDimension) || (mapTileHeight > maxTileDimension)) {
 		throw std::runtime_error("Provided scale factor is too large to render a map with this tile width and height");
 	}
 }
