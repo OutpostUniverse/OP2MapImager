@@ -93,11 +93,17 @@ void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 	const unsigned tilesetScaledHeight = numTiles * scaleFactor;
 
 	tilesetBmps.push_back(fiTilesetBmp.Rescale(tilesetScaledWidth, tilesetScaledHeight));
+	tileCount.push_back(numTiles);
 }
 
 void RenderManager::PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos)
 {
-	// Following static_cast is checked for overflow in constructor
+	// Check tile index values are in range
+	if (tilesetIndex < tileCount.size() && tileIndex < tileCount[tilesetIndex]) {
+		throw std::runtime_error("Tile index out of range");
+	}
+
+	// Image dimension pre-checked, so no overflow if tileIndex is in range
 	const unsigned int tilesetYPixelPos = static_cast<unsigned int>(tileIndex * scaleFactor);
 
 	FreeImageBmp tileBmp = tilesetBmps[tilesetIndex].CreateView(
