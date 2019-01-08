@@ -15,16 +15,13 @@ FreeImageBmp::FreeImageBmp(FreeImageBmp&& other) : fiBitmap(other.fiBitmap)
 }
 
 FreeImageBmp::FreeImageBmp(int width, int height, unsigned bpp) : 
-	fiBitmap(FreeImage_Allocate(width, height, bpp)) 
+	fiBitmap(nullptr)
 {
 	if (bpp > INT_MAX) {
-		if (fiBitmap != nullptr) {
-			FreeImage_Unload(fiBitmap);
-		}
-
 		throw std::runtime_error("Bpp of " + std::to_string(bpp) + " is too large");
 	}
 
+	fiBitmap = FreeImage_Allocate(width, height, bpp);
 	if (fiBitmap == nullptr) {
 		throw std::runtime_error("Unable to create a default bitmap with the following properties, Width: " + std::to_string(width) +
 			" , Height: " + std::to_string(height) + " , Bits per pixel: " + std::to_string(bpp));
