@@ -39,7 +39,8 @@ private:
 	const unsigned scaleFactor;
 	FreeImageBmp freeImageBmpDest;
 	std::vector<FreeImageBmp> tilesetBmps;
-	std::vector<unsigned> tileCount;
+	// The number of tiles contained in each tileset
+	std::vector<unsigned> tilesetTileCounts;
 
 	FREE_IMAGE_FORMAT GetFIImageFormat(ImageFormat imageFormat) const;
 	int GetFISaveFlag(ImageFormat imageFormat) const;
