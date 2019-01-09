@@ -102,7 +102,7 @@ void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 void RenderManager::PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos)
 {
 	// Check tile index values are in range
-	if (tilesetIndex < tilesetTileCounts.size() && tileIndex < tilesetTileCounts[tilesetIndex]) {
+	if (tileIndex >= tilesetTileCounts[tilesetIndex]) {
 		throw std::runtime_error("Tile index out of range");
 	}
 
