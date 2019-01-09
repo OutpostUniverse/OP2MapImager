@@ -24,9 +24,16 @@ void RenderManager::FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *mes
 	printf(" ***\n\n");
 }
 
-RenderManager::RenderManager(int mapTileWidth, int mapTileHeight, int bpp, int scaleFactor) : 
+RenderManager::RenderManager(unsigned mapTileWidth, unsigned mapTileHeight, unsigned bpp, unsigned scaleFactor) : 
 	scaleFactor(scaleFactor),
-	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) { }
+	freeImageBmpDest(mapTileWidth * scaleFactor, mapTileHeight * scaleFactor, bpp) 
+{
+	// maxTileDimension is the maximum width or height of a map in tiles
+	const auto maxTileDimension = std::numeric_limits<unsigned int>::max() / scaleFactor;
+	if ((mapTileWidth > maxTileDimension) || (mapTileHeight > maxTileDimension)) {
+		throw std::runtime_error("Provided scale factor is too large to render a map with this tile width and height");
+	}
+}
 
 void RenderManager::AddTileset(BYTE* tilesetMemoryPointer, std::size_t tilesetSize)
 {
@@ -63,18 +70,47 @@ void RenderManager::AddTileset(std::string filename, ImageFormat imageFormat)
 void RenderManager::AddScaledTileset(const FreeImageBmp& fiTilesetBmp)
 {
 	const unsigned nonScaledTileLength = 32;
-	const unsigned tilesetScaledWidth = fiTilesetBmp.Width() / nonScaledTileLength * scaleFactor;
-	const unsigned tilesetScaledHeight = fiTilesetBmp.Height() / nonScaledTileLength * scaleFactor;
+
+	// Only source tilesets of standard width are supported
+	if (fiTilesetBmp.Width() != nonScaledTileLength) {
+		throw std::runtime_error("Source tileset width must match " + 
+			std::to_string(nonScaledTileLength) + " pixels (1 tile)");
+	}
+	// Height must be a multiple of the tile size
+	if ((fiTilesetBmp.Width() % nonScaledTileLength) != 0) {
+		throw std::runtime_error("Source tileset height must be an integer multiple of " + 
+			std::to_string(nonScaledTileLength) + " pixels (tile size)");
+	}
+
+	// Determine number of tiles
+	const unsigned tilesetTileCount = fiTilesetBmp.Height() / nonScaledTileLength;
+
+	// Pre-check scaled tileset size
+	const unsigned maxScaledTiles = std::numeric_limits<unsigned>::max() / scaleFactor;
+	if (tilesetTileCount > maxScaledTiles) {
+		throw std::runtime_error("Scaled tileset height exceeds memory size");
+	}
+
+	// Calculate scaled tileset dimensions
+	const unsigned tilesetScaledWidth = scaleFactor;
+	const unsigned tilesetScaledHeight = tilesetTileCount * scaleFactor;
 
 	tilesetBmps.push_back(fiTilesetBmp.Rescale(tilesetScaledWidth, tilesetScaledHeight));
+	tilesetTileCounts.push_back(tilesetTileCount);
 }
 
 void RenderManager::PasteTile(std::size_t tilesetIndex, std::size_t tileIndex, int xPos, int yPos)
 {
-	if (tileIndex * scaleFactor + scaleFactor > std::numeric_limits<unsigned int>::max()) {
-		throw std::runtime_error("New tilesetYPixelPos is too large");
+	if (tilesetIndex >= tilesetTileCounts.size()) {
+		throw std::runtime_error("Requested tileset has not been loaded into RenderManager");
 	}
 
+	// Check tile index values are in range
+	if (tileIndex >= tilesetTileCounts[tilesetIndex]) {
+		throw std::runtime_error("Tile index out of range");
+	}
+
+	// Image dimension pre-checked, so no overflow if tileIndex is in range
 	const unsigned int tilesetYPixelPos = static_cast<unsigned int>(tileIndex * scaleFactor);
 
 	FreeImageBmp tileBmp = tilesetBmps[tilesetIndex].CreateView(

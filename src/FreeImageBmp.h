@@ -13,7 +13,7 @@ public:
 	FreeImageBmp(FreeImageBmp&& other); // Move constructor
 
 	// Create a new, default bitmap (pixels are all black)
-	FreeImageBmp(int width, int height, int bpp);
+	FreeImageBmp(int width, int height, unsigned bpp);
 
 	// Create bitmap from memory buffer
 	FreeImageBmp(FREE_IMAGE_FORMAT imageType, FIMEMORY* fiMemory);
