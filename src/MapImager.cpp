@@ -14,9 +14,7 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 
 	RenderManager::Initialize();
 
-	RenderManager renderManager(
-		mapData.header.MapTileWidth(),
-		mapData.header.mapTileHeight, 24, renderSettings.scaleFactor);
+	RenderManager renderManager(mapData.MapTileWidth(), mapData.MapTileHeight(), 24, renderSettings.scaleFactor);
 
 	LoadTilesets(mapData, renderManager, renderSettings.accessArchives);
 	SetRenderTiles(mapData, renderManager);
@@ -116,8 +114,8 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 
 void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < mapData.header.mapTileHeight; ++y) {
-		for (unsigned int x = 0; x < mapData.header.MapTileWidth(); ++x) {
+	for (unsigned int y = 0; y < mapData.MapTileHeight(); ++y) {
+		for (unsigned int x = 0; x < mapData.MapTileWidth(); ++x) {
 			renderManager.PasteTile(mapData.GetTilesetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
 		}
 	}
@@ -132,8 +130,8 @@ MapData MapImager::ReadMap(const string& filename, bool accessArchives)
 	}
 
 	if (XFile::ExtensionMatches(filename, ".OP2")) {
-		return MapReader::ReadSavedGame(*mapStream);
+		return MapData::ReadSavedGame(*mapStream);
 	}
 	
-	return MapReader::ReadMap(*mapStream);
+	return MapData::ReadMap(*mapStream);
 }
