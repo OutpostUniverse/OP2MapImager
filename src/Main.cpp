@@ -13,8 +13,8 @@ using namespace std;
 //  * Compiler Warning 4996 has been diasabled: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996
 //  * SDL checks have been set to NO/FALSE. (Security Development Lifecycle).
 
-static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "2.0.1";
+static const std::string consoleLineBreak("--------------------------------------------------");
+static const std::string version = "2.0.1";
 
 void OutputHelp();
 void ExecuteCommand(const ConsoleArgs& consoleArgs);
