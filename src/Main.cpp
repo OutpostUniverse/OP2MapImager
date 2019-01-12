@@ -146,9 +146,8 @@ void OutputHelp()
 	cout << endl;
 	cout << "+++ USAGE NOTES +++" << endl;
 	cout << "  * Capable of saving multiple map files and entire directories." << endl;
-	cout << "  * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs." << endl;
 	cout << "  * Scale Factor determines the final render size and represents the final pixel length of a single tile" << endl;
-	cout << "    * Max Value: 32, renders at full size, or 32 pixels per tile." << endl;
+	cout << "    * A value of 32 renders at full size, or 32 pixels per tile." << endl;
 	cout << "    * Min Value: 1, renders at 1 pixel per tile" << endl;
 	cout << endl;
 	cout << "+++ EXAMPLE COMMANDS +++" << endl;
