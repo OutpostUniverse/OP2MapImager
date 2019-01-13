@@ -13,8 +13,8 @@ using namespace std;
 //  * Compiler Warning 4996 has been diasabled: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996
 //  * SDL checks have been set to NO/FALSE. (Security Development Lifecycle).
 
-static string consoleLineBreak("--------------------------------------------------");
-static std::string version = "2.0.1";
+static const std::string consoleLineBreak("--------------------------------------------------");
+static const std::string version = "2.0.1";
 
 void OutputHelp();
 void ExecuteCommand(const ConsoleArgs& consoleArgs);
@@ -146,9 +146,8 @@ void OutputHelp()
 	cout << endl;
 	cout << "+++ USAGE NOTES +++" << endl;
 	cout << "  * Capable of saving multiple map files and entire directories." << endl;
-	cout << "  * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs." << endl;
 	cout << "  * Scale Factor determines the final render size and represents the final pixel length of a single tile" << endl;
-	cout << "    * Max Value: 32, renders at full size, or 32 pixels per tile." << endl;
+	cout << "    * A value of 32 renders at full size, or 32 pixels per tile." << endl;
 	cout << "    * Min Value: 1, renders at 1 pixel per tile" << endl;
 	cout << endl;
 	cout << "+++ EXAMPLE COMMANDS +++" << endl;
