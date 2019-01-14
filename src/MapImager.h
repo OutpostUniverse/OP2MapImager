@@ -25,9 +25,9 @@ public:
 private:
 	ResourceManager resourceManager;
 
-	void SetRenderTiles(MapData& mapData, RenderManager& mapImager);
-	void LoadTilesets(MapData& mapData, RenderManager& mapImager, bool accessArchives);
+	void SetRenderTiles(Map& map, RenderManager& mapImager);
+	void LoadTilesets(Map& map, RenderManager& mapImager, bool accessArchives);
 	std::string FormatRenderFilename(const std::string& filename, const RenderSettings& renderSettings);
 	std::string CreateUniqueFilename(const std::string& filename);
-	MapData ReadMap(const std::string& filename, bool accessArchives);
+	Map ReadMap(const std::string& filename, bool accessArchives);
 };
