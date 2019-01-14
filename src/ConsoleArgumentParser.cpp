@@ -40,7 +40,7 @@ ConsoleArgs ConsoleArgumentParser::SortArguments(int argc, char **argv)
 {
 	ConsoleArgs consoleArgs;
 
-	if (argc < 2) {
+	if (IsTooFewArguments(argc)) {
 		consoleArgs.renderSettings.helpRequested = true;
 		return consoleArgs;
 	}
@@ -107,6 +107,11 @@ void ConsoleArgumentParser::CheckForMissingSwitchArgument(int index, int argc, i
 	if (index + numberOfArgsToPass >= argc) {
 		throw runtime_error("Missing the final argument for the supplied switch.");
 	}
+}
+
+bool ConsoleArgumentParser::IsTooFewArguments(int argumentCount)
+{
+	return argumentCount < 2;
 }
 
 void ConsoleArgumentParser::ParseHelp(const char* value, ConsoleArgs& consoleArgs)

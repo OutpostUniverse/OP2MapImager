@@ -46,6 +46,8 @@ private:
 	bool ParseBool(const std::string& str);
 
 	static ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString);
+	
+	static bool IsTooFewArguments(int argumentCount);
 
 	static void ParseQuiet(const char* value, ConsoleArgs& consoleArgs);
 	static void ParseScale(const char* value, ConsoleArgs& consoleArgs);
