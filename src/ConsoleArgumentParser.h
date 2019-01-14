@@ -43,7 +43,7 @@ private:
 
 	void CheckForMissingSwitchArgument(int index, int argc, int numberOfArgsToPass);
 	bool FindSwitch(char* argumentChar, ConsoleSwitch& currentSwitch);
-	bool ParseBool(const std::string& str);
+	static bool ParseBool(const std::string& str);
 
 	static ImageFormat ParseImageTypeToEnum(const std::string& imageTypeString);
 	
