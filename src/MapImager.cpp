@@ -64,19 +64,20 @@ string MapImager::FormatRenderFilename(const string& filename, const RenderSetti
 	return renderFilename;
 }
 
-string MapImager::CreateUniqueFilename(const string& filename)
+std::string MapImager::CreateUniqueFilename(const std::string& filename)
 {
-	string uniqueFilename = filename;
+	std::string uniqueFilename = filename;
 
-	int pathIndex = 1;
+	std::size_t pathIndex = 0;
 	while (XFile::PathExists(uniqueFilename))
 	{
-		uniqueFilename = XFile::AppendToFilename(filename, "_" + std::to_string(pathIndex));
 		pathIndex++;
 
-		if (pathIndex >= 32000) {
-			throw runtime_error("Too many files with the same filename.");
+		if (pathIndex == SIZE_MAX) {
+			throw std::runtime_error("Too many files with the same filename.");
 		}
+
+		uniqueFilename = XFile::AppendToFilename(filename, "_" + std::to_string(pathIndex));
 	}
 
 	return uniqueFilename;
