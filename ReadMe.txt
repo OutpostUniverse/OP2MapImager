@@ -64,6 +64,8 @@ Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager. Se
 Ver 2.1.0
  * Remove Windows specific dependencies from code base (may now be compiled for use on Linux).
  * Allow compiling on both x86 (win32) and x64.
+ * Allow accessing tilesets (wells) without removing them from archive files.
+ * Bug Fix: Multiple directory search problems preventing OP2MapImager from finding tilesets or maps.
  * Bug Fix: Program crash when unable to find map file.
 
 Ver 2.0.1 (07Nov2017)
