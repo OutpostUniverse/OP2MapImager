@@ -10,14 +10,14 @@ using namespace std;
 
 void MapImager::ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
 {
-	MapData mapData = ReadMap(filename, renderSettings.accessArchives);
+	Map map = ReadMap(filename, renderSettings.accessArchives);
 
 	RenderManager::Initialize();
 
-	RenderManager renderManager(mapData.MapTileWidth(), mapData.MapTileHeight(), 24, renderSettings.scaleFactor);
+	RenderManager renderManager(map.MapTileWidth(), map.MapTileHeight(), 24, renderSettings.scaleFactor);
 
-	LoadTilesets(mapData, renderManager, renderSettings.accessArchives);
-	SetRenderTiles(mapData, renderManager);
+	LoadTilesets(map, renderManager, renderSettings.accessArchives);
+	SetRenderTiles(map, renderManager);
 
 	XFile::NewDirectory(renderSettings.destDirectory);
 	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
@@ -83,15 +83,15 @@ std::string MapImager::CreateUniqueFilename(const std::string& filename)
 	return uniqueFilename;
 }
 
-void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool accessArchives)
+void MapImager::LoadTilesets(Map& map, RenderManager& mapImager, bool accessArchives)
 {
-	for (std::size_t i = 0; i < mapData.tilesetSources.size(); ++i)
+	for (std::size_t i = 0; i < map.tilesetSources.size(); ++i)
 	{
-		if (mapData.tilesetSources[i].numTiles == 0) {
+		if (map.tilesetSources[i].numTiles == 0) {
 			continue;
 		}
 
-		string tilesetFilename(mapData.tilesetSources[i].tilesetFilename + ".bmp");
+		string tilesetFilename(map.tilesetSources[i].tilesetFilename + ".bmp");
 
 		auto stream = resourceManager.GetResourceStream(tilesetFilename);
 
@@ -113,16 +113,16 @@ void MapImager::LoadTilesets(MapData& mapData, RenderManager& mapImager, bool ac
 	}
 }
 
-void MapImager::SetRenderTiles(MapData& mapData, RenderManager& renderManager)
+void MapImager::SetRenderTiles(Map& map, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < mapData.MapTileHeight(); ++y) {
-		for (unsigned int x = 0; x < mapData.MapTileWidth(); ++x) {
-			renderManager.PasteTile(mapData.GetTilesetIndex(x, y), mapData.GetImageIndex(x, y), x, y);
+	for (unsigned int y = 0; y < map.MapTileHeight(); ++y) {
+		for (unsigned int x = 0; x < map.MapTileWidth(); ++x) {
+			renderManager.PasteTile(map.GetTilesetIndex(x, y), map.GetImageIndex(x, y), x, y);
 		}
 	}
 }
 
-MapData MapImager::ReadMap(const string& filename, bool accessArchives)
+Map MapImager::ReadMap(const string& filename, bool accessArchives)
 {
 	auto mapStream = resourceManager.GetResourceStream(filename, accessArchives);
 
@@ -131,8 +131,8 @@ MapData MapImager::ReadMap(const string& filename, bool accessArchives)
 	}
 
 	if (XFile::ExtensionMatches(filename, ".OP2")) {
-		return MapData::ReadSavedGame(*mapStream);
+		return Map::ReadSavedGame(*mapStream);
 	}
 	
-	return MapData::ReadMap(*mapStream);
+	return Map::ReadMap(*mapStream);
 }
