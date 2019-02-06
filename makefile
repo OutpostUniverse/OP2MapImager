@@ -32,11 +32,9 @@ FOLDERS := $(sort $(dir $(SRCS)))
 
 all: $(OUTPUT)
 
-$(OUTPUT): $(UTILITYLIB) $(OBJS)
+$(OUTPUT): $(OBJS) | op2utility
 	@mkdir -p ${@D}
 	$(CXX) $^ $(LDFLAGS) -o $@ $(LDLIBS)
-
-$(UTILITYLIB): op2utility
 
 .PHONY:op2utility
 op2utility:
