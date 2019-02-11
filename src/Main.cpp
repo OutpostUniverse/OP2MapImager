@@ -98,8 +98,8 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 {
 	ResourceManager resourceManager(directory);
 
-	vector<string> filenames = resourceManager.GetAllFilenamesOfType(directory, ".map", renderSettings.accessArchives);
-	vector<string> saveFilenames = resourceManager.GetAllFilenames(directory, R"(.*SGAME[0-9]\.OP2)"); //Regex
+	vector<string> filenames = resourceManager.GetAllFilenamesOfType(".map", renderSettings.accessArchives);
+	vector<string> saveFilenames = resourceManager.GetAllFilenames(R"(.*SGAME[0-9]\.OP2)"); //Regex
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
