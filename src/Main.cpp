@@ -64,7 +64,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
 		}
 		else if (IsRenderableFileExtension(path)) {
-			ImageMapFromConsole(path, XFile::GetDirectory(path), consoleArgs.renderSettings);
+			ImageMapFromConsole(XFile::GetFilename(path), XFile::GetDirectory(path), consoleArgs.renderSettings);
 		}
 		else {
 			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
