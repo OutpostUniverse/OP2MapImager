@@ -106,7 +106,7 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 	// Loop starts at index size - 1 and ends after index 0 executes
 	for (std::size_t i = filenames.size(); i-- > 0; )
 	{
-		const string& filename = XFile::GetFilename(filenames[i]);
+		const string& filename = filenames[i];
 		if (filename == "wellpallet.map") {
 			filenames.erase(filenames.begin() + i);
 		}
