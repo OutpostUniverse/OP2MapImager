@@ -27,21 +27,6 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	RenderManager::Deinitialize();
 }
 
-string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
-{
-	switch (imageFormat)
-	{
-	case ImageFormat::PNG:
-		return ".png";
-	case ImageFormat::BMP:
-		return ".bmp";
-	case ImageFormat::JPG:
-		return ".jpg";
-	default:
-		return ".bmp";
-	}
-}
-
 string MapImager::FormatRenderFilename(const string& filename, const RenderSettings& renderSettings)
 {
 	string renderFilename;
@@ -62,6 +47,21 @@ string MapImager::FormatRenderFilename(const string& filename, const RenderSetti
 	}
 
 	return renderFilename;
+}
+
+string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
+{
+	switch (imageFormat)
+	{
+	case ImageFormat::PNG:
+		return ".png";
+	case ImageFormat::BMP:
+		return ".bmp";
+	case ImageFormat::JPG:
+		return ".jpg";
+	default:
+		return ".bmp";
+	}
 }
 
 std::string MapImager::CreateUniqueFilename(const std::string& filename)
