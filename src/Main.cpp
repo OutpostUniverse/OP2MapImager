@@ -76,7 +76,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 void ImageMapFromConsole(const string& mapFilename, const string& resourceDirectory, const RenderSettings& renderSettings)
 {
 	if (!renderSettings.quiet) {
-		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(mapFilename) << endl;
+		cout << "Render initialized (May take up to 45 seconds): " + mapFilename << endl;
 	}
 
 	MapImager mapImager(resourceDirectory);
