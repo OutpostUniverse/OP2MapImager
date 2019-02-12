@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void MapImager::ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
+void MapImager::ImageMap(const string& renderFilename, const string& filename, const RenderSettings& renderSettings)
 {
 	Map map = ReadMap(filename, renderSettings.accessArchives);
 
@@ -20,9 +20,8 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	SetRenderTiles(map, renderManager);
 
 	XFile::NewDirectory(renderSettings.destDirectory);
-	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
-	renderManager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+	renderManager.SaveMapImage(renderFilename, renderSettings.imageFormat);
 
 	RenderManager::Deinitialize();
 }
