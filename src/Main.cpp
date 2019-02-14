@@ -60,7 +60,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 			ImageMapsInDirectoryFromConsole(path, consoleArgs.renderSettings);
 		}
 		else if (IsRenderableFileExtension(path)) {
-			ImageMapFromConsole(path, XFile::GetDirectory(path), consoleArgs.renderSettings);
+			ImageMapFromConsole(XFile::GetFilename(path), XFile::GetDirectory(path), consoleArgs.renderSettings);
 		}
 		else {
 			throw runtime_error("You must provide either a directory or a file of type (.map|.OP2).");
@@ -72,7 +72,7 @@ void ExecuteCommand(const ConsoleArgs& consoleArgs)
 void ImageMapFromConsole(const string& mapFilename, const string& resourceDirectory, const RenderSettings& renderSettings)
 {
 	if (!renderSettings.quiet) {
-		cout << "Render initialized (May take up to 45 seconds): " + XFile::GetFilename(mapFilename) << endl;
+		cout << "Render initialized (May take up to 45 seconds): " + mapFilename << endl;
 	}
 
 	MapImager mapImager(resourceDirectory);
@@ -94,16 +94,15 @@ void ImageMapsInDirectoryFromConsole(const string& directory, RenderSettings ren
 {
 	ResourceManager resourceManager(directory);
 
-	vector<string> filenames = resourceManager.GetAllFilenamesOfType(directory, ".map", renderSettings.accessArchives);
-	vector<string> saveFilenames = resourceManager.GetAllFilenames(directory, R"(.*SGAME[0-9]\.OP2)"); //Regex
+	vector<string> filenames = resourceManager.GetAllFilenamesOfType(".map", renderSettings.accessArchives);
+	vector<string> saveFilenames = resourceManager.GetAllFilenames(R"(.*SGAME[0-9]\.OP2)"); //Regex
 	
 	filenames.insert(std::end(filenames), std::begin(saveFilenames), std::end(saveFilenames));
 
 	// Loop starts at index size - 1 and ends after index 0 executes
 	for (std::size_t i = filenames.size(); i-- > 0; )
 	{
-		const string& filename = XFile::GetFilename(filenames[i]);
-		if (filename == "wellpallet.map") {
+		if (filenames[i] == "wellpallet.map") {
 			filenames.erase(filenames.begin() + i);
 		}
 	}
