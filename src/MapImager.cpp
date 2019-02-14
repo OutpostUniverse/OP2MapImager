@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void MapImager::ImageMap(string& renderFilenameOut, const string& filename, const RenderSettings& renderSettings)
+void MapImager::ImageMap(const string& renderFilename, const string& filename, const RenderSettings& renderSettings)
 {
 	Map map = ReadMap(filename, renderSettings.accessArchives);
 
@@ -20,26 +20,10 @@ void MapImager::ImageMap(string& renderFilenameOut, const string& filename, cons
 	SetRenderTiles(map, renderManager);
 
 	XFile::NewDirectory(renderSettings.destDirectory);
-	renderFilenameOut = FormatRenderFilename(filename, renderSettings);
 
-	renderManager.SaveMapImage(renderFilenameOut, renderSettings.imageFormat);
+	renderManager.SaveMapImage(renderFilename, renderSettings.imageFormat);
 
 	RenderManager::Deinitialize();
-}
-
-string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
-{
-	switch (imageFormat)
-	{
-	case ImageFormat::PNG:
-		return ".png";
-	case ImageFormat::BMP:
-		return ".bmp";
-	case ImageFormat::JPG:
-		return ".jpg";
-	default:
-		return ".bmp";
-	}
 }
 
 string MapImager::FormatRenderFilename(const string& filename, const RenderSettings& renderSettings)
@@ -62,6 +46,21 @@ string MapImager::FormatRenderFilename(const string& filename, const RenderSetti
 	}
 
 	return renderFilename;
+}
+
+string MapImager::GetImageFormatExtension(ImageFormat imageFormat)
+{
+	switch (imageFormat)
+	{
+	case ImageFormat::PNG:
+		return ".png";
+	case ImageFormat::BMP:
+		return ".bmp";
+	case ImageFormat::JPG:
+		return ".jpg";
+	default:
+		return ".bmp";
+	}
 }
 
 std::string MapImager::CreateUniqueFilename(const std::string& filename)

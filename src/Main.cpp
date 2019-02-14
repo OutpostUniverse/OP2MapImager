@@ -76,9 +76,9 @@ void ImageMapFromConsole(const string& mapFilename, const string& resourceDirect
 	}
 
 	MapImager mapImager(resourceDirectory);
-	string renderFilename;
-	
+
 	try {
+		string renderFilename = mapImager.FormatRenderFilename(mapFilename, renderSettings);
 		mapImager.ImageMap(renderFilename, mapFilename, renderSettings);
 
 		if (!renderSettings.quiet) {
