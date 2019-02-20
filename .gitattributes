@@ -2,3 +2,5 @@ $ cat .gitattributes
 FreeImage/* linguist-vendored
 
 ReadMe.txt linguist-documentation
+
+*.rc diff
