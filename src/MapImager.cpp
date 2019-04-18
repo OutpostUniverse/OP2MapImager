@@ -14,7 +14,7 @@ void MapImager::ImageMap(const string& renderFilename, const string& filename, c
 
 	RenderManager::Initialize();
 
-	RenderManager renderManager(map.MapTileWidth(), map.MapTileHeight(), 24, renderSettings.scaleFactor);
+	RenderManager renderManager(map.WidthInTiles(), map.HeightInTiles(), 24, renderSettings.scaleFactor);
 
 	LoadTilesets(map, renderManager, renderSettings.accessArchives);
 	SetRenderTiles(map, renderManager);
@@ -114,8 +114,8 @@ void MapImager::LoadTilesets(Map& map, RenderManager& mapImager, bool accessArch
 
 void MapImager::SetRenderTiles(Map& map, RenderManager& renderManager)
 {
-	for (unsigned int y = 0; y < map.MapTileHeight(); ++y) {
-		for (unsigned int x = 0; x < map.MapTileWidth(); ++x) {
+	for (unsigned int y = 0; y < map.HeightInTiles(); ++y) {
+		for (unsigned int x = 0; x < map.WidthInTiles(); ++x) {
 			renderManager.PasteTile(map.GetTilesetIndex(x, y), map.GetImageIndex(x, y), x, y);
 		}
 	}
