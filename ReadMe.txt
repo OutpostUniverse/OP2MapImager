@@ -33,25 +33,16 @@ Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.
 
 +++ INSTALL DIRECTIONS +++
 
-Ensure OP2MapImager.exe, FreeImage.dll, and well0000.bmp through well0012.bmp are all in the same directory. (I typically put them all in the root OP2 install directory for ease of use, but not required.)
+Ensure OP2MapImager.exe and FreeImage.dll are in the same directory. They can be placed in the root OP2 install directory for ease of install and use. Advanced users may want to establish an environment variable to allow application's use in any directory.
 
 Open a command prompt. Navigate to the directory with OP2MapImager.exe and type 'OP2MapImager -h' to see Usage Message.
 
 
 +++ OUTPOST 2 TILESETS (WELL00XX.BMP) +++
 
-The original tileset images shipped with Outpost 2 use a special format that prevents them from being opened by typical pixel image manipulation software (like Gimp or Paint). However, Outpost 2 is capable of reading normally formatted 8bpp indexed BMPs.
+The original tileset images (Wells) shipped with Outpost 2 use a special format that prevents them from being opened by typical pixel image manipulation software (like Gimp or Paint). If you attempt to render a map using the original Outpost 2 tileset images, OP2MapImager will throw an error. The current released version of Outpost 2 contains normally formatted tilesets and will not cause issues with OP2MapImager.
 
-OP2MapImager contains a copy of the tileset images that have been reformatted from the OP2 specific format to general BMP format. These may be placed in the root directory of Outpost 2 if you wish. They must exist in the same directory as OP2MapImager.exe and FreeImage.dll.
-
-If you attempt to render a map using the original Outpost 2 tileset images, OP2MapImager will throw an error.
-
-
-+++ ARCHIVE (.VOL) FILE ACCESS +++
-
-By default, OP2MapImager is able to search through .vol archives and pull maps or tilesets out of the .vol files.
-
-Unless the AccessArchives flag is disabled, OP2MapImager will first search the supplied directory, and if it cannot find the file of interest, then it will search alphabetically through all .vol files in the directory for the given file. If the file exists both loosely in the directory and in a .vol file, the copy not in the .vol file will be used.
+The tilesets (wells) must exist in the same directory as the map(s) chosen to render. The map and the tilesets may remain archived in their volume files for rendering as OP2MapImager is able to access volume files. OP2MapImager will first search for files loosely in the directory and then in the volume files alphabetically if the file does not exist loosely. Archive search may be disabled using the AccessArchives flag.
 
 
 +++ SOURCE CODE LOCATION AND COMPILIATION +++
