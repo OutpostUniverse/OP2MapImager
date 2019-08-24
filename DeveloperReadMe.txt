@@ -7,7 +7,7 @@ Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager.
 
 OP2MapImager is written in C++ and the solution/project files are built for Visual Studio 2017. C++11 and C++14 features are used. The currently expiremental C++ standard library filesystem is used and is supported by both VS2017 and GCC. 
 
-OP2MapImager depends on the project OP2Utility. The project must be compiled in x86 or x64. 
+OP2MapImager depends on the project OP2Utility. The project may be compiled in x86 or x64. 
 
 OP2Utility may be found at: https://github.com/OutpostUniverse/OP2Utility.
 
