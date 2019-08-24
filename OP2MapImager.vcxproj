@@ -100,9 +100,14 @@
     </Link>
     <PostBuildEvent>
       <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
-xcopy /y /d "$(ProjectDir)FreeImage\Dist\x32\FreeImage.dll" "$(OutDir)"
+SET freeImagePlatformDirectory="x32"
+if $(Platform) == x64 (
+   SET freeImagePlatformDirectory="x64"
+)
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\%freeImagePlatformDirectory%\FreeImage.dll" "$(OutDir)"
 
-SET zipName="OP2MapImager Ver2.0.1"
+
+SET zipName="OP2MapImager Ver2.1.0"
 SET directoryName=$(OutDir)%25zipName%25 
 
 SET pdbDirectoryName=$(OutDir)%25zipName%"_PDB"
@@ -147,6 +152,43 @@ if $(ConfigurationName) == Release (
       <AdditionalLibraryDirectories>FreeImage/Dist/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
+SET freeImagePlatformDirectory="x32"
+if $(Platform) == x64 (
+   SET freeImagePlatformDirectory="x64"
+)
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\%freeImagePlatformDirectory%\FreeImage.dll" "$(OutDir)"
+
+
+SET zipName="OP2MapImager Ver2.1.0"
+SET directoryName=$(OutDir)%25zipName%25 
+
+SET pdbDirectoryName=$(OutDir)%25zipName%"_PDB"
+
+if $(ConfigurationName) == Release (
+    mkdir %25directoryName%25
+    mkdir %25pdbDirectoryName%25 
+
+    xcopy /y /d "$(ProjectDir)well00*.bmp" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)ReadMe.txt" %25directoryName%25
+    xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
+    xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
+
+    xcopy /y /d "$(OutDir)OP2MapImager.pdb" %25pdbDirectoryName%25
+
+    REM Use 7Zip to zip final version
+    7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
+    
+    DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
+
+    7za a -tzip $(OutDir)%25zipName%25"_PDB".zip %25pdbDirectoryName%25
+    DEL /q %25pdbDirectoryName%25\*.*
+    RMDIR %25pdbDirectoryName%25 /s /q
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -170,9 +212,14 @@ if $(ConfigurationName) == Release (
     </Link>
     <PostBuildEvent>
       <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
-xcopy /y /d "$(ProjectDir)FreeImage\Dist\x32\FreeImage.dll" "$(OutDir)"
+SET freeImagePlatformDirectory="x32"
+if $(Platform) == x64 (
+   SET freeImagePlatformDirectory="x64"
+)
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\%freeImagePlatformDirectory%\FreeImage.dll" "$(OutDir)"
 
-SET zipName="OP2MapImager Ver2.0.1"
+
+SET zipName="OP2MapImager Ver2.1.0"
 SET directoryName=$(OutDir)%25zipName%25 
 
 SET pdbDirectoryName=$(OutDir)%25zipName%"_PDB"
@@ -221,6 +268,43 @@ if $(ConfigurationName) == Release (
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Place FreeImage DLL into debug or release directory for running application within Visual Studio.
+SET freeImagePlatformDirectory="x32"
+if $(Platform) == x64 (
+   SET freeImagePlatformDirectory="x64"
+)
+xcopy /y /d "$(ProjectDir)FreeImage\Dist\%freeImagePlatformDirectory%\FreeImage.dll" "$(OutDir)"
+
+
+SET zipName="OP2MapImager Ver2.1.0"
+SET directoryName=$(OutDir)%25zipName%25 
+
+SET pdbDirectoryName=$(OutDir)%25zipName%"_PDB"
+
+if $(ConfigurationName) == Release (
+    mkdir %25directoryName%25
+    mkdir %25pdbDirectoryName%25 
+
+    xcopy /y /d "$(ProjectDir)well00*.bmp" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)FreeImage license-gplv3.txt" %25directoryName%25
+    xcopy /y /d "$(ProjectDir)ReadMe.txt" %25directoryName%25
+    xcopy /y /d "$(OutDir)FreeImage.dll" %25directoryName%25
+    xcopy /y /d "$(OutDir)$(TargetFileName)" %25directoryName%25
+
+    xcopy /y /d "$(OutDir)OP2MapImager.pdb" %25pdbDirectoryName%25
+
+    REM Use 7Zip to zip final version
+    7za a -tzip $(OutDir)%25zipName%25.zip %25directoryName%25
+    
+    DEL /q %25directoryName%25\*.*
+    RMDIR %25directoryName%25 /s /q
+
+    7za a -tzip $(OutDir)%25zipName%25"_PDB".zip %25pdbDirectoryName%25
+    DEL /q %25pdbDirectoryName%25\*.*
+    RMDIR %25pdbDirectoryName%25 /s /q
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ConsoleArgumentParser.cpp" />
