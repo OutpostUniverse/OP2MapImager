@@ -10,7 +10,7 @@
 using namespace std;
 
 static const std::string consoleLineBreak("--------------------------------------------------");
-static const std::string version = "2.0.1";
+static const std::string version = "2.1.0";
 
 void OutputHelp();
 void ExecuteCommand(const ConsoleArgs& consoleArgs);

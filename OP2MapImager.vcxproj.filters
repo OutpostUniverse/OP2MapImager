@@ -53,10 +53,10 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CIInclude Include="src\FreeImageBmp.h">
-      <Filter>Header Files</Filter>
-    </CIInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FreeImageBmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
