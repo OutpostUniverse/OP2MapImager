@@ -3,19 +3,19 @@ Developed by Hooman and Brett208 (Vagabond)
 
 Check the OP2MapImager landing page for the newest version at https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager.
 
-+++ USAGE NOTES +++
+## USAGE NOTES
   * Capable of saving multiple map files and entire directories.
   * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs.
   * Scale Factor (-s) determines the final render size and represents the final pixel length of a single tile
     * Max Value: 32, renders at full size, or 32 pixels per tile.
     * Min Value: 1, renders at 1 pixel per tile
 
-+++ EXAMPLE COMMANDS +++
+## EXAMPLE COMMANDS
   * OP2MapImager mapFilename.[map|OP2]
   * OP2MapImager -s 16 -o -q Ashes.map eden01.map sgame0.op2
   * OP2MapImager --Scale 8 --ImageFormat BMP [Directory of choice]
 
-+++ OPTIONAL ARGUMENTS +++
+## OPTIONAL ARGUMENTS
   -H / --Help: Displays Help File
   -Q / --Quiet: [Default false] Add switch to run application without issuing console messages.
   -O / --Overwrite: [Default false] Add switch to allow application to overwrite existing files.
@@ -31,26 +31,26 @@ Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
 
-+++ INSTALL DIRECTIONS +++
+## INSTALL DIRECTIONS
 
 Ensure OP2MapImager.exe and FreeImage.dll are in the same directory. They can be placed in the root OP2 install directory for ease of install and use. Advanced users may want to establish an environment variable to allow application's use in any directory.
 
 Open a command prompt. Navigate to the directory with OP2MapImager.exe and type 'OP2MapImager -h' to see Usage Message.
 
 
-+++ OUTPOST 2 TILESETS (WELL00XX.BMP) +++
+## OUTPOST 2 TILESETS (WELL00XX.BMP)
 
 The original tileset images (Wells) shipped with Outpost 2 use a special format that prevents them from being opened by typical pixel image manipulation software (like Gimp or Paint). If you attempt to render a map using the original Outpost 2 tileset images, OP2MapImager will throw an error. The current released version of Outpost 2 contains normally formatted tilesets and will not cause issues with OP2MapImager.
 
 The tilesets (wells) must exist in the same directory as the map(s) chosen to render. The map and the tilesets may remain archived in their volume files for rendering as OP2MapImager is able to access volume files. OP2MapImager will first search for files loosely in the directory and then in the volume files alphabetically if the file does not exist loosely. Archive search may be disabled using the AccessArchives flag.
 
 
-+++ SOURCE CODE LOCATION AND COMPILIATION +++
+## SOURCE CODE LOCATION AND COMPILIATION
 
 Source code may be found at: https://github.com/OutpostUniverse/OP2MapImager. See the file DeveloperReadMe.txt in the source code for specific instructions.
 
 
-+++ Change Log +++
+## Change Log
 
 Ver 2.1.0
  * Remove Windows specific dependencies from code base (may now be compiled for use on Linux).
