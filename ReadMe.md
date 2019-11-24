@@ -28,7 +28,7 @@ For more information about Outpost 2 visit the Outpost Universe (http://outpost2
 Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/).
 
 
-+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+----
 
 
 ## INSTALL DIRECTIONS
