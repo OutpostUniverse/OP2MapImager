@@ -10,18 +10,18 @@ Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a .ma
     * Min Value: 1, renders at 1 pixel per tile (minimap view)
 
 ## EXAMPLE COMMANDS
-  * OP2MapImager mapFilename.[map|OP2]
-  * OP2MapImager -s 16 -o -q Ashes.map eden01.map sgame0.op2
-  * OP2MapImager --Scale 8 --ImageFormat BMP [Directory of choice]
+  * `OP2MapImager mapFilename.[map|OP2]`
+  * `OP2MapImager -s 16 -o -q Ashes.map eden01.map sgame0.op2`
+  * `OP2MapImager --Scale 8 --ImageFormat BMP [Directory of choice]`
 
 ## OPTIONAL ARGUMENTS
-  -H / --Help: Displays Help File
-  -Q / --Quiet: [Default false] Add switch to run application without issuing console messages.
-  -O / --Overwrite: [Default false] Add switch to allow application to overwrite existing files.
-  -D / --DestinationDirectory: [Default MapRenders]. Add switch and name of new destination path.
-  -I / --ImageFormat: [Default PNG]. Allows PNG|JPG|BMP. Sets the image format of the final render.
-  -S / --Scale: [Default 4] Sets Scale Factor of image.
-  -A / --AccessArchives: [Default true]. Add switch to disable searching VOL archives for map and well files.
+  `-H` / `--Help`: Displays Help File
+  `-Q` / `--Quiet`: [Default false] Add switch to run application without issuing console messages.
+  `-O` / `--Overwrite`: [Default false] Add switch to allow application to overwrite existing files.
+  `-D` / `--DestinationDirectory`: [Default MapRenders]. Add switch and name of new destination path.
+  `-I` / `--ImageFormat`: [Default PNG]. Allows PNG|JPG|BMP. Sets the image format of the final render.
+  `-S` / `--Scale`: [Default 4] Sets Scale Factor of image.
+  `-A` / `--AccessArchives`: [Default true]. Add switch to disable searching VOL archives for map and well files.
 
 For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/).
 Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/).
@@ -34,7 +34,7 @@ Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.
 
 Ensure OP2MapImager.exe and FreeImage.dll are in the same directory. They can be placed in the root OP2 install directory for ease of install and use. Advanced users may want to establish an environment variable to allow application's use in any directory.
 
-Open a command prompt. Navigate to the directory with OP2MapImager.exe and type 'OP2MapImager -h' to see Usage Message.
+Open a command prompt. Navigate to the directory with OP2MapImager.exe and type `OP2MapImager -h` to see Usage Message.
 
 
 ## OUTPOST 2 TILESETS (WELL00XX.BMP)
