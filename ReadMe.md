@@ -1,6 +1,6 @@
 # OP2MapImager
 
-Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a .map or .op2 saved game file into an image file (.png, .jpg, .bmp). It supports individual map imaging as well as batch processing of all maps in a folder. Check the [OP2MapImager landing page](https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager) for the newest version. Developed by Hooman and Brett208 (Vagabond).
+Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a map or saved game file (.map, .op2) into an image file (.png, .jpg, .bmp). It supports individual map imaging as well as batch processing of all maps in a folder. Check the [OP2MapImager landing page](https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager) for the newest version. Developed by Hooman and Brett208 (Vagabond).
 
 ## USAGE NOTES
   * Capable of saving multiple map files and entire directories.
