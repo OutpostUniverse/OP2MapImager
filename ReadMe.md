@@ -1,14 +1,13 @@
-OP2MapImager - Outpost 2 Map and Saved Game Imager
-Developed by Hooman and Brett208 (Vagabond)
+# OP2MapImager
 
-Check the OP2MapImager landing page for the newest version at https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager.
+Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a .map or .op2 saved game file into an image file (.png, .jpg, .bmp). It supports individual map imaging as well as batch processing of all maps in a folder. Check the [OP2MapImager landing page](https://wiki.outpost2.net/doku.php?id=outpost_2:helper_programs:op2mapimager) for the newest version. Developed by Hooman and Brett208 (Vagabond).
 
 ## USAGE NOTES
   * Capable of saving multiple map files and entire directories.
   * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs.
   * Scale Factor (-s) determines the final render size and represents the final pixel length of a single tile
-    * Max Value: 32, renders at full size, or 32 pixels per tile.
-    * Min Value: 1, renders at 1 pixel per tile
+    * Max Value: 32, renders at 32 pixels per tile (full size detail pane view)
+    * Min Value: 1, renders at 1 pixel per tile (minimap view)
 
 ## EXAMPLE COMMANDS
   * OP2MapImager mapFilename.[map|OP2]
