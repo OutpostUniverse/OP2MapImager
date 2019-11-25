@@ -21,7 +21,7 @@ Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a .ma
   -D / --DestinationDirectory: [Default MapRenders]. Add switch and name of new destination path.
   -I / --ImageFormat: [Default PNG]. Allows PNG|JPG|BMP. Sets the image format of the final render.
   -S / --Scale: [Default 4] Sets Scale Factor of image.
-  -A / --AccessArchives [Default true]. Add switch to disable searching VOL archives for map and well files.
+  -A / --AccessArchives: [Default true]. Add switch to disable searching VOL archives for map and well files.
 
 For more information about Outpost 2 visit the Outpost Universe (http://outpost2.net/).
 Image Manipulation accomplished through FreeImage (http://freeimage.sourceforge.net/).
