@@ -7,7 +7,7 @@ Outpost 2 Map and Saved Game Imager utility. This utility allows rendering a map
   * The OP2MapImager executable and FreeImage.dll must be in the same directory as the tileset BMPs.
   * Scale Factor (-s) determines the final render size and represents the final pixel length of a single tile
     * Min Value: 1, renders at 1 pixel per tile (minimap view)
-    * Max Value: 32, renders at 32 pixels per tile (full size detail pane view)
+    * Max Value: 32, renders at 32 pixels per tile (full size map)
 
 ## EXAMPLE COMMANDS
   * `OP2MapImager mapFilename.[map|OP2]`
