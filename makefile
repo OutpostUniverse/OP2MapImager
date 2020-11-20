@@ -1,11 +1,4 @@
 
-# Set compiler default
-# Can still override from command line or environment variables
-# Example: make CXX=clang
-ifeq ($(origin CXX),default)
-	CXX := clang-6.0
-endif
-
 SRCDIR := src
 BUILDDIR := .build
 BINDIR := $(BUILDDIR)/bin
